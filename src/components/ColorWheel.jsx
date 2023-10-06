@@ -2,8 +2,8 @@ import React from 'react';
 import MusicPlayer from './MusicPlayer';
 
 const colorSongs = {
-  yellow: ['song1.mp3', 'song2.mp3'],
-  green: ['song3.mp3', 'song4.mp3'],
+  yellow: ['src/music/happy/Feeling_Happy_FesliyanStudios.mp3', 'src/music/happy/Happy_Dreams_David_Fesliyan.mp3', 'src/music/happy/Happy_Feet_www.com.mp3', 'src/music/happy/Smilin_And_Vibin_.mp3'],
+  grey: ['src/music/sad/Emotional_Regret_.mp3', 'src/music/sad/Goodbye,_My_Friend_.mp3', 'src/music/sad/Lost_Souls.com.mp3', 'src/music/sad/Please_Dont_Cry_mp3.mp3'],
   // Define songs for other colors as needed
 };
 
