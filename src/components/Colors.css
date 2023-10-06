@@ -1,91 +1,66 @@
-/* src/components/ColorWheel.css */
-.color-wheel {
-  width: 200px;
-  height: 200px;
+.color-wheel-container {
+  width: 400px; /* Adjust the width as needed */
+  height: 400px; /* Adjust the height as needed */
   border-radius: 50%;
   position: relative;
-  transform: rotate(-45deg); /* Rotate to align colors correctly */
-  cursor: pointer;
+  border: 2px solid rgb(210, 200, 200); /* Add a border for the circular container */
+  overflow: hidden; /* Hide any overflow to keep it circular */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  background-color: white; /* Optional background color for the container */
 }
 
 .color-segment {
-  width: 0;
-  height: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-style: solid;
-  transform-origin: 50% 100%;
+  width: 33.33%; /* Adjust the width as a percentage of the container */
+  height: 33.33%; /* Adjust the height as a percentage of the container */
+  border-radius: 50%; /* Make each color segment circular */
+  position: relative; /* Ensure proper positioning */
 }
 
+
+/* Define the colors for the segments */
 .yellow {
-  border-width: 100px 50px 0;
-  border-color: yellow transparent transparent;
-  transform: rotate(30deg);
+  background-color: yellow;
 }
 
 .green {
-  border-width: 100px 50px 0;
-  border-color: green transparent transparent;
-  transform: rotate(60deg);
+  background-color: green;
 }
 
 .red {
-  border-width: 100px 50px 0;
-  border-color: red transparent transparent;
-  transform: rotate(90deg);
+  background-color: red;
 }
 
 .blue {
-  border-width: 100px 50px 0;
-  border-color: blue transparent transparent;
-  transform: rotate(120deg);
+  background-color: blue;
 }
 
 .pink {
-  border-width: 100px 50px 0;
-  border-color: pink transparent transparent;
-  transform: rotate(150deg);
+  background-color: pink;
 }
 
 .purple {
-  border-width: 100px 50px 0;
-  border-color: purple transparent transparent;
-  transform: rotate(180deg);
+  background-color: purple;
 }
 
 .brown {
-  border-width: 100px 50px 0;
-  border-color: brown transparent transparent;
-  transform: rotate(210deg);
+  background-color: brown;
 }
 
 .orange {
-  border-width: 100px 50px 0;
-  border-color: orange transparent transparent;
-  transform: rotate(240deg);
+  background-color: orange;
 }
 
 .grey {
-  border-width: 100px 50px 0;
-  border-color: grey transparent transparent;
-  transform: rotate(270deg);
+  background-color: grey;
 }
 
 .aqua {
-  border-width: 100px 50px 0;
-  border-color: aqua transparent transparent;
-  transform: rotate(300deg);
+  background-color: aqua;
 }
 
-.terracotta {
-  border-width: 100px 50px 0;
-  border-color: terracotta transparent transparent;
-  transform: rotate(330deg);
-}
-
-/* Hover effect for color segments */
-.color-segment:hover {
-  transform: scale(1.1);
-  transition: transform 0.2s ease-in-out;
+.white {
+  background-color: whitesmoke;
 }
