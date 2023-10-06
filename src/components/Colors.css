@@ -1,0 +1,91 @@
+/* src/components/ColorWheel.css */
+.color-wheel {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  position: relative;
+  transform: rotate(-45deg); /* Rotate to align colors correctly */
+  cursor: pointer;
+}
+
+.color-segment {
+  width: 0;
+  height: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-style: solid;
+  transform-origin: 50% 100%;
+}
+
+.yellow {
+  border-width: 100px 50px 0;
+  border-color: yellow transparent transparent;
+  transform: rotate(30deg);
+}
+
+.green {
+  border-width: 100px 50px 0;
+  border-color: green transparent transparent;
+  transform: rotate(60deg);
+}
+
+.red {
+  border-width: 100px 50px 0;
+  border-color: red transparent transparent;
+  transform: rotate(90deg);
+}
+
+.blue {
+  border-width: 100px 50px 0;
+  border-color: blue transparent transparent;
+  transform: rotate(120deg);
+}
+
+.pink {
+  border-width: 100px 50px 0;
+  border-color: pink transparent transparent;
+  transform: rotate(150deg);
+}
+
+.purple {
+  border-width: 100px 50px 0;
+  border-color: purple transparent transparent;
+  transform: rotate(180deg);
+}
+
+.brown {
+  border-width: 100px 50px 0;
+  border-color: brown transparent transparent;
+  transform: rotate(210deg);
+}
+
+.orange {
+  border-width: 100px 50px 0;
+  border-color: orange transparent transparent;
+  transform: rotate(240deg);
+}
+
+.grey {
+  border-width: 100px 50px 0;
+  border-color: grey transparent transparent;
+  transform: rotate(270deg);
+}
+
+.aqua {
+  border-width: 100px 50px 0;
+  border-color: aqua transparent transparent;
+  transform: rotate(300deg);
+}
+
+.terracotta {
+  border-width: 100px 50px 0;
+  border-color: terracotta transparent transparent;
+  transform: rotate(330deg);
+}
+
+/* Hover effect for color segments */
+.color-segment:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease-in-out;
+}
