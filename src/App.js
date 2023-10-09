@@ -1,15 +1,17 @@
 import React from 'react';
-import './App.css';
-import ColorWheel from './components/ColorWheel';
+import ColorWheel from '/workspace/mcm/src/components/ColorWheel.jsx';
+import { playRandomSong } from '/workspace/mcm/src/components/MusicPlayer.jsx';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <ColorWheel />
-      </header>
+    <div>
+      <h1>Color Songs</h1>
+      <ColorWheel />
+      <button onClick={() => playRandomSong(['src/music/happy/Feeling_Happy_FesliyanStudios.mp3'])}>
+        Play Single Song
+      </button>
     </div>
   );
-}
+};
 
 export default App;

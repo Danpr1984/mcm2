@@ -1,15 +1,22 @@
 .color-wheel-container {
-  width: 400px; /* Adjust the width as needed */
-  height: 400px; /* Adjust the height as needed */
-  border-radius: 50%;
-  position: relative;
-  border: 2px solid rgb(210, 200, 200); /* Add a border for the circular container */
-  overflow: hidden; /* Hide any overflow to keep it circular */
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  align-content: center;
-  background-color: white; /* Optional background color for the container */
+  align-items: center;
+  height: 100vh;
+}
+
+.center-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.parent-element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Set the height of the parent element to the full viewport height */
 }
 
 .color-segment {
