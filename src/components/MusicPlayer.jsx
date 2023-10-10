@@ -24,70 +24,70 @@ function playRandomSong(audioFiles) {
 
 const colorSongs = {
   yellow: [
-    '/src/music/happy/Feeling_Happy_FesliyanStudios.mp3',
-    '/src/music/happy/Happy_Dreams_David_Fesliyan.mp3',
-    '/src/music/happy/Happy_Feet_www.com.mp3',
-    '/src/music/happy/Smilin_And_Vibin_.mp3',
+    '/music/happy/Feeling_Happy_FesliyanStudios.mp3',
+    '/music/happy/Happy_Dreams_David_Fesliyan.mp3',
+    '/music/happy/Happy_Feet_www.com.mp3',
+    '/music/happy/Smilin_And_Vibin_.mp3',
   ],
   green: [
-    '/src/music/sad/Emotional_Regret_.mp3',
-    '/src/music/sad/Goodbye,_My_Friend_.mp3',
-    '/src/music/sad/Lost_Souls.com.mp3',
-    '/src/music/sad/Please_Dont_Cry_mp3.mp3',
+    '/music/sad/Emotional_Regret_.mp3',
+    '/music/sad/Goodbye,_My_Friend_.mp3',
+    '/music/sad/Lost_Souls.com.mp3',
+    '/music/sad/Please_Dont_Cry_mp3.mp3',
   ],
   red: [
-    '/src/music/happy/Feeling_Happy_FesliyanStudios.mp3', 
-    '/src/music/happy/Happy_Dreams_David_Fesliyan.mp3', 
-    '/src/music/happy/Happy_Feet_www.com.mp3', 
-    '/src/music/happy/Smilin_And_Vibin_.mp3'
+    '/music/happy/Feeling_Happy_FesliyanStudios.mp3', 
+    '/music/happy/Happy_Dreams_David_Fesliyan.mp3', 
+    '/music/happy/Happy_Feet_www.com.mp3', 
+    '/music/happy/Smilin_And_Vibin_.mp3'
   ],
   blue: [
-    '/src/music/sad/Emotional_Regret_.mp3',
-    '/src/music/sad/Goodbye,_My_Friend_.mp3',
-    '/src/music/sad/Lost_Souls.com.mp3',
-    '/src/music/sad/Please_Dont_Cry_mp3.mp3'
+    '/music/sad/Emotional_Regret_.mp3',
+    '/music/sad/Goodbye,_My_Friend_.mp3',
+    '/music/sad/Lost_Souls.com.mp3',
+    '/music/sad/Please_Dont_Cry_mp3.mp3'
   ],
   pink: [
-    '/src/music/happy/Feeling_Happy_FesliyanStudios.mp3',
-    '/src/music/happy/Happy_Dreams_David_Fesliyan.mp3',
-    '/src/music/happy/Happy_Feet_www.com.mp3',
-    '/src/music/happy/Smilin_And_Vibin_.mp3'
+    '/music/happy/Feeling_Happy_FesliyanStudios.mp3',
+    '/music/happy/Happy_Dreams_David_Fesliyan.mp3',
+    '/music/happy/Happy_Feet_www.com.mp3',
+    '/music/happy/Smilin_And_Vibin_.mp3'
   ],
   purple: [
-    '/src/music/sad/Emotional_Regret_.mp3',
-    '/src/music/sad/Goodbye,_My_Friend_.mp3',
-    '/src/music/sad/Lost_Souls.com.mp3',
-    '/src/music/sad/Please_Dont_Cry_mp3.mp3'
+    '/music/sad/Emotional_Regret_.mp3',
+    '/music/sad/Goodbye,_My_Friend_.mp3',
+    '/music/sad/Lost_Souls.com.mp3',
+    '/music/sad/Please_Dont_Cry_mp3.mp3'
   ],
   brown: [
-    '/src/music/happy/Feeling_Happy_FesliyanStudios.mp3',
-    '/src/music/happy/Happy_Dreams_David_Fesliyan.mp3',
-    '/src/music/happy/Happy_Feet_www.com.mp3',
-    '/src/music/happy/Smilin_And_Vibin_.mp3'
+    '/music/happy/Feeling_Happy_FesliyanStudios.mp3',
+    '/music/happy/Happy_Dreams_David_Fesliyan.mp3',
+    '/music/happy/Happy_Feet_www.com.mp3',
+    '/music/happy/Smilin_And_Vibin_.mp3'
   ],
   orange: [
-    '/src/music/sad/Emotional_Regret_.mp3',
-    '/src/music/sad/Goodbye,_My_Friend_.mp3',
-    '/src/music/sad/Lost_Souls.com.mp3',
-    '/src/music/sad/Please_Dont_Cry_mp3.mp3'
+    '/music/sad/Emotional_Regret_.mp3',
+    '/music/sad/Goodbye,_My_Friend_.mp3',
+    '/music/sad/Lost_Souls.com.mp3',
+    '/music/sad/Please_Dont_Cry_mp3.mp3'
   ],
   grey: [
-    '/src/music/happy/Feeling_Happy_FesliyanStudios.mp3',
-    '/src/music/happy/Happy_Dreams_David_Fesliyan.mp3',
-    '/src/music/happy/Happy_Feet_www.com.mp3',
-    '/src/music/happy/Smilin_And_Vibin_.mp3'
+    '/music/happy/Feeling_Happy_FesliyanStudios.mp3',
+    '/music/happy/Happy_Dreams_David_Fesliyan.mp3',
+    '/music/happy/Happy_Feet_www.com.mp3',
+    '/music/happy/Smilin_And_Vibin_.mp3'
   ],
   aqua: [
-    '/src/music/sad/Emotional_Regret_.mp3',
-    '/src/music/sad/Goodbye,_My_Friend_.mp3',
-    '/src/music/sad/Lost_Souls.com.mp3',
-    '/src/music/sad/Please_Dont_Cry_mp3.mp3'
+    '/music/sad/Emotional_Regret_.mp3',
+    '/music/sad/Goodbye,_My_Friend_.mp3',
+    '/music/sad/Lost_Souls.com.mp3',
+    '/music/sad/Please_Dont_Cry_mp3.mp3'
   ],
   white: [
-    '/src/music/happy/Feeling_Happy_FesliyanStudios.mp3',
-    '/src/music/happy/Happy_Dreams_David_Fesliyan.mp3',
-    '/src/music/happy/Happy_Feet_www.com.mp3',
-    '/src/music/happy/Smilin_And_Vibin_.mp3'
+    '/music/happy/Feeling_Happy_FesliyanStudios.mp3',
+    '/music/happy/Happy_Dreams_David_Fesliyan.mp3',
+    '/music/happy/Happy_Feet_www.com.mp3',
+    '/music/happy/Smilin_And_Vibin_.mp3'
   ],
   // Add more colors and audio files as needed
 };

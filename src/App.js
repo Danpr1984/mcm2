@@ -7,7 +7,7 @@ const App = () => {
     <div>
       <h1>Color Songs</h1>
       <ColorWheel />
-      <button onClick={() => playRandomSong(['src/music/happy/Feeling_Happy_FesliyanStudios.mp3'])}>
+      <button onClick={() => playRandomSong(['public/music/happy/Feeling_Happy_FesliyanStudios.mp3'])}>
         Play Single Song
       </button>
     </div>

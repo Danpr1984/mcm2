@@ -1,8 +1,6 @@
-import React from 'react';
-import './Colors.css'; // Import the Colors.css file
-import MusicPlayer, { playRandomSong, colorSongs } from '/workspace/mcm/src/components/MusicPlayer.jsx'; // Import the MusicPlayer component, playRandomSong function, and colorSongs object
-
-// Rest of your ColorWheel.jsx code
+import React, { useState } from 'react';
+import './Colors.css';
+import { colorSongs } from '/workspace/mcm/src/components/MusicPlayer.jsx';
 
 const ColorWheel = () => {
   const colors = [
@@ -20,14 +18,19 @@ const ColorWheel = () => {
   ];
   const segmentAngle = (2 * Math.PI) / colors.length;
 
-  // Function to play music when a color is clicked
+  const [currentAudio, setCurrentAudio] = useState(null);
+
   const handleColorClick = (color) => {
     const songsForColor = colorSongs[color];
     if (songsForColor && songsForColor.length > 0) {
+      if (currentAudio) {
+        currentAudio.pause();
+      }
       const randomIndex = Math.floor(Math.random() * songsForColor.length);
       const selectedSong = songsForColor[randomIndex];
-      // Play the selected song using the playRandomSong function
-      playRandomSong(selectedSong);
+      const audio = new Audio(selectedSong);
+      audio.play();
+      setCurrentAudio(audio);
     }
   };
 
@@ -50,12 +53,11 @@ const ColorWheel = () => {
                 key={color}
                 points={`200,200 ${x1},${y1} ${x2},${y2}`}
                 fill={color}
-                onClick={() => handleColorClick(color)} // Add the onClick handler here
+                onClick={() => handleColorClick(color)}
               />
             );
           })}
         </svg>
-        <MusicPlayer />
       </div>
     </div>
   );
