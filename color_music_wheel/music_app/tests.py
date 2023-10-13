@@ -13,7 +13,7 @@ class MyViewTestCase(TestCase):
     def test_my_view(self):
         url = reverse('my_view')
         response = self.client.get(url)
-        self.assertRedirects(response, reverse('login') + '?next=' + url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url, target_status_code=302)
 
         # Log in the user and make sure the view returns a 200 status code
         self.client.login(username='testuser', password='testpass')
