@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 class Color(models.Model):
     name = models.CharField(max_length=50)
+    hex_code = models.CharField(max_length=7, default='#000000')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Song(models.Model):
@@ -21,3 +22,10 @@ class UserColorMusic(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.color.name}'
+
+class MyModel(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name    
