@@ -29,3 +29,10 @@ def my_view(request):
 
 def home(request):
     return render(request, 'home.html')
+
+
+def react_view(request):
+    context = {
+        'foo': 'bar',
+    }
+    return render(request, 'react_template.html', context)
