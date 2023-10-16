@@ -9,6 +9,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import MyModel
+from django.views.generic.base import TemplateView
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -26,14 +28,4 @@ def my_view(request):
         return render(request, 'my_template.html')
 
 def home(request):
-    my_model_data = MyModel.objects.all()
-    context = {'my_model_data': my_model_data}
-    return render(request, 'home.html', context)
-
-class MyView(TemplateView):
-    template_name = 'my_template.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Add any additional context data here
-        return context
+    return render(request, 'home.html')

@@ -1,13 +1,17 @@
 from django.contrib import admin
-from django.urls import path
-from music_app.views import color_list, my_view, MyView
-from django.contrib.auth import views as auth_views
+from django.urls import path, include
+from django.views.generic.base import TemplateView
+from music_app.views import home
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', my_view, name='home'),
+    path('', home, name='home'),
+    path('react/', TemplateView.as_view(template_name='react.html')),
     path('admin/', admin.site.urls),
-    path('colors/', color_list, name='color_list'),
-    path('my-view/', MyView.as_view(), name='my_view'),
-    path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('my_view/', my_view, name='my_view'),
+    path('colors/', include('music_app.urls')),
+    path('login/', include('django.contrib.auth.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
