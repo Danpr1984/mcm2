@@ -9,8 +9,39 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import MyModel
-from django.views.generic.base import TemplateView
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
+
+@api_view(['POST'])
+def register_user(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        if password1 != password2:
+            return JsonResponse({'success': False, 'errors': {'password2': 'Passwords do not match'}})
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'success': False, 'errors': {'username': 'Username already exists'}})
+        user = User.objects.create_user(username=username, password=password1)
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'error': 'Invalid username or password'})
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
