@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-vs&i_=f36rjn59ox!k@e8dflifal4&jy$3gb2)q6*ii3%q&i%4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,18 +38,31 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'music_app'
+    'corsheaders',
+    'rest_framework',
+    'music_app',
+    'channels'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTH_USER_MODEL = 'music_app.AppUser'
+REST_FRAMEWORK = {'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny',]}
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+
 
 ROOT_URLCONF = 'color_music_wheel.urls'
 
@@ -70,6 +83,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'color_music_wheel.wsgi.application'
+ASGI_APPLICATION = 'color_music_wheel.routing.application'
+
+
 
 
 # Database

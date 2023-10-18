@@ -1,12 +1,9 @@
 from django.urls import path
 from . import views
 
-app_name = 'music_app'
-
 urlpatterns = [
-    path('register/', views.register_user, name='register'),
-    path('login/', views.login_view, name='login'),
-    path('color_list/', views.color_list, name='color_list'),
-    path('my_view/', views.my_view, name='my_view'),
-    # Add any other app-specific URL patterns you need
+	path('register', views.UserRegister.as_view(), name='register'),
+	path('login', views.UserLogin.as_view(), name='login'),
+	path('logout', views.UserLogout.as_view(), name='logout'),
+	path('user', views.UserView.as_view(), name='user'),
 ]
