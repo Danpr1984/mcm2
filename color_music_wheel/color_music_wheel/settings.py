@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'music_app',
+    'music_app.apps.MyappConfig',
     'channels'
 ]
 
