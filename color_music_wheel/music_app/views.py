@@ -22,23 +22,24 @@ from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerial
 from rest_framework import permissions, status
 from .validations import custom_validation, validate_email, validate_password
 
+from django.shortcuts import redirect
+from django.urls import reverse
+
 class UserRegister(APIView):
 	permission_classes = (permissions.AllowAny,)
 	def post(self, request):
-		print(request)
 		clean_data = custom_validation(request.data)
 		serializer = UserRegisterSerializer(data=clean_data)
 		if serializer.is_valid(raise_exception=True):
 			user = serializer.create(clean_data)
 			if user:
-				return Response(serializer.data, status=status.HTTP_201_CREATED)
+				# Redirect to the color wheel view upon successful registration
+				return redirect(reverse('colors'))
 		return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
 class UserLogin(APIView):
 	permission_classes = (permissions.AllowAny,)
 	authentication_classes = (SessionAuthentication,)
-	##
 	def post(self, request):
 		data = request.data
 		assert validate_email(data)
@@ -47,7 +48,17 @@ class UserLogin(APIView):
 		if serializer.is_valid(raise_exception=True):
 			user = serializer.check_user(data)
 			login(request, user)
-			return Response(serializer.data, status=status.HTTP_200_OK)
+			# Redirect to the color wheel view upon successful login
+			return redirect(reverse('colors'))
+		
+class UserRegistrationAPIView(APIView):
+    def post(self, request):
+        serializer = UserRegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response({"success": True, "message": "User registered successfully."}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)		
 
 
 class UserLogout(APIView):
@@ -65,3 +76,13 @@ class UserView(APIView):
 	def get(self, request):
 		serializer = UserSerializer(request.user)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+	
+def color_list(request):
+    colors = Color.objects.all()
+    data = [{'id': color.id, 'name': color.name} for color in colors]
+    return JsonResponse(data, safe=False)	
+
+from django.shortcuts import render
+
+def index(request):
+    return render(request, 'index.html')
