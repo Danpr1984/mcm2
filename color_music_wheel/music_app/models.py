@@ -71,7 +71,9 @@ class Color(models.Model):
 class Song(models.Model):
     title = models.CharField(max_length=100)
     artist = models.CharField(max_length=100)
-    colors = models.ManyToManyField(Color)
+    colors = models.ManyToManyField(Color)    
+    audio_file = models.URLField(default='')
+
 
 class UserColorMusic(models.Model):
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
