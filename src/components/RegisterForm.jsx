@@ -1,48 +1,67 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function RegisterForm() {
-    const [formData, setFormData] = useState({
-        email: '',
-        username: '',
-        password: '',
-    });
+const RegisterForm = () => {
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
-    const handleSubmit = async (event) => {
+    async function registerUser(event) {
         event.preventDefault();
-        try {
-            const response = await axios.post('/api/register/', formData);
-            console.log(response.data);
-            // Redirect to ColorWheel component
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const handleChange = (event) => {
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.value,
+        const user = {
+            email: email,
+            username: username,
+            password: password,
+        };
+        const response = await fetch("http://localhost:8000/api/register/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(user),
         });
-    };
+        console.log(response);
+        const data = await response.json();
+        setUser(data);
+        if (data) {
+            navigate("/login/");
+        }
+    }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={registerUser}>
             <label>
                 Email:
-                <input type="email" name="email" value={formData.email} onChange={handleChange} />
+                <input
+                    type="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                />
             </label>
+            <br />
             <label>
                 Username:
-                <input type="text" name="username" value={formData.username} onChange={handleChange} />
+                <input
+                    type="text"
+                    value={username}
+                    onChange={(event) => setUsername(event.target.value)}
+                />
             </label>
+            <br />
             <label>
                 Password:
-                <input type="password" name="password" value={formData.password} onChange={handleChange} />
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                />
             </label>
+            <br />
             <button type="submit">Register</button>
         </form>
     );
-}
+};
 
 export default RegisterForm;
