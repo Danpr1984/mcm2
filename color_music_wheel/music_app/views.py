@@ -72,7 +72,20 @@ class UserView(APIView):
 		serializer = UserSerializer(request.user)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 	
-	
+@api_view(['POST'])
+def assign_color_to_song(request):
+	user_id = request.data.get('user_id')
+	color_id = request.data.get('color_id')
+	song_id = request.data.get('song_id')
+
+	user = AppUser.objects.get(id=user_id)
+	color = Color.objects.get(id=color_id)
+	song = Song.objects.get(id=song_id)
+	user_color_music = UserColorMusic(user=user, color=color)
+	user_color_music.save()
+	user_color_music.music.add(song)
+
+	return Response({'message': 'Color assigned to song for user'})	
 	
 def color_list(request):
     colors = Color.objects.all()

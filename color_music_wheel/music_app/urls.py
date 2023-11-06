@@ -10,4 +10,5 @@ urlpatterns = [
     path('logout/', views.UserLogout.as_view(), name='logout'),
     path('user/', views.UserView.as_view(), name='detail'),
     path('colors/', views.color_list, name='colors'),
+    path('assign_color_to_song/', views.assign_color_to_song, name='assign_color_to_song'),  # Add this line
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
