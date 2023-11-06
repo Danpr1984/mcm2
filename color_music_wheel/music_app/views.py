@@ -72,6 +72,8 @@ class UserView(APIView):
 		serializer = UserSerializer(request.user)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 	
+	
+	
 def color_list(request):
     colors = Color.objects.all()
     data = [{'id': color.id, 'name': color.name} for color in colors]
