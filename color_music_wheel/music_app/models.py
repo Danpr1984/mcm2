@@ -69,10 +69,16 @@ class Color(models.Model):
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
 
 class Song(models.Model):
-    title = models.CharField(max_length=100)
+    id = models.CharField(max_length=255, primary_key=True)  # Using Spotify track ID as the primary key
+    name = models.CharField(max_length=100)
     artist = models.CharField(max_length=100)
-    colors = models.ManyToManyField(Color)    
-    audio_file = models.URLField(default='')
+    album = models.CharField(max_length=100)
+    duration = models.IntegerField()  # Duration in milliseconds
+    image = models.URLField()
+
+    def __str__(self):
+        return self.name 
+
 
 
 class UserColorMusic(models.Model):

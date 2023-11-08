@@ -92,6 +92,35 @@ def color_list(request):
     data = [{'id': color.id, 'name': color.name} for color in colors]
     return JsonResponse(data, safe=False)	
 
+from rest_framework.views import APIView
+from .models import Song
+from .serializers import SongSerializer
+
+class SongList(APIView):
+    """
+    List all songs, or create a new song.
+    """
+    def get(self, request, format=None):
+        songs = Song.objects.all()
+        serializer = SongSerializer(songs, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = SongSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_song(request, song_id):
+		try:
+			song = Song.objects.get(id=song_id)
+			return JsonResponse({'song': song})
+		except Song.DoesNotExist:
+			return JsonResponse({'error': 'Song not found'}, status=404)	
+
+	
 
 class IndexView(TemplateView):
     template_name = 'index.html'

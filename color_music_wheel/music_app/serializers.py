@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Color
+from .models import Color, Song
 from django.contrib.auth import get_user_model, authenticate
 
 UserModel = get_user_model()
@@ -33,4 +33,9 @@ class ColorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Color
         fields = '__all__'
+
+class SongSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Song
+        fields = '__all__'		
 
