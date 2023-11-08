@@ -1,60 +1,34 @@
-import React, { useState, useEffect } from "react";
-import APIKit from "/Users/danielporras/mcm/src/components/spotify.js";
-import { IconContext } from "react-icons";
-import { AiFillPlayCircle } from "react-icons/ai";
+import React, { useState, useEffect, useContext } from "react";
+import axios from 'axios';
+import APIKit from "./spotify.js";
 import { useNavigate, useLocation } from "react-router-dom";
-import ColorWheel, { colors } from '/Users/danielporras/mcm/src/components/ColorWheel.jsx';
-import AudioPlayer from "/Users/danielporras/mcm/src/components/audioPlayer.jsx";
+import ColorWheel, { colors } from './ColorWheel.jsx';
+import AudioPlayer from "./audioPlayer.jsx";
+import UserContext from '/Users/danielporras/mcm/src/UserContext.jsx';
+
+
 
 function Library() {
+  const [openColorPanels, setOpenColorPanels] = useState([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
   const [playlists, setPlaylists] = useState(null);
-  const [isAssigningColor, setIsAssigningColor] = useState(false);
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [tracks, setTracks] = useState([]);
   const location = useLocation();
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audioPlayers, setAudioPlayers] = useState([]);
-
+  const [message, setMessage] = useState('');
+  const { user } = useContext(UserContext); 
+  const [songColors, setSongColors] = useState({});
 
   useEffect(() => {
-    APIKit.get("me/playlists").then(function (response) {
-      console.log('Playlists:', response.data.items);
-      const playlists = response.data.items;
-      const promises = playlists.map(playlist =>
-        APIKit.get(playlist.tracks.href).then(response => {
-          playlist.tracks.items = response.data.items; // Add the tracks to the playlist
-          return playlist;
-        }).catch(error => {
-          console.error('Error fetching tracks:', error);
-        })
-      );
-      Promise.all(promises).then(playlistsWithTracks => {
-        setPlaylists(playlistsWithTracks);
-      }).catch(error => {
-        console.error('Error fetching playlists or tracks:', error);
-      });
-    }).catch(error => {
-      console.error('Error fetching playlists:', error);
-    });
+    fetchPlaylists();
   }, []);
 
   useEffect(() => {
-    console.log('location.state:', location.state); // Log location.state
-    console.log('location.state?.id:', location.state?.id); // Log location.state?.id
     if (location.state) {
-      APIKit
-        .get("playlists/" + location.state?.id + "/tracks")
-        .then((res) => {
-          setTracks(res.data.items);
-          setCurrentTrack(res.data?.items[0]?.track);
-        })
-        .catch(error => {
-          console.error('Error fetching tracks:', error); // Log any errors
-        });
+      fetchTracks(location.state?.id);
     }
   }, [location.state]);
 
@@ -62,29 +36,143 @@ function Library() {
     setCurrentTrack(tracks[currentIndex]?.track);
   }, [currentIndex, tracks]);
 
-  const navigate = useNavigate();
+  const fetchPlaylists = async () => {
+    try {
+      const response = await APIKit.get("me/playlists");
+      const playlists = response.data.items;
+      const promises = playlists.map(playlist =>
+        APIKit.get(playlist.tracks.href).then(response => {
+          playlist.tracks.items = response.data.items;
+          return playlist;
+        })
+      );
+      const playlistsWithTracks = await Promise.all(promises);
+      setPlaylists(playlistsWithTracks);
+    } catch (error) {
+      console.error('Error fetching playlists or tracks:', error);
+    }
+  };
+
+  const fetchTracks = async (playlistId) => {
+    try {
+      const res = await APIKit.get("playlists/" + playlistId + "/tracks");
+      setTracks(res.data.items);
+      setCurrentTrack(res.data?.items[0]?.track);
+
+      // Save the tracks to your database
+      for (const item of res.data.items) {
+        const track = item.track;
+        await axios.post('http://localhost:8000/api/songs/', {
+          id: track.id,
+          name: track.name,
+          artist: track.artists[0].name,
+          album: track.album.name,
+          duration: track.duration_ms,
+          image: track.album.images[0].url,
+        }, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+
+        // Verify that the song was stored correctly
+        const response = await axios.get(`http://localhost:8000/api/songs/${track.id}`);
+        console.log('Stored song:', response.data.song);
+      }
+    } catch (error) {
+      console.error('Error fetching tracks:', error);
+    }
+  };
+
+
 
   const handlePlaylistClick = (playlistId) => {
     setSelectedPlaylist(prevPlaylistId => prevPlaylistId === playlistId ? null : playlistId);
   };
 
-  const handleAssignColorClick = (trackId) => {
-    setSelectedTrack(prevTrackId => prevTrackId === trackId ? null : trackId);
+  const assignColorToSong = async (userId, colorId, songId) => {
+    const response = await fetch('http://localhost:8000/api/assign_color_to_song/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}` // Get the token from local storage
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        color_id: colorId,
+        song_id: songId,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(`Assigned color with ID ${colorId} to song with ID ${songId} for user with ID ${userId}`);
+    console.log(data);
+
+    // Update the songColors state variable
+    setSongColors(prevSongColors => ({
+      ...prevSongColors,
+      [songId]: colorId,
+    }));
+  }
+  
+
+  const handleAssignColorClick = (event, trackId) => {
+    event.stopPropagation();
+    setSelectedTrack(trackId); // Set the selected track
+    setOpenColorPanels(prevState => {
+      if (prevState.includes(trackId)) {
+        // If the panel is already open, close it
+        return prevState.filter(id => id !== trackId);
+      } else {
+        // Otherwise, open it
+        return [...prevState, trackId];
+      }
+    });
   };
 
-  const handleColorAssign = (color) => {
+  const handleColorAssign = async (color) => {
+    console.log('handleColorAssign called with color:', color, 'and selectedTrack:', selectedTrack);
     if (selectedTrack) {
-      // Assign the selected color to the selected track
       console.log(`Assigning color ${color} to track ${selectedTrack}`);
+      const userId = user.id; // Use the user's ID from context
+      const colorId = color.id;
+      const songId = selectedTrack; // the selected track's ID
+      console.log(`Color for song with ID ${songId} is now ${colorId}`);
+      
+      await assignColorToSong(userId, colorId, songId);
+        
+      // Save the color ID to the database
+      axios.post('/api/colors', { colorId: color.id }, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+        .then(response => {
+          console.log('Color ID saved successfully');
+        })
+        .catch(error => {
+          console.error('Error saving color ID:', error);
+        });
+
+      // Update the songColors state variable
+      setSongColors(prevSongColors => ({
+        ...prevSongColors,
+        [colorId]: [...prevSongColors[colorId] || [], songId],
+      }));
       setSelectedTrack(null);
     }
   };
   
   const handlePlaySong = (track, index) => {
-    setCurrentTrack(track); // Set the current track when a song is played
+    setCurrentTrack(track);
     setCurrentIndex(index);
-    setIsPlaying(true); // Start playing the song
+    setIsPlaying(true);
   };
+
 
   return (
     <div className="sidebar-container">
@@ -106,27 +194,23 @@ function Library() {
               {selectedPlaylist === playlist.id && playlist.tracks.items && playlist.tracks.items.map((track, index) => (
                 <div key={index}>
                   <p>{track.track.name || 'No name'}</p>
-                  <button onClick={() => handleAssignColorClick(track.track.id)}>Assign Color</button>
-                  {selectedTrack === track.track.id && (
+                  <button onClick={(event) => handleAssignColorClick(event, track.track.id)}>Assign Color</button>
+                  {openColorPanels.includes(track.track.id) && (
                     <div className="color-assignment-panel">
                       {colors.map((color) => (
                         <div
-                          key={color}
+                          key={color.id}
                           className="color-square"
-                          style={{ backgroundColor: color }}
+                          style={{ backgroundColor: color.name }}
                           onClick={() => handleColorAssign(color)}
                         />
                       ))}
                     </div>
                   )}
-                  <button onClick={() => handlePlaySong(track.track, index)}>Play</button>
                   <AudioPlayer
-                    currentTrack={track.track}
-                    total={playlist.tracks.items}
-                    currentIndex={index}
-                    setCurrentIndex={setCurrentIndex}
-                    isPlaying={isPlaying}
-                    setIsPlaying={setIsPlaying}
+                    track={track.track}
+                    isPlaying={isPlaying && currentTrack === track.track.id}
+                    onPlay={() => handlePlaySong(track.track, index)}
                   />
                 </div>
               ))}
@@ -139,3 +223,6 @@ function Library() {
 }
 
 export default Library;
+
+
+
