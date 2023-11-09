@@ -4,7 +4,7 @@ import APIKit from "./spotify.js";
 import { useNavigate, useLocation } from "react-router-dom";
 import ColorWheel, { colors } from './ColorWheel.jsx';
 import AudioPlayer from "./audioPlayer.jsx";
-import UserContext from '/Users/danielporras/mcm/src/UserContext.jsx';
+import UserContext from '../UserContext.jsx';
 
 
 

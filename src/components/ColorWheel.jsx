@@ -1,8 +1,8 @@
 import React, { useState, useEffect, createContext } from "react";
 import './Colors.css';
-import { colorSongs } from '/Users/danielporras/mcm/src/components/MusicPlayer.jsx';
+import { colorSongs } from './MusicPlayer.jsx';
 import Library, { playPlaylist } from './Library.jsx';
-import apiClient from '/Users/danielporras/mcm/src/components/spotify.js';
+import apiClient from './spotify.js';
 
 export const colors = [
   {id: 1, name: 'yellow'},

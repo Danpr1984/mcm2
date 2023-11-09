@@ -1,10 +1,10 @@
 import React, { useState, useEffect, createContext } from "react";
 import { WebPlaybackSDK } from "react-spotify-web-playback-sdk";
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
-import LoginForm from "/Users/danielporras/mcm/src/components/LoginForm.jsx";
-import ColorWheel from "/Users/danielporras/mcm/src/components/ColorWheel.jsx";
-import RegisterForm from "/Users/danielporras/mcm/src/components/RegisterForm.jsx";
-import { setClientToken } from "/Users/danielporras/mcm/src/components/spotify.js";
+import LoginForm from './components/LoginForm.jsx';
+import ColorWheel from "./components/ColorWheel.jsx";
+import RegisterForm from "./components/RegisterForm.jsx";
+import { setClientToken } from "./components/spotify.js";
 import Login from "/Users/danielporras/mcm/src/auth/login.js";
 
 export const AccessTokenContext = createContext(null);

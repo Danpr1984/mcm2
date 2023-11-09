@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from '/Users/danielporras/mcm/src/UserContext.jsx';
+import UserContext from '../UserContext.jsx';
 
 const RegisterForm = () => {
     const [email, setEmail] = useState("");
