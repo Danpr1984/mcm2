@@ -68,17 +68,28 @@ class Color(models.Model):
     hex_code = models.CharField(max_length=7, default='#000000')
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
 
+class Features(models.Model):
+    acousticness = models.FloatField(null=True)
+    danceability = models.FloatField(null=True)
+    energy = models.FloatField(null=True)
+    instrumentalness = models.FloatField(null=True)
+    liveness = models.FloatField(null=True)
+    loudness = models.FloatField(null=True)
+    speechiness = models.FloatField(null=True)
+    tempo = models.FloatField(null=True)
+    valence = models.FloatField(null=True)
+
 class Song(models.Model):
     id = models.CharField(max_length=255, primary_key=True)  # Using Spotify track ID as the primary key
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, default='Unknown Song')
     artist = models.CharField(max_length=100)
     album = models.CharField(max_length=100)
-    duration = models.IntegerField()  # Duration in milliseconds
-    image = models.URLField()
+    duration = models.IntegerField(default=0)
+    image = models.URLField(default='')
+    features = models.OneToOneField(Features, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.name 
-
+        return self.name
 
 
 class UserColorMusic(models.Model):
