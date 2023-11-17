@@ -5,7 +5,6 @@ import AudioPlayer from "./audioPlayer.jsx";
 
 function Library({ token }) {
   if (!token) return;
-  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
   const [playlists, setPlaylists] = useState(null);
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [currentTrack, setCurrentTrack] = useState(null);
@@ -16,10 +15,6 @@ function Library({ token }) {
 
   useEffect(() => {
     fetchPlaylists();
-  }, []);
-
-  useEffect(() => {
-    fetchUserTracks();
   }, []);
 
   useEffect(() => {
@@ -43,23 +38,17 @@ function Library({ token }) {
     }
   };
 
-  const fetchUserTracks = async (playlistId) => {
-    try {
-      const response = await fetch("http://localhost:8000/api/songs");
+  // const fetchUserTracks = async (playlistId) => {
+  //   try {
+  //     const response = await fetch("http://localhost:8000/api/songs");
 
-      const { user_songs } = await response.json();
+  //     const { user_songs } = await response.json();
 
-      setUserSavedSongs(user_songs);
-    } catch (error) {
-      console.error("Error fetching tracks:", error);
-    }
-  };
-
-  const handlePlaylistClick = (playlistId) => {
-    setSelectedPlaylist((prevPlaylistId) =>
-      prevPlaylistId === playlistId ? null : playlistId,
-    );
-  };
+  //     setUserSavedSongs(user_songs);
+  //   } catch (error) {
+  //     console.error("Error fetching tracks:", error);
+  //   }
+  // };
 
   const handleAssignColorClick = (event, track) => {
     event.stopPropagation();
@@ -92,8 +81,6 @@ function Library({ token }) {
     setCurrentIndex(index);
     setIsPlaying(true);
   };
-
-  console.log(userSavedSongs);
 
   return (
     <>

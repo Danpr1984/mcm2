@@ -1,60 +1,74 @@
+import Cookies from "js-cookie";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import CSRFToken from "../auth/CSRFToken";
+
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+axios.defaults.xsrfCookieName = "csrftoken";
+axios.defaults.withCredentials = true;
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   async function loginUser(event) {
     event.preventDefault();
 
-    const user = {
-      email: email,
-      password: password,
-    };
-
-    const response = await fetch("http://localhost:8000/api/login/", {
-      method: "POST",
+    const cookie = Cookies.get("csrftoken");
+    const config = {
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json",
+        "X-CSRFToken": cookie,
       },
-      body: JSON.stringify(user),
-    });
+    };
+    const body = JSON.stringify({ username, password });
 
-    const data = await response.json();
+    const response = await axios.post(
+      "http://localhost:8000/api/login",
+      body,
+      config,
+    );
 
-    if (data) {
-      navigate("library/");
+    const { data } = await axios.get("http://localhost:8000/api/user", config);
+
+    if (data.user) {
+      navigate("/dashboard");
     }
   }
 
   return (
-    <form
-      onSubmit={loginUser}
-      className="flex flex-col items-center justify-center gap-5 rounded-lg border-2 border-white bg-violet-500 px-4 py-6 text-xl text-white shadow-md"
-    >
-      <label className="w-100">Email:</label>
-      <input
-        type="email"
-        className="rounded-sm p-1"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-      />
-      <label>Password: </label>
-      <input
-        type="password"
-        className="rounded-sm p-1"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
-      <button
-        className="rounded-md bg-white px-3 py-1 text-2xl text-indigo-800 hover:cursor-pointer hover:bg-indigo-700 hover:text-white focus:cursor-pointer focus:bg-indigo-700 focus:text-white"
-        type="submit"
+    <div className="flex flex-col gap-2">
+      <form
+        onSubmit={loginUser}
+        className="flex flex-col items-center justify-center gap-5 rounded-lg border-2 border-white bg-violet-500 px-4 py-6 text-xl text-white shadow-md"
       >
-        Login
-      </button>
-    </form>
+        <CSRFToken />
+        <label className="w-100">Username:</label>
+        <input
+          type="text"
+          className="rounded-sm p-1 text-slate-950"
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
+        />
+        <label>Password: </label>
+        <input
+          type="password"
+          className="rounded-sm p-1 text-slate-950"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
+        <button
+          className="rounded-md bg-white px-3 py-1 text-2xl text-indigo-800 hover:cursor-pointer hover:bg-indigo-700 hover:text-white focus:cursor-pointer focus:bg-indigo-700 focus:text-white"
+          type="submit"
+        >
+          Login
+        </button>
+      </form>
+      <Link to="register">Register</Link>
+    </div>
   );
 };
 

@@ -1,11 +1,14 @@
 import "./App.css";
+import AuthContextProvider from "./context/AuthContext";
 import Routing from "./routes/Routing";
 
 function App() {
   return (
-    <main className="flex justify-center items-center min-h-screen w-100 bg-violet-50">
-      <Routing />
-    </main>
+    <AuthContextProvider>
+      <main className="w-100 flex min-h-screen items-center justify-center bg-violet-50">
+        <Routing />
+      </main>
+    </AuthContextProvider>
   );
 }
 

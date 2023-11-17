@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +14,7 @@ const RegisterForm = () => {
       username: username,
       password: password,
     };
-    const response = await fetch("http://localhost:8000/api/register/", {
+    const response = await fetch("http://localhost:8000/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,50 +23,45 @@ const RegisterForm = () => {
     });
 
     const data = await response.json();
-    setUser(data);
-    if (data) {
-      navigate("library/");
-    }
+    // if (data) {
+    //   navigate("library/");
+    // }
   }
 
-  const goToLogin = () => {
-    navigate("library/");
-  };
-
   return (
-    <form onSubmit={registerUser}>
-      <label>
-        Email:
-        <input
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Username:
-        <input
-          type="text"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Password:
-        <input
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-      </label>
-      <br />
-      <button type="submit">Register</button>
-      <button type="button" onClick={goToLogin}>
-        Login
-      </button>
-    </form>
+    <div className="flex flex-col gap-2">
+      <form onSubmit={registerUser}>
+        <label>
+          Email:
+          <input
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Username:
+          <input
+            type="text"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Password:
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </label>
+        <br />
+        <button type="submit">Register</button>
+      </form>
+      <Link to="login">Login</Link>
+    </div>
   );
 };
 
