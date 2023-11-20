@@ -33,7 +33,7 @@ const Routing = () => {
         {!spotifyToken && <Route path="/" element={<SpotifyLogin />} />}
         {/* <Route path="/" element={<RegisterForm />} /> */}
         <Route path="/" element={<LoginForm />} />
-        <Route path="/dashboard" element={<Dashboard token={spotifyToken} />} />
+        <Route path="/dashboard" element={<Library token={spotifyToken} />} />
       </Routes>
     </Router>
   );

@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import APIKit from "./spotify.js";
 import { colors } from "./ColorWheel.jsx";
 import AudioPlayer from "./audioPlayer.jsx";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 function Library({ token }) {
   if (!token) return;
   const [playlists, setPlaylists] = useState(null);
+  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -24,6 +27,7 @@ function Library({ token }) {
   const fetchPlaylists = async () => {
     try {
       const response = await APIKit.get("me/playlists");
+
       const playlists = response.data.items;
       const promises = playlists.map((playlist) =>
         APIKit.get(playlist.tracks.href).then((response) => {
@@ -50,6 +54,12 @@ function Library({ token }) {
   //   }
   // };
 
+  const handlePlaylistClick = (playlistId) => {
+    setSelectedPlaylist((prevPlaylistId) =>
+      prevPlaylistId === playlistId ? null : playlistId,
+    );
+  };
+
   const handleAssignColorClick = (event, track) => {
     event.stopPropagation();
     setSelectedTrack(track); // Set the selected track
@@ -59,21 +69,28 @@ function Library({ token }) {
     if (!selectedTrack) return;
 
     // USER IS NULL DUE TO CONTEXT ISSUES
-    const data = {
+    const colorData = {
       color: color,
       track: selectedTrack,
     };
 
-    const response = await fetch(
-      "http://localhost:8000/api/assign_color_to_song/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+    const cookie = Cookies.get("csrftoken");
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-CSRFToken": cookie,
       },
+    };
+    const body = JSON.stringify(colorData);
+
+    const response = await axios.post(
+      "http://localhost:8000/api/assign_color_to_song/",
+      body,
+      config,
     );
+
+    console.log(response);
   };
 
   const handlePlaySong = (track, index) => {

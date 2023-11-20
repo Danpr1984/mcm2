@@ -1,8 +1,9 @@
 import Cookies from "js-cookie";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import CSRFToken from "../auth/CSRFToken";
+import { AuthContext } from "../context/AuthContext";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";

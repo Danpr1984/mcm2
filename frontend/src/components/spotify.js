@@ -20,14 +20,23 @@ export const loginEndpoint = `${authEndpoint}client_id=${clientId}&redirect_uri=
 
 const apiClient = axios.create({
   baseURL: "https://api.spotify.com/v1/",
+  withCredentials: false,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 export const setClientToken = (token) => {
-  apiClient.interceptors.request.use(async function (config) {
-    config.headers.Authorization = "Bearer " + token;
-
-    return config;
-  });
+  apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 };
 
 export default apiClient;
+
+export async function fetchUserPlaylists(token) {
+  const result = await fetch("https://api.spotify.com/v1/me/playlists", {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return await result.json();
+}
