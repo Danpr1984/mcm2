@@ -6,7 +6,6 @@ from .models import  Song, Color, AssignedSong
 
 class AssignedSongInline(admin.TabularInline):
     model = AssignedSong
-    extra = 0  
     readonly_fields = ('song', 'color')
 
 class UserAdmin(admin.ModelAdmin):
@@ -32,8 +31,6 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
-
-
 
 admin.site.register(Song)
 admin.site.register(Color)

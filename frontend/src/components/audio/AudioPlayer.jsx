@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 
-function AudioPlayer({ track, isPlaying, onPlay }) {
+function AudioPlayer({ track, isPlaying }) {
   const audioRef = useRef();
 
   useEffect(() => {
@@ -12,9 +12,7 @@ function AudioPlayer({ track, isPlaying, onPlay }) {
     }
   }, [track, isPlaying]);
 
-  return (
-    <audio className="audio-player" ref={audioRef} onPlay={onPlay} controls />
-  );
+  return <audio className="audio-player" ref={audioRef} controls />;
 }
 
 export default AudioPlayer;

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import APIKit from "./spotify.js";
 import { colors } from "./ColorWheel.jsx";
-import AudioPlayer from "./audioPlayer.jsx";
+import AudioPlayer from "./audio/AudioPlayer.jsx";
 import Cookies from "js-cookie";
 import axios from "axios";
+import Playlist from "./audio/Playlist.jsx";
 
 function Library({ token }) {
   if (!token) return;
@@ -42,18 +43,6 @@ function Library({ token }) {
     }
   };
 
-  // const fetchUserTracks = async (playlistId) => {
-  //   try {
-  //     const response = await fetch("http://localhost:8000/api/songs");
-
-  //     const { user_songs } = await response.json();
-
-  //     setUserSavedSongs(user_songs);
-  //   } catch (error) {
-  //     console.error("Error fetching tracks:", error);
-  //   }
-  // };
-
   const handlePlaylistClick = (playlistId) => {
     setSelectedPlaylist((prevPlaylistId) =>
       prevPlaylistId === playlistId ? null : playlistId,
@@ -67,8 +56,6 @@ function Library({ token }) {
 
   const handleColorAssign = async (color) => {
     if (!selectedTrack) return;
-
-    // USER IS NULL DUE TO CONTEXT ISSUES
     const colorData = {
       color: color,
       track: selectedTrack,
@@ -89,89 +76,26 @@ function Library({ token }) {
       body,
       config,
     );
-
-    console.log(response);
-  };
-
-  const handlePlaySong = (track, index) => {
-    setCurrentTrack(track);
-    setCurrentIndex(index);
-    setIsPlaying(true);
   };
 
   return (
-    <>
-      <h1>Saved to DB</h1>
-      {userSavedSongs &&
-        userSavedSongs.map((song, index) => {
-          return (
-            <div key={index}>
-              <div style={{ background: song.color.hex_code, padding: "1rem" }}>
-                <h2 style={{ color: "white" }}>{song.color.name}</h2>
-              </div>
-              <div>{song.user.email}</div>
-              <AudioPlayer
-                track={song.song}
-                isPlaying={isPlaying && currentTrack === song.song.id}
-                onPlay={() => handlePlaySong(song.song, index)}
-              />
-            </div>
-          );
-        })}
-
-      <div className="sidebar-container">
-        <div className="library-body">
-          {playlists?.map((playlist) => (
-            <div
-              className={`playlist-card ${
-                selectedPlaylist === playlist.id ? "active" : ""
-              }`}
-              key={playlist.id}
-              onClick={() => handlePlaylistClick(playlist.id)}
-            >
-              {playlist.images && playlist.images[0] && (
-                <img
-                  src={playlist.images[0].url}
-                  className="playlist-image"
-                  alt="Playlist-Art"
-                />
-              )}
-              <div className="playlist-songs">
-                {selectedPlaylist === playlist.id &&
-                  playlist.tracks.items &&
-                  playlist.tracks.items.map((track, index) => (
-                    <div key={index}>
-                      <p>{track.track.name || "No name"}</p>
-                      <button
-                        onClick={(event) =>
-                          handleAssignColorClick(event, track)
-                        }
-                      >
-                        Assign Color
-                      </button>
-                      <div className="color-assignment-panel">
-                        {colors.map((color) => (
-                          <div
-                            key={color.id}
-                            className="color-square"
-                            style={{ backgroundColor: color.name }}
-                            onClick={() => handleColorAssign(color)}
-                          />
-                        ))}
-                      </div>
-                      <AudioPlayer
-                        track={track.track}
-                        isPlaying={isPlaying && currentTrack === track.track.id}
-                        onPlay={() => handlePlaySong(track.track, index)}
-                      />
-                    </div>
-                  ))}
-              </div>
-            </div>
-          ))}
-        </div>
+    <div className="flex flex-col">
+      <div className="grid grid-cols-3 overflow-hidden rounded-lg border-2 border-slate-900">
+        {colors.map((color) => (
+          <div
+            key={color.id}
+            className="p-8"
+            style={{ backgroundColor: color.name }}
+            onClick={() => handleColorAssign(color)}
+          />
+        ))}
       </div>
-    </>
+      <div className="flex w-full justify-center gap-3">
+        {playlists?.map((playlist, index) => (
+          <Playlist playlist={playlist} key={index} />
+        ))}
+      </div>
+    </div>
   );
 }
 
