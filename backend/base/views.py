@@ -45,6 +45,7 @@ class LoginView(APIView):
         except:
             return Response({ 'error': 'Something went wrong when logging in' })
 
+
 @method_decorator(csrf_protect, name='dispatch')
 class SignupView(APIView):
     permission_classes = (permissions.AllowAny, )
@@ -64,11 +65,11 @@ class SignupView(APIView):
                     if len(password) < 6:
                         return Response({ 'error': 'Password must be at least 6 characters' })
                     else:
-                        user = User.objects.create_user(username=username, password=password)
+                        user = User.objects.create(username=username, password=password)
 
-                        user = User.objects.get(id=user.id)
+                        user.save()
 
-                        user_profile = UserProfile.objects.create(user=user, first_name='', last_name='', phone='', city='')
+
 
                         return Response({ 'success': 'User created successfully' })
             else:

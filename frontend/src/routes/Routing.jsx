@@ -6,6 +6,7 @@ import Library from "../components/Library.jsx";
 import { setClientToken } from "../components/spotify.js";
 import SpotifyLogin from "../auth/SpotifyLogin.jsx";
 import { AuthContext } from "../context/AuthContext.jsx";
+import RegisterForm from "../auth/RegisterForm.jsx";
 
 export const AccessTokenContext = createContext(null);
 
@@ -31,8 +32,9 @@ const Routing = () => {
     <Router>
       <Routes>
         {!spotifyToken && <Route path="/" element={<SpotifyLogin />} />}
-        {/* <Route path="/" element={<RegisterForm />} /> */}
         <Route path="/" element={<LoginForm />} />
+        <Route path="/register" element={<RegisterForm />} />
+
         <Route path="/dashboard" element={<Library token={spotifyToken} />} />
       </Routes>
     </Router>
