@@ -33,6 +33,8 @@ const LoginForm = () => {
       config,
     );
 
+    console.log(response);
+
     const { data } = await axios.get("http://localhost:8000/api/user", config);
 
     if (data.user) {

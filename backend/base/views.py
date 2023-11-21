@@ -33,9 +33,12 @@ class LoginView(APIView):
 
         username = data['username']
         password = data['password']
+        print(username)
+        print(password)
 
         try:
             user = auth.authenticate(username=username, password=password)
+            print(user)
 
             if user is not None:
                 auth.login(request, user)
@@ -65,7 +68,7 @@ class SignupView(APIView):
                     if len(password) < 6:
                         return Response({ 'error': 'Password must be at least 6 characters' })
                     else:
-                        user = User.objects.create(username=username, password=password)
+                        user = User.objects.create_user(username=username, password=password)
 
                         user.save()
 
