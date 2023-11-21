@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import AudioPlayer from "./AudioPlayer";
+import { ColorContext } from "../../context/ColorContext";
 
 const SongFile = ({ track }) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const { setAssignTrack } = useContext(ColorContext);
 
   return (
     <div>
       <p>{track.track.name || "No name"}</p>
-      {/* <button onClick={(event) => handleAssignColorClick(event, track)}>
-        Assign Color
-      </button> */}
+      <button onClick={() => setAssignTrack(track)}>Assign Color</button>
       <AudioPlayer
         track={track.track}
         isPlaying={isPlaying}

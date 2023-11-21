@@ -1,29 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import APIKit from "./spotify.js";
 import { colors } from "./ColorWheel.jsx";
 import AudioPlayer from "./audio/AudioPlayer.jsx";
 import Cookies from "js-cookie";
 import axios from "axios";
 import Playlist from "./audio/Playlist.jsx";
+import { ColorContext } from "../context/ColorContext.jsx";
 
 function Library({ token }) {
   if (!token) return;
   const [playlists, setPlaylists] = useState(null);
-  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
-  const [selectedTrack, setSelectedTrack] = useState(null);
-  const [currentTrack, setCurrentTrack] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [tracks, setTracks] = useState([]);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [userSavedSongs, setUserSavedSongs] = useState();
+  const { assignTrack } = useContext(ColorContext);
 
   useEffect(() => {
     fetchPlaylists();
   }, []);
-
-  useEffect(() => {
-    setCurrentTrack(tracks[currentIndex]?.track);
-  }, [currentIndex, tracks]);
 
   const fetchPlaylists = async () => {
     try {
@@ -43,22 +34,11 @@ function Library({ token }) {
     }
   };
 
-  const handlePlaylistClick = (playlistId) => {
-    setSelectedPlaylist((prevPlaylistId) =>
-      prevPlaylistId === playlistId ? null : playlistId,
-    );
-  };
-
-  const handleAssignColorClick = (event, track) => {
-    event.stopPropagation();
-    setSelectedTrack(track); // Set the selected track
-  };
-
   const handleColorAssign = async (color) => {
-    if (!selectedTrack) return;
+    if (!assignTrack) return;
     const colorData = {
       color: color,
-      track: selectedTrack,
+      track: assignTrack,
     };
 
     const cookie = Cookies.get("csrftoken");
@@ -81,14 +61,15 @@ function Library({ token }) {
   return (
     <div className="flex flex-col">
       <div className="grid grid-cols-3 overflow-hidden rounded-lg border-2 border-slate-900">
-        {colors.map((color) => (
-          <div
-            key={color.id}
-            className="p-8"
-            style={{ backgroundColor: color.name }}
-            onClick={() => handleColorAssign(color)}
-          />
-        ))}
+        {assignTrack &&
+          colors.map((color) => (
+            <div
+              key={color.id}
+              className="p-8"
+              style={{ backgroundColor: color.name }}
+              onClick={() => handleColorAssign(color)}
+            />
+          ))}
       </div>
       <div className="flex w-full justify-center gap-3">
         {playlists?.map((playlist, index) => (

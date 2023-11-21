@@ -1,5 +1,4 @@
 import { useState } from "react";
-import AudioPlayer from "./AudioPlayer";
 import SongFile from "./SongFile";
 
 const Playlist = ({ playlist }) => {
