@@ -1,6 +1,12 @@
 import { useState } from "react";
+import Cookies from "js-cookie";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import CSRFToken from "./CSRFToken";
+
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+axios.defaults.xsrfCookieName = "csrftoken";
+axios.defaults.withCredentials = true;
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -47,7 +53,7 @@ const LoginForm = () => {
         <div>
           <label className="block text-gray-700">Username</label>
           <input
-            type="email"
+            type="text"
             value={username}
             onChange={(event) => setUsername(event.target.value)}
             placeholder="Enter Email Address"

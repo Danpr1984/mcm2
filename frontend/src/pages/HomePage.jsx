@@ -1,4 +1,8 @@
+import { useContext, useEffect } from "react";
 import LoginForm from "../auth/LoginForm";
+import { AuthContext } from "../context/AuthContext";
+import { setClientToken } from "../components/spotify";
+import SpotifyLogin from "../auth/SpotifyLogin";
 
 const HomePage = () => {
   return (
@@ -13,7 +17,7 @@ const HomePage = () => {
 
       <div
         className="flex w-full items-center justify-center rounded-lg bg-white px-6 pb-6 md:mx-auto md:w-1/2 md:max-w-md lg:h-full lg:max-w-full lg:rounded-none
-          lg:px-16 xl:w-1/3 xl:px-12"
+        lg:px-16 xl:w-1/3 xl:px-12"
       >
         <LoginForm />
       </div>
