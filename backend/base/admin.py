@@ -1,12 +1,20 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from .models import  Song, Color, AssignedSong
+from .models import  Song, Color, AssignedSong, Profile
 # Register your models here.
 
 
 class AssignedSongInline(admin.TabularInline):
     model = AssignedSong
     readonly_fields = ('song', 'color')
+
+class ProfileInline(admin.StackedInline):
+    """
+    Inline representation of user profiles for the admin panel.
+
+    """
+
+    model = Profile
 
 class UserAdmin(admin.ModelAdmin):
     """
@@ -26,7 +34,7 @@ class UserAdmin(admin.ModelAdmin):
 
     model = User
     fields = ("username", "first_name", "last_name", "email", 'password')
-    inlines = [AssignedSongInline]
+    inlines = [ProfileInline, AssignedSongInline]
 
 
 admin.site.unregister(User)
