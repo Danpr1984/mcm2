@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import { setClientToken } from "../components/spotify";
 
 export const AuthContext = createContext({

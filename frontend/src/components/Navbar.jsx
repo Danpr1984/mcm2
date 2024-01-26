@@ -1,10 +1,12 @@
 import { useContext } from "react";
 import { AudioContext } from "../context/AudioContext";
+import { AuthContext } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const { userImage } = useContext(AudioContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
-  console.log(userImage);
   return (
     <nav className="h-[64px] border-gray-200 bg-indigo-700 dark:bg-gray-900">
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
@@ -112,31 +114,24 @@ const Navbar = () => {
         >
           <ul className="mt-4 flex flex-col rounded-lg p-4 font-medium rtl:space-x-reverse dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0  md:p-0">
             <li>
-              <a
-                href="#"
+              <Link
+                to="/"
                 className="block rounded px-3 py-2 text-white hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
                 aria-current="page"
               >
                 Home
-              </a>
+              </Link>
             </li>
-            <li>
-              <a
-                href="#"
-                className="block rounded px-3 py-2 text-white hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-              >
-                Dashboard
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="#"
-                className="block rounded px-3 py-2 text-white hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-              >
-                Contact
-              </a>
-            </li>
+            {isAuthenticated && (
+              <li>
+                <Link
+                  to="/dashboard"
+                  className="block rounded px-3 py-2 text-white hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+                >
+                  Dashboard
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>

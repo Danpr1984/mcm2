@@ -11,7 +11,7 @@ export const AudioContext = createContext({
 
 export default function AudioContextProvider({ children }) {
   const [assignTrack, setAssignTrack] = useState("");
-  const [userImage, setUserImage] = useState("/images/colourwheel.png"); // [1
+  const [userImage, setUserImage] = useState("/images/colourwheel.png");
   const [playlists, setPlaylists] = useState(null);
 
   useEffect(() => {

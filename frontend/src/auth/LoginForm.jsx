@@ -67,8 +67,8 @@ const LoginForm = () => {
     })
       .then(isResponseOk)
       .then((data) => {
-        console.log(data);
         setIsAuthenticated({ isAuthenticated: true });
+        navigate("/dashboard");
       })
       .catch((err) => {
         console.log(err);
@@ -82,8 +82,6 @@ const LoginForm = () => {
       </h1>
 
       <form className="mt-6" onSubmit={login}>
-        {/* <CSRFToken /> */}
-
         <div>
           <label className="block text-gray-700">Username</label>
           <input
