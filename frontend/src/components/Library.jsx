@@ -35,8 +35,6 @@ function Library({ token }) {
     );
   };
 
-  console.log(playlists);
-
   return (
     <div className="flex flex-col">
       <div className="grid grid-cols-3 overflow-hidden rounded-lg border-2 border-slate-900">

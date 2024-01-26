@@ -13,6 +13,7 @@ export default function AuthContextProvider({ children }) {
   const [user, setUser] = useState();
   const [spotifyToken, setSpotifyToken] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [csrf, setCsrf] = useState("");
 
   useEffect(() => {
@@ -41,6 +42,7 @@ export default function AuthContextProvider({ children }) {
       }
 
       const csrfToken = response.headers.get("X-CSRFToken");
+      console.log(csrfToken);
       setCsrf(csrfToken);
     } catch (err) {
       console.error(err);
@@ -60,9 +62,9 @@ export default function AuthContextProvider({ children }) {
       const data = await response.json();
 
       if (data.isAuthenticated) {
-        setIsAuthenticated({ isAuthenticated: true });
+        setIsAuthenticated(true);
       } else {
-        setIsAuthenticated({ isAuthenticated: false });
+        setIsAuthenticated(false);
         await getCSRF();
       }
     } catch (err) {
@@ -71,8 +73,10 @@ export default function AuthContextProvider({ children }) {
   };
 
   useEffect(() => {
+    setLoading(true);
     const asyncGetSession = async () => {
       await getSession();
+      setLoading(false);
     };
 
     asyncGetSession();
@@ -87,7 +91,9 @@ export default function AuthContextProvider({ children }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("You are logged in as: " + data.username);
+        const { user } = data;
+        console.log("You are logged in as: " + user.username);
+        setUser(user);
       })
       .catch((err) => {
         console.log(err);
@@ -100,6 +106,10 @@ export default function AuthContextProvider({ children }) {
     setSpotifyToken,
     spotifyToken,
     csrf,
+    getCSRF,
+    isAuthenticated,
+    setIsAuthenticated,
+    loading,
   };
 
   return (

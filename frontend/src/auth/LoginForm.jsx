@@ -10,7 +10,7 @@ axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.withCredentials = true;
 
 const LoginForm = () => {
-  const { csrf } = useContext(AuthContext);
+  const { csrf, setIsAuthenticated } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -68,10 +68,10 @@ const LoginForm = () => {
       .then(isResponseOk)
       .then((data) => {
         console.log(data);
+        setIsAuthenticated({ isAuthenticated: true });
       })
       .catch((err) => {
         console.log(err);
-        this.setState({ error: "Wrong username or password." });
       });
   };
 

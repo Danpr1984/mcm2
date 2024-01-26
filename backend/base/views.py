@@ -11,6 +11,8 @@ from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from .serializers import UserSerializer
 from .models import AssignedSong, Color, Song
 
@@ -54,6 +56,8 @@ class CheckAuthenticatedView(APIView):
 #         except:
 #             return Response({ 'error': 'Something went wrong when logging in' })
 
+@api_view(['POST'])
+@permission_classes([AllowAny])
 @require_POST
 def login_view(request):
     data = json.loads(request.body)
@@ -69,7 +73,9 @@ def login_view(request):
         return JsonResponse({'detail': 'Invalid credentials.'}, status=400)
 
     auth.login(request, user)
-    return JsonResponse({'detail': 'Successfully logged in.'})
+    serializer = UserSerializer(user)
+    return  Response({'user': serializer.data}, status=status.HTTP_200_OK)
+
 
 
 @method_decorator(csrf_protect, name='dispatch')
@@ -126,13 +132,16 @@ def session_view(request):
 
     return JsonResponse({'isAuthenticated': True})
 
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def whoami_view(request):
-    print(request.user)
 
     if not request.user.is_authenticated:
         return JsonResponse({'isAuthenticated': False})
 
-    return JsonResponse({'username': request.user.username})
+    serializer = UserSerializer(request.user)
+    return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 
 class UserView(APIView):
     permission_classes =(permissions.IsAuthenticated, )

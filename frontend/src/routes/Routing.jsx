@@ -7,13 +7,17 @@ import { AuthContext } from "../context/AuthContext.jsx";
 import RegisterForm from "../auth/RegisterForm.jsx";
 import HomePage from "../pages/HomePage.jsx";
 import PlaylistPage from "../pages/PlaylistPage.jsx";
+import ProtectedRoutes from "./ProtectedRoutes.jsx";
+import { useContext } from "react";
 
 const Routing = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/playlist/:slug" element={<PlaylistPage />} />
+      <Route element={<ProtectedRoutes />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/playlist/:slug" element={<PlaylistPage />} />
+      </Route>
     </Routes>
   );
 };
