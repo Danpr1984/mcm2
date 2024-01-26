@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useState } from "react";
-import CSRFToken from "./CSRFToken";
+// import CSRFToken from "./CSRFToken";
 import { Link } from "react-router-dom";
 
 const RegisterForm = ({ register, isAuthenticated }) => {

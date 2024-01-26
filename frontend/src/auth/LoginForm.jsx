@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import CSRFToken from "./CSRFToken";
+// import CSRFToken from "./CSRFToken";
+import { AuthContext } from "../context/AuthContext";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.withCredentials = true;
 
 const LoginForm = () => {
+  const { csrf } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -41,14 +43,46 @@ const LoginForm = () => {
     }
   }
 
+  function isResponseOk(response) {
+    if (response.status >= 200 && response.status <= 299) {
+      return response.json();
+    } else {
+      throw Error(response.statusText);
+    }
+  }
+
+  const login = async (event) => {
+    event.preventDefault();
+    fetch("http://localhost:8000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrf,
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    })
+      .then(isResponseOk)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({ error: "Wrong username or password." });
+      });
+  };
+
   return (
     <div className="h-100 w-full">
       <h1 className="mt-12 text-xl font-bold leading-tight md:text-2xl">
         Log in to your account
       </h1>
 
-      <form className="mt-6" onSubmit={loginUser}>
-        <CSRFToken />
+      <form className="mt-6" onSubmit={login}>
+        {/* <CSRFToken /> */}
 
         <div>
           <label className="block text-gray-700">Username</label>

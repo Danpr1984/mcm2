@@ -1,10 +1,16 @@
+import json
+
+
 from rest_framework.views import APIView
 from rest_framework import permissions, status
 from rest_framework.response import Response
+from django.http import JsonResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_POST
 from .serializers import UserSerializer
 from .models import AssignedSong, Color, Song
 
@@ -24,29 +30,46 @@ class CheckAuthenticatedView(APIView):
             return Response({ 'error': 'Something went wrong when checking authentication status' })
 
 
-@method_decorator(csrf_protect, name='dispatch')
-class LoginView(APIView):
-    permission_classes = (permissions.AllowAny, )
+# @method_decorator(csrf_protect, name='dispatch')
+# class LoginView(APIView):
+#     permission_classes = (permissions.AllowAny, )
 
-    def post(self, request, format=None):
-        data = self.request.data
+#     def post(self, request, format=None):
+#         data = self.request.data
 
-        username = data['username']
-        password = data['password']
-        print(username)
-        print(password)
+#         username = data['username']
+#         password = data['password']
+#         print(username)
+#         print(password)
 
-        try:
-            user = auth.authenticate(username=username, password=password)
-            print(user)
+#         try:
+#             user = auth.authenticate(username=username, password=password)
+#             print(user)
 
-            if user is not None:
-                auth.login(request, user)
-                return Response({ 'success': 'User authenticated' })
-            else:
-                return Response({ 'error': 'Error Authenticating' })
-        except:
-            return Response({ 'error': 'Something went wrong when logging in' })
+#             if user is not None:
+#                 auth.login(request, user)
+#                 return Response({ 'success': 'User authenticated' })
+#             else:
+#                 return Response({ 'error': 'Error Authenticating' })
+#         except:
+#             return Response({ 'error': 'Something went wrong when logging in' })
+
+@require_POST
+def login_view(request):
+    data = json.loads(request.body)
+    username = data.get('username')
+    password = data.get('password')
+
+    if username is None or password is None:
+        return JsonResponse({'detail': 'Please provide username and password.'}, status=400)
+
+    user = auth.authenticate(username=username, password=password)
+
+    if user is None:
+        return JsonResponse({'detail': 'Invalid credentials.'}, status=400)
+
+    auth.login(request, user)
+    return JsonResponse({'detail': 'Successfully logged in.'})
 
 
 @method_decorator(csrf_protect, name='dispatch')
@@ -83,7 +106,6 @@ class SignupView(APIView):
 
 
 
-@method_decorator(ensure_csrf_cookie, name='dispatch')
 class GetCSRFToken(APIView):
     permission_classes = (permissions.AllowAny, )
 
@@ -91,6 +113,26 @@ class GetCSRFToken(APIView):
         return Response({ 'success': 'CSRF cookie set' })
 
 
+def get_csrf(request):
+    response = JsonResponse({'detail': 'CSRF cookie set'})
+    response['X-CSRFToken'] = get_token(request)
+    return response
+
+
+@ensure_csrf_cookie
+def session_view(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'isAuthenticated': False})
+
+    return JsonResponse({'isAuthenticated': True})
+
+def whoami_view(request):
+    print(request.user)
+
+    if not request.user.is_authenticated:
+        return JsonResponse({'isAuthenticated': False})
+
+    return JsonResponse({'username': request.user.username})
 
 class UserView(APIView):
     permission_classes =(permissions.IsAuthenticated, )

@@ -1,38 +1,15 @@
-import React, { useState, useEffect, useContext } from "react";
-import APIKit from "./spotify.js";
+import React, { useContext } from "react";
 import { colors } from "./ColorWheel.jsx";
-import AudioPlayer from "./audio/AudioPlayer.jsx";
 import Cookies from "js-cookie";
 import axios from "axios";
 import Playlist from "./audio/Playlist.jsx";
 import { ColorContext } from "../context/ColorContext.jsx";
+import { AudioContext } from "../context/AudioContext.jsx";
 
 function Library({ token }) {
   if (!token) return;
-  const [playlists, setPlaylists] = useState(null);
+  const { playlists } = useContext(AudioContext);
   const { assignTrack } = useContext(ColorContext);
-
-  useEffect(() => {
-    fetchPlaylists();
-  }, []);
-
-  const fetchPlaylists = async () => {
-    try {
-      const response = await APIKit.get("me/playlists");
-
-      const playlists = response.data.items;
-      const promises = playlists.map((playlist) =>
-        APIKit.get(playlist.tracks.href).then((response) => {
-          playlist.tracks.items = response.data.items;
-          return playlist;
-        }),
-      );
-      const playlistsWithTracks = await Promise.all(promises);
-      setPlaylists(playlistsWithTracks);
-    } catch (error) {
-      console.error("Error fetching playlists or tracks:", error);
-    }
-  };
 
   const handleColorAssign = async (color) => {
     if (!assignTrack) return;
@@ -58,6 +35,8 @@ function Library({ token }) {
     );
   };
 
+  console.log(playlists);
+
   return (
     <div className="flex flex-col">
       <div className="grid grid-cols-3 overflow-hidden rounded-lg border-2 border-slate-900">
@@ -71,10 +50,16 @@ function Library({ token }) {
             />
           ))}
       </div>
-      <div className="flex w-full justify-center gap-3">
-        {playlists?.map((playlist, index) => (
-          <Playlist playlist={playlist} key={index} />
-        ))}
+      <div className="text-center">
+        <h1 className=" my-5 text-xl font-bold text-indigo-600">
+          Select a playlist
+        </h1>
+        <hr className="my-5" />
+        <div className="grid w-full justify-center gap-3 md:grid-cols-3">
+          {playlists?.map((playlist, index) => (
+            <Playlist playlist={playlist} key={index} />
+          ))}
+        </div>
       </div>
     </div>
   );

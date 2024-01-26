@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage";
 import Routing from "./routes/Routing";
 import { BrowserRouter } from "react-router-dom";
 import SpotifyLogin from "./auth/SpotifyLogin";
+import AudioContextProvider from "./context/AudioContext";
 
 function App() {
   const { spotifyToken } = useContext(AuthContext);
@@ -16,14 +17,14 @@ function App() {
       <ColorContextProvider>
         <BrowserRouter>
           {spotifyToken ? (
-            <>
+            <AudioContextProvider>
               <header>
                 <Navbar />
               </header>
               <main>
                 <Routing />
               </main>
-            </>
+            </AudioContextProvider>
           ) : (
             <SpotifyLogin />
           )}
