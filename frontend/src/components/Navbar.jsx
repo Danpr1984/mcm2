@@ -1,4 +1,10 @@
+import { useContext } from "react";
+import { AudioContext } from "../context/AudioContext";
+
 const Navbar = () => {
+  const { userImage } = useContext(AudioContext);
+
+  console.log(userImage);
   return (
     <nav className="h-[64px] border-gray-200 bg-indigo-700 dark:bg-gray-900">
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
@@ -24,7 +30,7 @@ const Navbar = () => {
             <span className="sr-only">Open user menu</span>
             <img
               className="h-8 w-8 rounded-full"
-              src="/docs/images/people/profile-picture-3.jpg"
+              src={userImage}
               alt="user photo"
             />
           </button>

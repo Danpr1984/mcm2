@@ -11,6 +11,7 @@ export const AudioContext = createContext({
 
 export default function AudioContextProvider({ children }) {
   const [assignTrack, setAssignTrack] = useState("");
+  const [userImage, setUserImage] = useState("/images/colourwheel.png"); // [1
   const [playlists, setPlaylists] = useState(null);
 
   useEffect(() => {
@@ -20,6 +21,8 @@ export default function AudioContextProvider({ children }) {
   const fetchPlaylists = async () => {
     try {
       const response = await APIKit.get("me/playlists");
+      const userResponse = await APIKit.get("me");
+      setUserImage(userResponse.data.images[0].url);
 
       const playlists = response.data.items;
       const promises = playlists.map((playlist) =>
@@ -40,6 +43,7 @@ export default function AudioContextProvider({ children }) {
     setAssignTrack,
     playlists,
     setPlaylists,
+    userImage,
   };
 
   return (
