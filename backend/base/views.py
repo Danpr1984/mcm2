@@ -63,22 +63,32 @@ def register_view(request):
         password = data.get('password')
         re_password = data.get('re_password')
 
-        if username is None or password is None or re_password is None:
-            return JsonResponse({'error': 'Please provide username, password, and re_password.'}, status=400)
+        errors = {}
 
-        if password != re_password:
-            return JsonResponse({'error': 'Passwords do not match.'}, status=400)
+        if username is None or password is None or re_password is None:
+            errors['username'] ='Please provide username, password, and re_password.'
 
         if User.objects.filter(username=username).exists():
-            return JsonResponse({'error': 'Username already exists.'}, status=400)
+            errors['username'] = 'Username already exists.'
 
-        if len(password) < 6:
-            return JsonResponse({'error': 'Password must be at least 6 characters.'}, status=400)
+        if len(username) < 6:
+            errors['username'] = 'Username must be at least 6 characters.'
+
+        if len(password) < 8:
+            errors['password'] = 'Password must be at least 8 characters.'
+
+        if password != re_password:
+            errors['password'] = 'Passwords do not match.'
+            errors['re_password'] = 'Passwords do not match.'
+
+        if errors:
+            return JsonResponse({'error': errors}, status=400)
 
         user = User.objects.create_user(username=username, password=password)
         user.save()
 
         return JsonResponse({'success': 'User created successfully.'}, status=201)
+        
     except Exception as e:
         return JsonResponse({'error': f'Something went wrong when registering account - {str(e)}'}, status=400)
 
