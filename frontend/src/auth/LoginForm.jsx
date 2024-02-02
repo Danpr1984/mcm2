@@ -1,48 +1,13 @@
 import { useContext, useState } from "react";
-import Cookies from "js-cookie";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-// import CSRFToken from "./CSRFToken";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { isResponseOk } from "../helpers/fetch-requests";
 
-axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
-axios.defaults.xsrfCookieName = "csrftoken";
-axios.defaults.withCredentials = true;
-
-const LoginForm = () => {
+const LoginForm = ({ setIsLoggingIn }) => {
   const { csrf, setIsAuthenticated } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
-  async function loginUser(event) {
-    event.preventDefault();
-
-    const cookie = Cookies.get("csrftoken");
-    const config = {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-CSRFToken": cookie,
-      },
-    };
-    const body = JSON.stringify({ username, password });
-
-    const response = await axios.post(
-      "http://localhost:8000/api/login",
-      body,
-      config,
-    );
-
-    console.log(response);
-
-    const { data } = await axios.get("http://localhost:8000/api/user", config);
-
-    if (data.user) {
-      navigate("/dashboard");
-    }
-  }
 
   const login = async (event) => {
     event.preventDefault();
@@ -163,12 +128,12 @@ const LoginForm = () => {
 
       <p className="mt-8">
         Need an account?{" "}
-        <Link
-          to="register"
+        <button
+          onClick={() => setIsLoggingIn(false)}
           className="font-semibold text-blue-500 hover:text-blue-700"
         >
           Create an account
-        </Link>
+        </button>
       </p>
     </div>
   );

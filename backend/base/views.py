@@ -53,37 +53,67 @@ def login_view(request):
     return  Response({'user': serializer.data}, status=status.HTTP_200_OK)
 
 
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@require_POST
+def register_view(request):
+    try:
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        re_password = data.get('re_password')
 
-@method_decorator(csrf_protect, name='dispatch')
-class SignupView(APIView):
-    permission_classes = (permissions.AllowAny, )
+        if username is None or password is None or re_password is None:
+            return JsonResponse({'error': 'Please provide username, password, and re_password.'}, status=400)
 
-    def post(self, request, format=None):
-        data = self.request.data
+        if password != re_password:
+            return JsonResponse({'error': 'Passwords do not match.'}, status=400)
 
-        username = data['username']
-        password = data['password']
-        re_password  = data['re_password']
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'error': 'Username already exists.'}, status=400)
 
-        try:
-            if password == re_password:
-                if User.objects.filter(username=username).exists():
-                    return Response({ 'error': 'Username already exists' })
-                else:
-                    if len(password) < 6:
-                        return Response({ 'error': 'Password must be at least 6 characters' })
-                    else:
-                        user = User.objects.create_user(username=username, password=password)
+        if len(password) < 6:
+            return JsonResponse({'error': 'Password must be at least 6 characters.'}, status=400)
 
-                        user.save()
+        user = User.objects.create_user(username=username, password=password)
+        user.save()
+
+        return JsonResponse({'success': 'User created successfully.'}, status=201)
+    except Exception as e:
+        return JsonResponse({'error': f'Something went wrong when registering account - {str(e)}'}, status=400)
 
 
+# @method_decorator(csrf_protect, name='dispatch')
+# class SignupView(APIView):
+#     permission_classes = (permissions.AllowAny, )
 
-                        return Response({ 'success': 'User created successfully' })
-            else:
-                return Response({ 'error': 'Passwords do not match' })
-        except:
-                return Response({ 'error': 'Something went wrong when registering account' })
+#     def post(self, request, format=None):
+#         data = self.request.data
+
+#         username = data['username']
+#         password = data['password']
+#         re_password  = data['re_password']
+
+#         print(username, password, re_password)
+
+#         try:
+#             if password == re_password:
+#                 if User.objects.filter(username=username).exists():
+#                     return Response({ 'error': 'Username already exists' })
+#                 else:
+#                     if len(password) < 6:
+#                         return Response({ 'error': 'Password must be at least 6 characters' })
+#                     else:
+#                         user = User.objects.create_user(username=username, password=password)
+#                         user.save()
+
+
+
+#                         return Response({ 'success': 'User created successfully' })
+#             else:
+#                 return Response({ 'error': 'Passwords do not match' })
+#         except:
+#                 return Response({ 'error': 'Something went wrong when registering account' })
 
 class GetCSRFToken(APIView):
     permission_classes = (permissions.AllowAny, )
