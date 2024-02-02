@@ -19,7 +19,7 @@ const AudioLayout = ({ tracks }) => {
           <img
             className="h-20 w-20 object-cover"
             alt="User avatar"
-            src={assignTrack?.album?.images[0].url}
+            src={assignTrack?.album?.images[0]?.url}
           />
           <div className="flex w-full flex-col px-2">
             <span className="text-xs font-medium uppercase text-gray-700">
