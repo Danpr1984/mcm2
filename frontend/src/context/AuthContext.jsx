@@ -19,6 +19,8 @@ export default function AuthContextProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [csrf, setCsrf] = useState("");
 
+  console.log(user);
+
   useEffect(() => {
     const token = window.localStorage.getItem("token");
     const hash = window.location.hash;
@@ -32,6 +34,7 @@ export default function AuthContextProvider({ children }) {
       setSpotifyToken(token);
       setClientToken(token);
     }
+    whoami();
   }, [spotifyToken]);
 
   async function getCSRF() {

@@ -28,7 +28,7 @@ const RegisterForm = ({ setIsLoggingIn }) => {
       .then(isResponseOk)
       .then((data) => {
         setIsAuthenticated({ isAuthenticated: true });
-        // navigate("/dashboard");
+        navigate("/dashboard");
       })
       .catch((err) => {
         console.log(err);
