@@ -5,7 +5,7 @@ import { ColorContext } from "../context/ColorContext";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import { generatePlaylistSlug } from "../components/audio/Playlist";
 import ColorWheel from "../components/ColorWheel";
-import TestAudioLayout from "../components/audio/TestAudioLayout";
+import AudioLayout from "../components/audio/AudioLayout";
 import { AuthContext } from "../context/AuthContext";
 
 const PlaylistPage = () => {
@@ -56,7 +56,7 @@ const PlaylistPage = () => {
         </p>
 
         {selectedPlaylist ? (
-          <TestAudioLayout tracks={selectedPlaylist.tracks.items} />
+          <AudioLayout tracks={selectedPlaylist.tracks.items} />
         ) : (
           <LoadingSpinner />
         )}

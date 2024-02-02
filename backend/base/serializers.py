@@ -17,7 +17,7 @@ class SongSerializer(serializers.ModelSerializer):
 class AssignedSongSerializer(serializers.ModelSerializer):
     class Meta:
         model = AssignedSong
-        fields = ('id', 'song', 'color')
+        fields = ('song', 'color')
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -31,12 +31,7 @@ class AssignedSongSerializer(serializers.ModelSerializer):
             # Add more fields as needed
         }
         representation['color'] = {
-            'id': instance.color.id,
-            # Add more fields as needed
+            'name': instance.color.name,
         }
-        representation['user'] = {
-            'id': instance.user.id,
-            'username': instance.user.username,
-            # Add more fields as needed
-        }
+
         return representation

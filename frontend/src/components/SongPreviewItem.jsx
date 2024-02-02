@@ -1,9 +1,14 @@
 import { useContext } from "react";
 import { FaQuestion } from "react-icons/fa";
 import { ColorContext } from "../context/ColorContext";
+import { findObjectById } from "../helpers/functions";
+import { AudioContext } from "../context/AudioContext";
 
 const SongPreviewItem = ({ track }) => {
   const { setAssignTrack } = useContext(ColorContext);
+  const { userSongs } = useContext(AudioContext);
+
+  const alreadyAssigned = findObjectById(userSongs, track.id);
 
   return (
     <button
@@ -13,7 +18,6 @@ const SongPreviewItem = ({ track }) => {
       <img
         className="h-10 w-10 rounded-lg object-cover"
         alt="track album cover"
-        // src="https://images.unsplash.com/photo-1477118476589-bff2c5c4cfbb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=200"
         src={track?.album?.images[0]?.url}
       />
       <div className="flex w-full flex-col px-2">
@@ -24,9 +28,16 @@ const SongPreviewItem = ({ track }) => {
           -{track.artists[0].name}
         </span>
       </div>
-      <div className="flex aspect-square h-12 items-center justify-center rounded-full border border-slate-950 bg-slate-200 bg-opacity-80 bg-clip-padding backdrop-blur-md backdrop-filter">
-        <FaQuestion />
-      </div>
+      {alreadyAssigned ? (
+        <div
+          className="flex aspect-square h-12 items-center justify-center rounded-full border border-slate-950 bg-opacity-80 bg-clip-padding backdrop-blur-md backdrop-filter"
+          style={{ background: alreadyAssigned.color.name }}
+        ></div>
+      ) : (
+        <div className="flex aspect-square h-12 items-center justify-center rounded-full border border-slate-950 bg-slate-200 bg-opacity-80 bg-clip-padding backdrop-blur-md backdrop-filter">
+          <FaQuestion />
+        </div>
+      )}
     </button>
   );
 };

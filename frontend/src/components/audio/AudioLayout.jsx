@@ -4,14 +4,13 @@ import { useContext } from "react";
 import { ColorContext } from "../../context/ColorContext";
 import { AudioContext } from "../../context/AudioContext";
 import { findObjectById } from "../../helpers/functions";
+import AudioPlayer from "./AudioPlayer";
 
-const TestAudioLayout = ({ tracks }) => {
+const AudioLayout = ({ tracks }) => {
   const { assignTrack } = useContext(ColorContext);
   const { userSongs } = useContext(AudioContext);
 
-  const tester = findObjectById(userSongs, assignTrack.id);
-
-  console.log(tester);
+  const alreadyAssigned = findObjectById(userSongs, assignTrack.id);
 
   return (
     <section className="container">
@@ -37,13 +36,21 @@ const TestAudioLayout = ({ tracks }) => {
             <p className="whitespace-nowrap text-sm font-semibold capitalize text-red-500">
               Assigned Colour
             </p>
-            <div className="flex aspect-square h-12 items-center justify-center rounded-full border border-slate-950 bg-slate-200 bg-opacity-80 bg-clip-padding backdrop-blur-md backdrop-filter">
-              <FaQuestion />
-            </div>
+
+            {alreadyAssigned ? (
+              <div
+                className="flex aspect-square h-12 items-center justify-center rounded-full border border-slate-950 bg-opacity-80 bg-clip-padding backdrop-blur-md backdrop-filter"
+                style={{ background: alreadyAssigned.color.name }}
+              ></div>
+            ) : (
+              <div className="flex aspect-square h-12 items-center justify-center rounded-full border border-slate-950 bg-slate-200 bg-opacity-80 bg-clip-padding backdrop-blur-md backdrop-filter">
+                <FaQuestion />
+              </div>
+            )}
           </div>
         </div>
 
-        <div className="flex flex-col items-center p-5 sm:flex-row">
+        {/* <div className="flex flex-col items-center p-5 sm:flex-row">
           <div className="flex items-center">
             <div className="flex space-x-3 p-2">
               <button className="focus:outline-none">
@@ -98,6 +105,9 @@ const TestAudioLayout = ({ tracks }) => {
               02:00/04:00
             </span>
           </div>
+        </div> */}
+        <div className="flex justify-center">
+          <AudioPlayer track={assignTrack} />
         </div>
       </div>
 
@@ -123,4 +133,4 @@ const TestAudioLayout = ({ tracks }) => {
   );
 };
 
-export default TestAudioLayout;
+export default AudioLayout;

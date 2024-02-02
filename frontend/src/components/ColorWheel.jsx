@@ -1,11 +1,13 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ColorContext } from "../context/ColorContext";
 import { AuthContext } from "../context/AuthContext";
 import { isResponseOk } from "../helpers/fetch-requests";
+import { AudioContext } from "../context/AudioContext";
 
 const ColorWheel = () => {
   const { assignTrack } = useContext(ColorContext);
   const { getCSRF } = useContext(AuthContext);
+  const { setUserSongs } = useContext(AudioContext);
 
   const handleColorAssign = async (color) => {
     if (!assignTrack) return;
@@ -27,6 +29,27 @@ const ColorWheel = () => {
       credentials: "include",
       body,
     }).then(isResponseOk);
+
+    fetchUserSongs();
+  };
+
+  const fetchUserSongs = async () => {
+    const csrf = await getCSRF();
+
+    try {
+      const response = await fetch("http://localhost:8000/api/user_songs/", {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
+        },
+        credentials: "include",
+      });
+
+      const { user_songs } = await response.json();
+      setUserSongs(user_songs);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

@@ -150,12 +150,14 @@ class AssignColorToSong(APIView):
         image = track['album']['images'][0]['url']
         preview_url = track['preview_url']
 
-        song = Song(id=track_id, name=name, artist=artist, album=album, image=image, preview_url=preview_url)
+        song, created = Song.objects.get_or_create(
+            id=track_id, 
+            defaults={'name': name, 'artist': artist, 'album': album, 'image': image, 'preview_url': preview_url}
+        )
 
-        song.save()
+        AssignedSong.objects.filter(user=user, song=song).delete()
 
         user_assigned_song = AssignedSong(color=color, user=user, song=song)
-
         user_assigned_song.save()
-      
+
         return Response({"message" : 'Route works'})

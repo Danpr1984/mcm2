@@ -1,7 +1,6 @@
 export function findObjectById(arrayOfObjects, targetId) {
   for (const obj of arrayOfObjects) {
-    console.log(obj);
-    if (obj.id === targetId) {
+    if (obj.song.id === targetId) {
       return obj;
     }
   }
