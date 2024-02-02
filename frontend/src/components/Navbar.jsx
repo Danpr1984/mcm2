@@ -1,11 +1,35 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AudioContext } from "../context/AudioContext";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import { isResponseOk } from "../helpers/fetch-requests";
 
 const Navbar = () => {
   const { userImage } = useContext(AudioContext);
-  const { user, isAuthenticated } = useContext(AuthContext);
+
+  const { user, isAuthenticated, getCSRF, setIsAuthenticated } =
+    useContext(AuthContext);
+
+  const logout = async (event) => {
+    event.preventDefault();
+
+    const csrf = await getCSRF();
+    fetch("http://localhost:8000/api/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrf,
+      },
+      credentials: "include",
+    })
+      .then(isResponseOk)
+      .then((data) => {
+        setIsAuthenticated({ isAuthenticated: false });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <nav className="h-[64px] border-gray-200 bg-indigo-700 dark:bg-gray-900">
@@ -20,16 +44,16 @@ const Navbar = () => {
             ColourWheel
           </span>
         </div>
-        <div className="flex items-center space-x-3 rtl:space-x-reverse md:order-2 md:space-x-0">
+        <div
+          className="group relative flex items-center space-x-3 rtl:space-x-reverse md:order-2 md:space-x-0"
+          aria-expanded="false"
+          data-dropdown-toggle="user-dropdown"
+          data-dropdown-placement="bottom"
+        >
           <span className="me-1 capitalize text-white">{user?.username}</span>
-
-          <button
-            type="button"
+          <div
             className="flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 md:me-0"
             id="user-menu-button"
-            aria-expanded="false"
-            data-dropdown-toggle="user-dropdown"
-            data-dropdown-placement="bottom"
           >
             <span className="sr-only">Open user menu</span>
 
@@ -38,54 +62,23 @@ const Navbar = () => {
               src={userImage}
               alt="user photo"
             />
-          </button>
+          </div>
           <div
-            className="z-50 my-4 hidden list-none divide-y divide-gray-100 rounded-lg bg-white text-base shadow dark:divide-gray-600 dark:bg-gray-700"
+            className="absolute top-5 z-50 my-4 hidden list-none divide-y divide-gray-100 rounded-lg bg-white text-base shadow group-hover:block dark:divide-gray-600 dark:bg-gray-700"
             id="user-dropdown"
           >
-            <div className="px-4 py-3">
-              <span className="block text-sm text-gray-900 dark:text-white">
-                Bonnie Green
-              </span>
-              <span className="block truncate  text-sm text-gray-500 dark:text-gray-400">
-                name@flowbite.com
-              </span>
-            </div>
             <ul className="py-2" aria-labelledby="user-menu-button">
               <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Dashboard
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Settings
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Earnings
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
+                <button
+                  onClick={logout}
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Sign out
-                </a>
+                </button>
               </li>
             </ul>
           </div>
+
           <button
             data-collapse-toggle="navbar-user"
             type="button"

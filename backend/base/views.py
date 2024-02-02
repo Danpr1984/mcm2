@@ -12,7 +12,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from .serializers import UserSerializer, SongSerializer, AssignedSongSerializer
 from .models import AssignedSong, Color, Song
 
@@ -82,6 +82,21 @@ def register_view(request):
     except Exception as e:
         return JsonResponse({'error': f'Something went wrong when registering account - {str(e)}'}, status=400)
 
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@require_POST
+def logout_view(request):
+    try:
+        # Assuming you have a valid token or session for the user
+        # You may need to implement token or session validation logic
+
+        # Log out the user
+        auth.logout(request)
+
+        return JsonResponse({'detail': 'User logged out successfully.'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return JsonResponse({'error': f'Something went wrong during logout - {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # @method_decorator(csrf_protect, name='dispatch')
 # class SignupView(APIView):
