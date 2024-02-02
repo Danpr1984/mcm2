@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AudioContext } from "../context/AudioContext";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
@@ -63,21 +63,23 @@ const Navbar = () => {
               alt="user photo"
             />
           </div>
-          <div
-            className="absolute top-5 z-50 my-4 hidden list-none divide-y divide-gray-100 rounded-lg bg-white text-base shadow group-hover:block dark:divide-gray-600 dark:bg-gray-700"
-            id="user-dropdown"
-          >
-            <ul className="py-2" aria-labelledby="user-menu-button">
-              <li>
-                <button
-                  onClick={logout}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Sign out
-                </button>
-              </li>
-            </ul>
-          </div>
+          {user && (
+            <div
+              className="absolute z-50 my-4 hidden list-none divide-y divide-gray-100 whitespace-nowrap rounded-lg bg-white text-base shadow group-hover:block dark:divide-gray-600 dark:bg-gray-700"
+              id="user-dropdown"
+            >
+              <ul className="py-2" aria-labelledby="user-menu-button">
+                <li>
+                  <button
+                    onClick={logout}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    Sign out
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
 
           <button
             data-collapse-toggle="navbar-user"

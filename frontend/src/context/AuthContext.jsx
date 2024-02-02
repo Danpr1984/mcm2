@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import { setClientToken } from "../components/spotify";
 
 export const AuthContext = createContext({
@@ -18,8 +17,6 @@ export default function AuthContextProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [csrf, setCsrf] = useState("");
-
-  console.log(user);
 
   useEffect(() => {
     const token = window.localStorage.getItem("token");
@@ -98,7 +95,6 @@ export default function AuthContextProvider({ children }) {
       .then((res) => res.json())
       .then((data) => {
         const { user } = data;
-        console.log("You are logged in as: " + user.username);
         setUser(user);
       })
       .catch((err) => {
@@ -116,6 +112,7 @@ export default function AuthContextProvider({ children }) {
     isAuthenticated,
     setIsAuthenticated,
     loading,
+    whoami,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { isResponseOk } from "../helpers/fetch-requests";
 
 const LoginForm = ({ setIsLoggingIn }) => {
-  const { csrf, setIsAuthenticated } = useContext(AuthContext);
+  const { csrf, whoami, setIsAuthenticated } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -26,6 +26,7 @@ const LoginForm = ({ setIsLoggingIn }) => {
       .then(isResponseOk)
       .then((data) => {
         setIsAuthenticated({ isAuthenticated: true });
+        whoami();
         navigate("/dashboard");
       })
       .catch((err) => {
