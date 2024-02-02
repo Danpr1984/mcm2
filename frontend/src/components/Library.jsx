@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { colors } from "./ColorWheel.jsx";
 import Cookies from "js-cookie";
 import axios from "axios";
 import Playlist from "./audio/Playlist.jsx";

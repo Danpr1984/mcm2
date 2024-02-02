@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import { AudioContext } from "../context/AudioContext";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import { generatePlaylistSlug } from "../components/audio/Playlist";
+import SongFile from "../components/audio/SongFile";
+import ColorWheel from "../components/ColorWheel";
+import TestAudioLayout from "../components/audio/TestAudioLayout";
 
 const PlaylistPage = () => {
   const { slug } = useParams();
@@ -18,13 +21,19 @@ const PlaylistPage = () => {
   }, [slug, playlists]);
 
   return (
-    <div className="flex h-[calc(100vh-64px)] items-center justify-center">
-      {selectedPlaylist ? (
-        <h2>Playlist Details for {slug}</h2>
-      ) : (
-        <LoadingSpinner />
-      )}
-      {/* Add more content for displaying playlist details */}
+    <div className="h-[calc(100vh-64px)]">
+      <div className="my-3 flex flex-col items-center justify-center">
+        <ColorWheel />
+        <p className="my-2 font-medium uppercase text-gray-700">
+          Select A Colour to assign to playing song
+        </p>
+
+        {selectedPlaylist ? (
+          <TestAudioLayout tracks={selectedPlaylist.tracks.items} />
+        ) : (
+          <LoadingSpinner />
+        )}
+      </div>
     </div>
   );
 };

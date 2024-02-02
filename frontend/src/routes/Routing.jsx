@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "../components/Dashboard.jsx";
-import Library from "../components/Library.jsx";
 import { setClientToken } from "../components/spotify.js";
 import SpotifyLogin from "../auth/SpotifyLogin.jsx";
 import { AuthContext } from "../context/AuthContext.jsx";

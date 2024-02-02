@@ -42,7 +42,6 @@ export default function AuthContextProvider({ children }) {
       }
 
       const csrfToken = response.headers.get("X-CSRFToken");
-      console.log(csrfToken);
       setCsrf(csrfToken);
     } catch (err) {
       console.error(err);

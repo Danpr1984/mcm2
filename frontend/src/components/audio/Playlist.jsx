@@ -9,6 +9,7 @@ export function generatePlaylistSlug(playlistName) {
 
 const Playlist = ({ playlist }) => {
   const slug = generatePlaylistSlug(playlist.name);
+
   return (
     <Link
       to={`/playlist/${slug}`}

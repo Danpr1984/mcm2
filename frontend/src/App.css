@@ -1,0 +1,8 @@
+.pie {
+  width: 300px;
+}
+
+.pie circle {
+  fill: none;
+  stroke-width: 32;
+}
