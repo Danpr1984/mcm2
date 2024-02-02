@@ -7,10 +7,13 @@ export const AudioContext = createContext({
   setAssignTrack: () => {},
   setPlaylists: () => {},
   playlists: null,
+  userSongs: [],
+  setUserSongs: () => {},
 });
 
 export default function AudioContextProvider({ children }) {
   const [assignTrack, setAssignTrack] = useState("");
+  const [userSongs, setUserSongs] = useState([]);
   const [userImage, setUserImage] = useState("/images/colourwheel.png");
   const [playlists, setPlaylists] = useState(null);
 
@@ -44,6 +47,8 @@ export default function AudioContextProvider({ children }) {
     playlists,
     setPlaylists,
     userImage,
+    userSongs,
+    setUserSongs,
   };
 
   return (

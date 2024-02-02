@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 // import CSRFToken from "./CSRFToken";
 import { AuthContext } from "../context/AuthContext";
+import { isResponseOk } from "../helpers/fetch-requests";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -40,14 +41,6 @@ const LoginForm = () => {
 
     if (data.user) {
       navigate("/dashboard");
-    }
-  }
-
-  function isResponseOk(response) {
-    if (response.status >= 200 && response.status <= 299) {
-      return response.json();
-    } else {
-      throw Error(response.statusText);
     }
   }
 

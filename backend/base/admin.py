@@ -7,6 +7,7 @@ from .models import  Song, Color, AssignedSong, Profile
 class AssignedSongInline(admin.TabularInline):
     model = AssignedSong
     readonly_fields = ('song', 'color')
+    extra = 0
 
 class ProfileInline(admin.StackedInline):
     """
@@ -42,3 +43,4 @@ admin.site.register(User, UserAdmin)
 
 admin.site.register(Song)
 admin.site.register(Color)
+admin.site.register(AssignedSong)

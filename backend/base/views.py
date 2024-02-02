@@ -13,7 +13,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
-from .serializers import UserSerializer
+from .serializers import UserSerializer, SongSerializer, AssignedSongSerializer
 from .models import AssignedSong, Color, Song
 
 @method_decorator(csrf_protect, name='dispatch')
@@ -31,30 +31,6 @@ class CheckAuthenticatedView(APIView):
         except:
             return Response({ 'error': 'Something went wrong when checking authentication status' })
 
-
-# @method_decorator(csrf_protect, name='dispatch')
-# class LoginView(APIView):
-#     permission_classes = (permissions.AllowAny, )
-
-#     def post(self, request, format=None):
-#         data = self.request.data
-
-#         username = data['username']
-#         password = data['password']
-#         print(username)
-#         print(password)
-
-#         try:
-#             user = auth.authenticate(username=username, password=password)
-#             print(user)
-
-#             if user is not None:
-#                 auth.login(request, user)
-#                 return Response({ 'success': 'User authenticated' })
-#             else:
-#                 return Response({ 'error': 'Error Authenticating' })
-#         except:
-#             return Response({ 'error': 'Something went wrong when logging in' })
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -109,9 +85,6 @@ class SignupView(APIView):
         except:
                 return Response({ 'error': 'Something went wrong when registering account' })
 
-
-
-
 class GetCSRFToken(APIView):
     permission_classes = (permissions.AllowAny, )
 
@@ -143,6 +116,15 @@ def whoami_view(request):
     serializer = UserSerializer(request.user)
     return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 
+class UserSongsView(APIView):
+    permission_classes =(permissions.IsAuthenticated, )
+
+    def get(self, request):
+        assigned_songs = request.user.user_songs.all()
+        song_serializer = AssignedSongSerializer(assigned_songs, many=True)
+        return Response({'user_songs': song_serializer.data}, status=status.HTTP_200_OK)
+
+
 class UserView(APIView):
     permission_classes =(permissions.IsAuthenticated, )
 
@@ -157,10 +139,10 @@ class AssignColorToSong(APIView):
 
     def post(self, request):
         color = request.data.get('color')
-        track = request.data.get('track')['track']
+        track = request.data.get('track')
         user = request.user
 
-        color = Color.objects.get(name=color['name'])
+        color = Color.objects.get(name=color)
         track_id = track['id']
         name = track['name']
         artist = track['artists'][0]['name']

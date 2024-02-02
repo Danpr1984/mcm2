@@ -2,7 +2,6 @@ import { useContext } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import AuthContextProvider, { AuthContext } from "./context/AuthContext";
-import ColorContextProvider from "./context/ColorContext";
 import HomePage from "./pages/HomePage";
 import Routing from "./routes/Routing";
 import { BrowserRouter } from "react-router-dom";
@@ -14,22 +13,20 @@ function App() {
 
   return (
     <AuthContextProvider>
-      <ColorContextProvider>
-        <BrowserRouter>
-          {spotifyToken ? (
-            <AudioContextProvider>
-              <header>
-                <Navbar />
-              </header>
-              <main>
-                <Routing />
-              </main>
-            </AudioContextProvider>
-          ) : (
-            <SpotifyLogin />
-          )}
-        </BrowserRouter>
-      </ColorContextProvider>
+      <BrowserRouter>
+        {spotifyToken ? (
+          <AudioContextProvider>
+            <header>
+              <Navbar />
+            </header>
+            <main>
+              <Routing />
+            </main>
+          </AudioContextProvider>
+        ) : (
+          <SpotifyLogin />
+        )}
+      </BrowserRouter>
     </AuthContextProvider>
   );
 }

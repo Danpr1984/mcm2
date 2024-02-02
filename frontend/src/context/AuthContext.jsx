@@ -7,6 +7,9 @@ export const AuthContext = createContext({
   setUser: () => {},
   spotifyToken: "",
   setSpotifyToken: () => {},
+  csrf: "",
+  setCsrf: () => {},
+  getCSRF: () => {},
 });
 
 export default function AuthContextProvider({ children }) {
@@ -43,6 +46,7 @@ export default function AuthContextProvider({ children }) {
 
       const csrfToken = response.headers.get("X-CSRFToken");
       setCsrf(csrfToken);
+      return csrfToken;
     } catch (err) {
       console.error(err);
     }

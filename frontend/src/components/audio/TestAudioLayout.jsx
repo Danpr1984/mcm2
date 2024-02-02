@@ -1,9 +1,17 @@
 import { FaQuestion } from "react-icons/fa";
 import SongPreviewItem from "../SongPreviewItem";
-import { useState } from "react";
+import { useContext } from "react";
+import { ColorContext } from "../../context/ColorContext";
+import { AudioContext } from "../../context/AudioContext";
+import { findObjectById } from "../../helpers/functions";
 
 const TestAudioLayout = ({ tracks }) => {
-  const [track, setTrack] = useState(tracks[0].track);
+  const { assignTrack } = useContext(ColorContext);
+  const { userSongs } = useContext(AudioContext);
+
+  const tester = findObjectById(userSongs, assignTrack.id);
+
+  console.log(tester);
 
   return (
     <section className="container">
@@ -12,17 +20,17 @@ const TestAudioLayout = ({ tracks }) => {
           <img
             className="h-20 w-20 object-cover"
             alt="User avatar"
-            src={track?.album?.images[0].url}
+            src={assignTrack?.album?.images[0].url}
           />
           <div className="flex w-full flex-col px-2">
             <span className="text-xs font-medium uppercase text-gray-700">
               Now playing
             </span>
             <span className="pt-1 text-sm font-semibold capitalize text-red-500">
-              {track.name}
+              {assignTrack?.name}
             </span>
             <span className="text-xs font-medium uppercase text-gray-500 ">
-              -{track.artists[0].name}
+              -{assignTrack?.artists[0]?.name}
             </span>
           </div>
           <div className="flex flex-col items-center justify-center">
@@ -93,26 +101,22 @@ const TestAudioLayout = ({ tracks }) => {
         </div>
       </div>
 
-      <div class="flex flex-col p-5">
-        <div class="mb-2 flex items-center justify-between border-b pb-1">
-          <span class=" text-base font-semibold uppercase text-gray-700">
+      <div className="flex flex-col p-5">
+        <div className="mb-2 flex items-center justify-between border-b pb-1">
+          <span className=" text-base font-semibold uppercase text-gray-700">
             {" "}
             play list
           </span>
           <img
-            class="w-4 cursor-pointer"
+            className="w-4 cursor-pointer"
             src="https://p.kindpng.com/picc/s/152-1529312_filter-ios-filter-icon-png-transparent-png.png"
           />
         </div>
 
         {tracks
-          .filter((item) => item.track.id !== track.id)
+          .filter((track) => track.track.id !== assignTrack.id)
           .map((track, index) => (
-            <SongPreviewItem
-              track={track.track}
-              key={index}
-              setTrack={setTrack}
-            />
+            <SongPreviewItem track={track.track} key={index} />
           ))}
       </div>
     </section>

@@ -1,13 +1,11 @@
 import { useContext, useState } from "react";
 import AudioPlayer from "./AudioPlayer";
-import { ColorContext } from "../../context/ColorContext";
 import SongPreviewItem from "../SongPreviewItem";
 import { FaQuestion } from "react-icons/fa";
 import TestAudioLayout from "./TestAudioLayout";
 
 const SongFile = ({ track }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const { setAssignTrack } = useContext(ColorContext);
 
   return (
     <div>

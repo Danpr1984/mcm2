@@ -1,4 +1,34 @@
+import { useContext, useEffect } from "react";
+import { ColorContext } from "../context/ColorContext";
+import { AuthContext } from "../context/AuthContext";
+import { isResponseOk } from "../helpers/fetch-requests";
+
 const ColorWheel = () => {
+  const { assignTrack } = useContext(ColorContext);
+  const { getCSRF } = useContext(AuthContext);
+
+  const handleColorAssign = async (color) => {
+    if (!assignTrack) return;
+    const colorData = {
+      color: color,
+      track: assignTrack,
+    };
+
+    const csrf = await getCSRF();
+
+    const body = JSON.stringify(colorData);
+
+    fetch("http://localhost:8000/api/assign_color_to_song/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrf,
+      },
+      credentials: "include",
+      body,
+    }).then(isResponseOk);
+  };
+
   return (
     <svg viewBox="0 0 64 64" className="pie">
       <circle
@@ -11,6 +41,7 @@ const ColorWheel = () => {
           stroke: "orange",
           strokeDashoffset: -1,
         }}
+        onClick={() => handleColorAssign("orange")}
       ></circle>
       <circle
         r="25%"
@@ -22,6 +53,7 @@ const ColorWheel = () => {
           stroke: "skyblue",
           strokeDashoffset: 12.5,
         }}
+        onClick={() => handleColorAssign("skyblue")}
       ></circle>
       <circle
         r="25%"
@@ -33,6 +65,7 @@ const ColorWheel = () => {
           stroke: "gray",
           strokeDashoffset: 25,
         }}
+        onClick={() => handleColorAssign("gray")}
       ></circle>
       <circle
         r="25%"
@@ -43,6 +76,7 @@ const ColorWheel = () => {
           strokeDasharray: "100 100",
           strokeDashoffset: 37.5,
         }}
+        onClick={() => handleColorAssign("black")}
       ></circle>
       <circle
         r="25%"
@@ -53,6 +87,7 @@ const ColorWheel = () => {
           strokeDasharray: "100 100",
           strokeDashoffset: 50,
         }}
+        onClick={() => handleColorAssign("yellow")}
       ></circle>
       <circle
         r="25%"
@@ -63,6 +98,7 @@ const ColorWheel = () => {
           strokeDasharray: "100 100",
           strokeDashoffset: 62.5,
         }}
+        onClick={() => handleColorAssign("blue")}
       ></circle>
       <circle
         r="25%"
@@ -73,6 +109,7 @@ const ColorWheel = () => {
           strokeDasharray: "100 100",
           strokeDashoffset: 75,
         }}
+        onClick={() => handleColorAssign("red")}
       ></circle>
       <circle
         r="25%"
@@ -84,6 +121,7 @@ const ColorWheel = () => {
           stroke: "green",
           strokeDashoffset: 87.5,
         }}
+        onClick={() => handleColorAssign("green")}
       ></circle>
     </svg>
   );

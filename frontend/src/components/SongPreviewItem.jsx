@@ -1,22 +1,26 @@
+import { useContext } from "react";
 import { FaQuestion } from "react-icons/fa";
+import { ColorContext } from "../context/ColorContext";
 
-const SongPreviewItem = ({ track, setTrack }) => {
+const SongPreviewItem = ({ track }) => {
+  const { setAssignTrack } = useContext(ColorContext);
+
   return (
     <button
-      class="flex cursor-pointer border-b px-2 py-3 hover:shadow-md"
-      onClick={() => setTrack(track)}
+      className="flex cursor-pointer border-b px-2 py-3 hover:shadow-md"
+      onClick={() => setAssignTrack(track)}
     >
       <img
-        class="h-10 w-10 rounded-lg object-cover"
+        className="h-10 w-10 rounded-lg object-cover"
         alt="track album cover"
         // src="https://images.unsplash.com/photo-1477118476589-bff2c5c4cfbb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=200"
         src={track?.album?.images[0]?.url}
       />
-      <div class="flex w-full flex-col px-2">
-        <span class="pt-1 text-sm font-semibold capitalize text-red-500">
+      <div className="flex w-full flex-col px-2">
+        <span className="pt-1 text-sm font-semibold capitalize text-red-500">
           {track.name || "No name"}
         </span>
-        <span class="text-xs font-medium uppercase text-gray-500 ">
+        <span className="text-xs font-medium uppercase text-gray-500 ">
           -{track.artists[0].name}
         </span>
       </div>
