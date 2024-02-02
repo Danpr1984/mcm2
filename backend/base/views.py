@@ -36,21 +36,33 @@ class CheckAuthenticatedView(APIView):
 @permission_classes([AllowAny])
 @require_POST
 def login_view(request):
-    data = json.loads(request.body)
-    username = data.get('username')
-    password = data.get('password')
+    try:
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
 
-    if username is None or password is None:
-        return JsonResponse({'detail': 'Please provide username and password.'}, status=400)
+        errors = {}
 
-    user = auth.authenticate(username=username, password=password)
+        if username is None or password is None:
+            errors['username'] ='Please provide username and password.'
+            errors['password'] ='Please provide username and password.'
 
-    if user is None:
-        return JsonResponse({'detail': 'Invalid credentials.'}, status=400)
+        user = auth.authenticate(username=username, password=password)
 
-    auth.login(request, user)
-    serializer = UserSerializer(user)
-    return  Response({'user': serializer.data}, status=status.HTTP_200_OK)
+        if user is None:
+            errors['username'] = 'Invalid credentials.'
+            errors['password'] = 'Invalid credentials.'
+
+        if errors:
+            return JsonResponse({'error': errors}, status=400)
+
+        auth.login(request, user)
+        serializer = UserSerializer(user)
+        return  Response({'user': serializer.data}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return JsonResponse({'error': f'Something went wrong when logging in - {str(e)}'}, status=400)
+
 
 
 @api_view(['POST'])
@@ -88,7 +100,7 @@ def register_view(request):
         user.save()
 
         return JsonResponse({'success': 'User created successfully.'}, status=201)
-        
+
     except Exception as e:
         return JsonResponse({'error': f'Something went wrong when registering account - {str(e)}'}, status=400)
 
