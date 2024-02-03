@@ -3,6 +3,7 @@ import Playlist from "./audio/Playlist.jsx";
 import { AudioContext } from "../context/AudioContext.jsx";
 import { AuthContext } from "../context/AuthContext.jsx";
 import AudioPlayer from "./audio/AudioPlayer.jsx";
+import PlayWheel from "./PlayWheel.jsx";
 
 function Library({ token }) {
   if (!token) return;
@@ -33,18 +34,18 @@ function Library({ token }) {
   }, []);
 
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-col items-center justify-center">
+    <div className="p-2">
+      <div className="flex justify-center">
+        <PlayWheel />
+      </div>
+      <div className="mx-auto flex max-w-5xl flex-col items-center justify-center">
         <h1 className=" my-5 text-xl font-bold text-indigo-600">
           Your Assigned Songs
         </h1>
 
-        <div className="container">
+        <div className="no-scrollbar container max-h-96 overflow-scroll rounded-lg border border-indigo-200 p-4">
           {userSongs?.map((item, index) => {
             const { song, color } = item;
-
-            console.log(song);
-
             return (
               <div
                 className="flex cursor-pointer border-b px-2 py-3 hover:shadow-md"
@@ -66,7 +67,7 @@ function Library({ token }) {
                 <AudioPlayer track={song} />
                 <div
                   className="flex aspect-square h-12 items-center justify-center rounded-full border border-slate-950 bg-opacity-80 bg-clip-padding backdrop-blur-md backdrop-filter"
-                  style={{ background: color.name }}
+                  style={{ background: color }}
                 ></div>
               </div>
             );
@@ -74,7 +75,7 @@ function Library({ token }) {
         </div>
       </div>
 
-      <div className="text-center">
+      <div className="mx-auto my-2 max-w-5xl rounded-lg border border-indigo-200 p-4 text-center">
         <h2 className=" my-5 text-xl font-bold text-indigo-600">
           Select a playlist
         </h2>

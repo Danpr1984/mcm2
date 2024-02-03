@@ -6,3 +6,35 @@
   fill: none;
   stroke-width: 32;
 }
+
+@keyframes jumping {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.jumping > div {
+  animation: jumping 1s infinite;
+}
+
+.jumping > div:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.jumping > div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.jumping > div:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.jumping > div:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.jumping > div:nth-child(5) {
+  animation-delay: 0.5s;
+}
