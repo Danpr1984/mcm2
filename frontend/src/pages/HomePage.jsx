@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import LoginForm from "../auth/LoginForm";
 import RegisterForm from "../auth/RegisterForm";
 import { AuthContext } from "../context/AuthContext";
+import { staggeredFadeUp } from "../animations/variants";
+import { motion, AnimatePresence } from "framer-motion";
 
 const HomePage = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
@@ -24,13 +26,31 @@ const HomePage = () => {
         lg:px-16 xl:w-1/3 xl:px-12"
       >
         {!user && (
-          <>
+          <AnimatePresence mode="wait">
             {isLoggingIn ? (
-              <LoginForm setIsLoggingIn={setIsLoggingIn} />
+              <motion.div
+                key="containerDiv"
+                variants={staggeredFadeUp}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                className="container"
+              >
+                <LoginForm setIsLoggingIn={setIsLoggingIn} />
+              </motion.div>
             ) : (
-              <RegisterForm setIsLoggingIn={setIsLoggingIn} />
+              <motion.div
+                key="containerDiv2"
+                variants={staggeredFadeUp}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                className="container"
+              >
+                <RegisterForm setIsLoggingIn={setIsLoggingIn} />
+              </motion.div>
             )}
-          </>
+          </AnimatePresence>
         )}
       </div>
     </section>

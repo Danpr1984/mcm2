@@ -55,8 +55,8 @@
 }
 
 .orange {
-  background-color: #f42b03;
-  background-image: linear-gradient(316deg, #f42b03 0%, #ffbe0b 74%);
+  background-color: #f45703;
+  background-image: linear-gradient(316deg, #f45703 0%, #e4a71a 74%);
 }
 
 .skyblue {
@@ -71,7 +71,7 @@
 
 .gray {
   background-color: #d7d7d7;
-  background-image: linear-gradient(147deg, #d7d7d7 0%, #353535 74%);
+  background-image: linear-gradient(147deg, #d7d7d7 0%, #706f6f 74%);
 }
 
 .black {
