@@ -3,8 +3,9 @@ import { AudioContext } from "../context/AudioContext";
 import AudioPlayer from "./audio/AudioPlayer";
 import { motion } from "framer-motion";
 import { opacityScaleChild, staggerContainer } from "../animations/containers";
+import EditColor from "./EditColour";
 
-const COLORS = [
+export const COLORS = [
   "yellow",
   "orange",
   "red",
@@ -72,7 +73,7 @@ const AssignedSongs = () => {
           const { song, color } = item;
           return (
             <div
-              className="my-1 flex cursor-pointer rounded-md border border-b border-black/30 bg-slate-50 px-2 py-3"
+              className="my-1 flex rounded-md border border-b border-black/30 bg-slate-50 px-2 py-3"
               key={index}
             >
               <img
@@ -89,9 +90,7 @@ const AssignedSongs = () => {
                 </span>
               </div>
               <AudioPlayer track={song} />
-              <div
-                className={`${color} flex aspect-square h-12 items-center justify-center rounded-full border border-slate-950 bg-opacity-80 bg-clip-padding backdrop-blur-md backdrop-filter`}
-              ></div>
+              <EditColor color={color} />
             </div>
           );
         })}
