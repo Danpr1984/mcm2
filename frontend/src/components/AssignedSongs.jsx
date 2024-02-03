@@ -24,10 +24,10 @@ const AssignedSongs = () => {
     setFilteredSongs(userSongs);
   }, [userSongs]);
 
-  console.log(userSongs);
-
   const handleColorAssign = async (color) => {
     setAssignedColor(color);
+
+    if (color === "all") return setFilteredSongs(userSongs);
     const newfilteredSongs = userSongs.filter((item) => item.color === color);
 
     setFilteredSongs(newfilteredSongs);
@@ -45,6 +45,15 @@ const AssignedSongs = () => {
           initial="initial"
           animate="animate"
         >
+          <button
+            onClick={() => handleColorAssign("all")}
+            variants={opacityScaleChild}
+            whileFocus={{ scale: 1.1 }}
+            whileHover={{ scale: 1.1 }}
+            className={`h-10 w-10 rounded-full border border-black/30 capitalize text-slate-800 shadow-md`}
+          >
+            all
+          </button>
           {COLORS.map((color, index) => (
             <motion.button
               key={index}
