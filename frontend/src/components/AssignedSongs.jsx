@@ -72,7 +72,7 @@ const AssignedSongs = () => {
           const { song, color } = item;
           return (
             <div
-              className="flex cursor-pointer border-b px-2 py-3 hover:shadow-md"
+              className="my-1 flex cursor-pointer rounded-md border border-b border-black/30 bg-slate-50 px-2 py-3"
               key={index}
             >
               <img
