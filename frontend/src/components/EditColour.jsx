@@ -1,11 +1,36 @@
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 
 import { COLORS } from "./AssignedSongs";
+import { isResponseOk } from "../helpers/fetch-requests";
+import { AuthContext } from "../context/AuthContext";
 
-export default function EditColor({ color }) {
+export default function EditColor({ color, song }) {
+  const { getCSRF } = useContext(AuthContext);
+
+  console.log(song);
+
   const handleColorReAssign = async (color) => {
-    console.log(color);
+    const colorData = {
+      color: color,
+      track: song,
+    };
+
+    const csrf = await getCSRF();
+
+    const body = JSON.stringify(colorData);
+
+    fetch("http://localhost:8000/api/assign_color_to_song/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrf,
+      },
+      credentials: "include",
+      body,
+    }).then(isResponseOk);
+
+    // fetchUserSongs();
   };
 
   return (

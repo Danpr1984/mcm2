@@ -90,7 +90,7 @@ const AssignedSongs = () => {
                 </span>
               </div>
               <AudioPlayer track={song} />
-              <EditColor color={color} />
+              <EditColor color={color} song={song} />
             </div>
           );
         })}
