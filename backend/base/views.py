@@ -36,21 +36,33 @@ class CheckAuthenticatedView(APIView):
 @permission_classes([AllowAny])
 @require_POST
 def login_view(request):
-    data = json.loads(request.body)
-    username = data.get('username')
-    password = data.get('password')
+    try:
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
 
-    if username is None or password is None:
-        return JsonResponse({'detail': 'Please provide username and password.'}, status=400)
+        errors = {}
 
-    user = auth.authenticate(username=username, password=password)
+        if username is None or password is None:
+            errors['username'] ='Please provide username and password.'
+            errors['password'] ='Please provide username and password.'
 
-    if user is None:
-        return JsonResponse({'detail': 'Invalid credentials.'}, status=400)
+        user = auth.authenticate(username=username, password=password)
 
-    auth.login(request, user)
-    serializer = UserSerializer(user)
-    return  Response({'user': serializer.data}, status=status.HTTP_200_OK)
+        if user is None:
+            errors['username'] = 'Invalid credentials.'
+            errors['password'] = 'Invalid credentials.'
+
+        if errors:
+            return JsonResponse({'error': errors}, status=400)
+
+        auth.login(request, user)
+        serializer = UserSerializer(user)
+        return  Response({'user': serializer.data}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return JsonResponse({'error': f'Something went wrong when logging in - {str(e)}'}, status=400)
+
 
 
 @api_view(['POST'])
@@ -63,22 +75,32 @@ def register_view(request):
         password = data.get('password')
         re_password = data.get('re_password')
 
-        if username is None or password is None or re_password is None:
-            return JsonResponse({'error': 'Please provide username, password, and re_password.'}, status=400)
+        errors = {}
 
-        if password != re_password:
-            return JsonResponse({'error': 'Passwords do not match.'}, status=400)
+        if username is None or password is None or re_password is None:
+            errors['username'] ='Please provide username, password, and re_password.'
 
         if User.objects.filter(username=username).exists():
-            return JsonResponse({'error': 'Username already exists.'}, status=400)
+            errors['username'] = 'Username already exists.'
 
-        if len(password) < 6:
-            return JsonResponse({'error': 'Password must be at least 6 characters.'}, status=400)
+        if len(username) < 6:
+            errors['username'] = 'Username must be at least 6 characters.'
+
+        if len(password) < 8:
+            errors['password'] = 'Password must be at least 8 characters.'
+
+        if password != re_password:
+            errors['password'] = 'Passwords do not match.'
+            errors['re_password'] = 'Passwords do not match.'
+
+        if errors:
+            return JsonResponse({'error': errors}, status=400)
 
         user = User.objects.create_user(username=username, password=password)
         user.save()
 
         return JsonResponse({'success': 'User created successfully.'}, status=201)
+
     except Exception as e:
         return JsonResponse({'error': f'Something went wrong when registering account - {str(e)}'}, status=400)
 

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { AudioContext } from "../context/AudioContext";
 import { AuthContext } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { isResponseOk } from "../helpers/fetch-requests";
 
 const Navbar = () => {
@@ -25,6 +25,7 @@ const Navbar = () => {
       .then(isResponseOk)
       .then((data) => {
         setIsAuthenticated({ isAuthenticated: false });
+        window.location.href = "/";
       })
       .catch((err) => {
         console.log(err);

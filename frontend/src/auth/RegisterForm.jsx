@@ -5,6 +5,7 @@ import { isResponseOk } from "../helpers/fetch-requests";
 
 const RegisterForm = ({ setIsLoggingIn }) => {
   const { csrf, whoami, setIsAuthenticated } = useContext(AuthContext);
+  const [errorMessages, setErrorMessages] = useState({});
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [re_password, setRePassword] = useState("");
@@ -12,28 +13,35 @@ const RegisterForm = ({ setIsLoggingIn }) => {
 
   const register = async (event) => {
     event.preventDefault();
-    fetch("http://localhost:8000/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrf,
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        username,
-        password,
-        re_password,
-      }),
-    })
-      .then(isResponseOk)
-      .then((data) => {
-        setIsAuthenticated({ isAuthenticated: true });
-        navigate("/dashboard");
-        whoami();
-      })
-      .catch((err) => {
-        console.log(err);
+
+    try {
+      const response = await fetch("http://localhost:8000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          username,
+          password,
+          re_password,
+        }),
       });
+
+      if (!response.ok) {
+        const { error } = await response.json();
+        setErrorMessages(error);
+
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      } else {
+        await whoami();
+        setIsAuthenticated(true);
+        navigate("dashboard");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -50,11 +58,18 @@ const RegisterForm = ({ setIsLoggingIn }) => {
             value={username}
             onChange={(event) => setUsername(event.target.value)}
             placeholder="Enter Email Address"
-            className="mt-2 w-full rounded-lg border bg-gray-200 px-4 py-3 focus:border-blue-500 focus:bg-white focus:outline-none"
+            className={`mt-2 w-full rounded-lg border ${
+              errorMessages.username && "border-red-600"
+            } bg-gray-200 px-4 py-3 focus:border-blue-500 focus:bg-white focus:outline-none`}
             autoFocus
             autoComplete="true"
             required
           />
+          {errorMessages.username && (
+            <span className="text-xs font-semibold text-red-600">
+              {errorMessages.username}
+            </span>
+          )}
         </div>
 
         <div className="mt-4">
@@ -64,10 +79,16 @@ const RegisterForm = ({ setIsLoggingIn }) => {
             placeholder="Enter Password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="mt-2 w-full rounded-lg border bg-gray-200 px-4 py-3 focus:border-blue-500
-            focus:bg-white focus:outline-none"
+            className={`mt-2 w-full rounded-lg border ${
+              errorMessages.password && "border-red-600"
+            } bg-gray-200 px-4 py-3 focus:border-blue-500 focus:bg-white focus:outline-none`}
             required
           />
+          {errorMessages.password && (
+            <span className="text-xs font-semibold text-red-600">
+              {errorMessages.password}
+            </span>
+          )}
         </div>
 
         <div className="mt-4">
@@ -77,10 +98,16 @@ const RegisterForm = ({ setIsLoggingIn }) => {
             placeholder="Enter Password"
             value={re_password}
             onChange={(event) => setRePassword(event.target.value)}
-            className="mt-2 w-full rounded-lg border bg-gray-200 px-4 py-3 focus:border-blue-500
-            focus:bg-white focus:outline-none"
+            className={`mt-2 w-full rounded-lg border ${
+              errorMessages.re_password && "border-red-600"
+            } bg-gray-200 px-4 py-3 focus:border-blue-500 focus:bg-white focus:outline-none`}
             required
           />
+          {errorMessages.re_password && (
+            <span className="text-xs font-semibold text-red-600">
+              {errorMessages.re_password}
+            </span>
+          )}
         </div>
 
         <button

@@ -7,31 +7,39 @@ const LoginForm = ({ setIsLoggingIn }) => {
   const { csrf, whoami, setIsAuthenticated } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessages, setErrorMessages] = useState({});
   const navigate = useNavigate();
 
   const login = async (event) => {
     event.preventDefault();
-    fetch("http://localhost:8000/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrf,
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    })
-      .then(isResponseOk)
-      .then((data) => {
-        setIsAuthenticated({ isAuthenticated: true });
-        whoami();
-        navigate("/dashboard");
-      })
-      .catch((err) => {
-        console.log(err);
+
+    try {
+      const response = await fetch("http://localhost:8000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          username,
+          password,
+        }),
       });
+
+      if (!response.ok) {
+        const { error } = await response.json();
+        setErrorMessages(error);
+
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      } else {
+        await whoami();
+        setIsAuthenticated(true);
+        navigate("dashboard");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -48,11 +56,18 @@ const LoginForm = ({ setIsLoggingIn }) => {
             value={username}
             onChange={(event) => setUsername(event.target.value)}
             placeholder="Enter Email Address"
-            className="mt-2 w-full rounded-lg border bg-gray-200 px-4 py-3 focus:border-blue-500 focus:bg-white focus:outline-none"
+            className={`mt-2 w-full rounded-lg border ${
+              errorMessages.username && "border-red-600"
+            } bg-gray-200 px-4 py-3 focus:border-blue-500 focus:bg-white focus:outline-none`}
             autoFocus
             autoComplete="true"
             required
           />
+          {errorMessages.username && (
+            <span className="text-xs font-semibold text-red-600">
+              {errorMessages.username}
+            </span>
+          )}
         </div>
 
         <div className="mt-4">
@@ -62,10 +77,16 @@ const LoginForm = ({ setIsLoggingIn }) => {
             placeholder="Enter Password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="mt-2 w-full rounded-lg border bg-gray-200 px-4 py-3 focus:border-blue-500
-            focus:bg-white focus:outline-none"
+            className={`mt-2 w-full rounded-lg border ${
+              errorMessages.password && "border-red-600"
+            } bg-gray-200 px-4 py-3 focus:border-blue-500 focus:bg-white focus:outline-none`}
             required
           />
+          {errorMessages.password && (
+            <span className="text-xs font-semibold text-red-600">
+              {errorMessages.password}
+            </span>
+          )}
         </div>
 
         <div className="mt-2 text-right">

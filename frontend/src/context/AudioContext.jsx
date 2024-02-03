@@ -38,6 +38,7 @@ export default function AudioContextProvider({ children }) {
       setPlaylists(playlistsWithTracks);
     } catch (error) {
       console.error("Error fetching playlists or tracks:", error);
+      window.localStorage.removeItem("token");
     }
   };
 

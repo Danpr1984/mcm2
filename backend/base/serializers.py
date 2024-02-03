@@ -30,8 +30,6 @@ class AssignedSongSerializer(serializers.ModelSerializer):
             'preview_url': instance.song.preview_url,
             # Add more fields as needed
         }
-        representation['color'] = {
-            'name': instance.color.name,
-        }
+        representation['color'] = instance.color.name
 
         return representation
