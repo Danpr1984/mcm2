@@ -4,7 +4,10 @@ import { Fragment } from "react";
 import { COLORS } from "./AssignedSongs";
 
 export default function EditColor({ color }) {
-  console.log(color);
+  const handleColorReAssign = async (color) => {
+    console.log(color);
+  };
+
   return (
     <div className="text-right">
       <Menu as="div" className="relative inline-block text-left">
@@ -26,7 +29,12 @@ export default function EditColor({ color }) {
             {COLORS.map((color, index) => {
               return (
                 <Menu.Item key={index} className="aspect-square h-6 w-6">
-                  {({ active }) => <button className={`${color}`} />}
+                  {({ active }) => (
+                    <button
+                      className={`${color}`}
+                      onClick={() => handleColorReAssign(color)}
+                    />
+                  )}
                 </Menu.Item>
               );
             })}
