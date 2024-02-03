@@ -40,8 +40,8 @@
 }
 
 .red {
-  background-color: #c62128;
-  background-image: linear-gradient(147deg, #c62128 0%, #a00000 74%);
+  background-color: #dc2626;
+  background-image: linear-gradient(147deg, #dc2626 0%, #a00000 74%);
 }
 
 .green {
@@ -60,13 +60,13 @@
 }
 
 .skyblue {
-  background-color: #fefefe;
-  background-image: linear-gradient(315deg, #fefefe 0%, #00a4e4 74%);
+  background-color: #87ceeb;
+  background-image: linear-gradient(315deg, #87ceeb 0%, #00a4e4 74%);
 }
 
 .blue {
-  background-color: #2a2a72;
-  background-image: linear-gradient(315deg, #2a2a72 0%, #009ffd 74%);
+  background-color: #383894;
+  background-image: linear-gradient(315deg, #383894 0%, #1c4ed8 74%);
 }
 
 .gray {
