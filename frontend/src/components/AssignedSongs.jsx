@@ -48,8 +48,6 @@ const AssignedSongs = () => {
           <button
             onClick={() => handleColorAssign("all")}
             variants={opacityScaleChild}
-            whileFocus={{ scale: 1.1 }}
-            whileHover={{ scale: 1.1 }}
             className={`h-10 w-10 rounded-full border border-black/30 capitalize text-slate-800 shadow-md`}
           >
             all
