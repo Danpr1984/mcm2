@@ -30,8 +30,7 @@ const SongPreviewItem = ({ track }) => {
       </div>
       {alreadyAssigned ? (
         <div
-          className="flex aspect-square h-12 items-center justify-center rounded-full border border-slate-950 bg-opacity-80 bg-clip-padding backdrop-blur-md backdrop-filter"
-          style={{ background: alreadyAssigned.color }}
+          className={`${alreadyAssigned.color} flex aspect-square h-12 items-center justify-center rounded-full border border-slate-950 bg-opacity-80 bg-clip-padding backdrop-blur-md backdrop-filter`}
         ></div>
       ) : (
         <div className="flex aspect-square h-12 items-center justify-center rounded-full border border-slate-950 bg-slate-200 bg-opacity-80 bg-clip-padding backdrop-blur-md backdrop-filter">

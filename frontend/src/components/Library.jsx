@@ -66,8 +66,7 @@ function Library({ token }) {
                 </div>
                 <AudioPlayer track={song} />
                 <div
-                  className="flex aspect-square h-12 items-center justify-center rounded-full border border-slate-950 bg-opacity-80 bg-clip-padding backdrop-blur-md backdrop-filter"
-                  style={{ background: color }}
+                  className={`${color} flex aspect-square h-12 items-center justify-center rounded-full border border-slate-950 bg-opacity-80 bg-clip-padding backdrop-blur-md backdrop-filter`}
                 ></div>
               </div>
             );

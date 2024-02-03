@@ -125,26 +125,11 @@ const PlayWheel = () => {
       {randomSong && (
         <div className="text-center">
           <div className="jumping mx-auto my-5 flex items-center justify-center gap-1">
-            <div
-              className="h-4 w-4 rounded-full"
-              style={{ background: randomColor }}
-            ></div>
-            <div
-              className="h-4 w-4 rounded-full"
-              style={{ background: randomColor }}
-            ></div>
-            <div
-              className="h-4 w-4 rounded-full"
-              style={{ background: randomColor }}
-            ></div>
-            <div
-              className="h-4 w-4 rounded-full"
-              style={{ background: randomColor }}
-            ></div>
-            <div
-              className="h-4 w-4 rounded-full"
-              style={{ background: randomColor }}
-            ></div>
+            <div className={`${randomColor} h-4 w-4 rounded-full`}></div>
+            <div className={`${randomColor} h-4 w-4 rounded-full`}></div>
+            <div className={`${randomColor} h-4 w-4 rounded-full`}></div>
+            <div className={`${randomColor} h-4 w-4 rounded-full`}></div>
+            <div className={`${randomColor} h-4 w-4 rounded-full`}></div>
           </div>
           <div className="flex">
             <img
