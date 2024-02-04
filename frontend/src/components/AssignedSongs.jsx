@@ -3,8 +3,11 @@ import { AudioContext } from "../context/AudioContext";
 import AudioPlayer from "./audio/AudioPlayer";
 import { motion } from "framer-motion";
 import { opacityScaleChild, staggerContainer } from "../animations/containers";
+import { FaTrash } from "react-icons/fa";
+import EditColor from "./EditColour";
+import { AuthContext } from "../context/AuthContext";
 
-const COLORS = [
+export const COLORS = [
   "yellow",
   "orange",
   "red",
@@ -19,6 +22,7 @@ const AssignedSongs = () => {
   const { userSongs } = useContext(AudioContext);
   const [assignedColor, setAssignedColor] = useState("");
   const [filteredSongs, setFilteredSongs] = useState([]);
+  const { getCSRF } = useContext(AuthContext);
 
   useEffect(() => {
     setFilteredSongs(userSongs);
@@ -31,6 +35,32 @@ const AssignedSongs = () => {
     const newfilteredSongs = userSongs.filter((item) => item.color === color);
 
     setFilteredSongs(newfilteredSongs);
+  };
+
+  const removeSong = async (song) => {
+    const csrf = await getCSRF();
+
+    const body = JSON.stringify(song);
+
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/remove_color_song/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrf,
+          },
+          credentials: "include",
+          body,
+        },
+      );
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -72,7 +102,7 @@ const AssignedSongs = () => {
           const { song, color } = item;
           return (
             <div
-              className="my-1 flex cursor-pointer rounded-md border border-b border-black/30 bg-slate-50 px-2 py-3"
+              className="my-1 flex rounded-md border border-b border-black/30 bg-slate-50 px-2 py-3"
               key={index}
             >
               <img
@@ -89,9 +119,10 @@ const AssignedSongs = () => {
                 </span>
               </div>
               <AudioPlayer track={song} />
-              <div
-                className={`${color} flex aspect-square h-12 items-center justify-center rounded-full border border-slate-950 bg-opacity-80 bg-clip-padding backdrop-blur-md backdrop-filter`}
-              ></div>
+              <EditColor color={color} song={song} />
+              <button className="m-2" onClick={() => removeSong(song)}>
+                <FaTrash className="text-2xl text-red-600" />
+              </button>
             </div>
           );
         })}

@@ -16,6 +16,8 @@ const ColorWheel = () => {
       track: assignTrack,
     };
 
+    console.log(assignTrack);
+
     const csrf = await getCSRF();
 
     const body = JSON.stringify(colorData);
