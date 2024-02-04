@@ -8,8 +8,6 @@ import { AuthContext } from "../context/AuthContext";
 export default function EditColor({ color, song }) {
   const { getCSRF } = useContext(AuthContext);
 
-  console.log(song);
-
   const handleColorReAssign = async (color) => {
     const colorData = {
       color: color,
