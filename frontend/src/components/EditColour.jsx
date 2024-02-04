@@ -20,7 +20,7 @@ export default function EditColor({ color, song }) {
 
     const body = JSON.stringify(colorData);
 
-    fetch("http://localhost:8000/api/assign_color_to_song/", {
+    fetch("http://localhost:8000/api/reassign_color/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
