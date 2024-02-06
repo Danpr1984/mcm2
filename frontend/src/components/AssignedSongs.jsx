@@ -19,7 +19,7 @@ export const COLORS = [
 ];
 
 const AssignedSongs = () => {
-  const { userSongs } = useContext(AudioContext);
+  const { userSongs, setUserSongs } = useContext(AudioContext);
   const [assignedColor, setAssignedColor] = useState("");
   const [filteredSongs, setFilteredSongs] = useState([]);
   const { getCSRF } = useContext(AuthContext);
@@ -58,8 +58,29 @@ const AssignedSongs = () => {
 
       const data = await response.json();
       console.log(data);
+
+      fetchUserSongs();
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const fetchUserSongs = async () => {
+    const csrf = await getCSRF();
+
+    try {
+      const response = await fetch("http://localhost:8000/api/user_songs/", {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
+        },
+        credentials: "include",
+      });
+
+      const { user_songs } = await response.json();
+      setUserSongs(user_songs);
+    } catch (err) {
+      console.log(err);
     }
   };
 

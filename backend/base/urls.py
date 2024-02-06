@@ -11,5 +11,7 @@ urlpatterns = [
     path('session', views.session_view, name='api-session'),
 	path('whoami', views.whoami_view),
     path('assign_color_to_song/', views.AssignColorToSong.as_view(), name='assign_color_to_song'), 
+    path('reassign_color/', views.ReAssignColor.as_view(), name='reassign_color'),
+    path('remove_color_song/', views.RemovedAssignedSong.as_view(), name='remove_color_song'),
     path('user_songs/', views.UserSongsView.as_view(), name='user_songs'), 
 ]

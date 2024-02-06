@@ -4,9 +4,11 @@ import { Fragment, useContext } from "react";
 import { COLORS } from "./AssignedSongs";
 import { isResponseOk } from "../helpers/fetch-requests";
 import { AuthContext } from "../context/AuthContext";
+import { AudioContext } from "../context/AudioContext";
 
 export default function EditColor({ color, song }) {
   const { getCSRF } = useContext(AuthContext);
+  const { setUserSongs } = useContext(AudioContext);
 
   const handleColorReAssign = async (color) => {
     const colorData = {
@@ -28,7 +30,26 @@ export default function EditColor({ color, song }) {
       body,
     }).then(isResponseOk);
 
-    // fetchUserSongs();
+    fetchUserSongs();
+  };
+
+  const fetchUserSongs = async () => {
+    const csrf = await getCSRF();
+
+    try {
+      const response = await fetch("http://localhost:8000/api/user_songs/", {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
+        },
+        credentials: "include",
+      });
+
+      const { user_songs } = await response.json();
+      setUserSongs(user_songs);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
