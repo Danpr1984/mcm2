@@ -20,7 +20,7 @@ export default function EditColor({ color, song }) {
 
     const body = JSON.stringify(colorData);
 
-    fetch("http://localhost:8000/api/reassign_color/", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/reassign_color/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export default function EditColor({ color, song }) {
     const csrf = await getCSRF();
 
     try {
-      const response = await fetch("http://localhost:8000/api/user_songs/", {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user_songs/`, {
         headers: {
           "Content-Type": "application/json",
           "X-CSRFToken": csrf,

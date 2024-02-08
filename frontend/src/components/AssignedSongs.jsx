@@ -44,7 +44,7 @@ const AssignedSongs = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/remove_color_song/",
+        `${process.env.REACT_APP_BACKEND_URL}/api/remove_color_song/`,
         {
           method: "POST",
           headers: {
@@ -69,7 +69,7 @@ const AssignedSongs = () => {
     const csrf = await getCSRF();
 
     try {
-      const response = await fetch("http://localhost:8000/api/user_songs/", {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user_songs/`, {
         headers: {
           "Content-Type": "application/json",
           "X-CSRFToken": csrf,

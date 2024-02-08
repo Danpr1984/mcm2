@@ -22,7 +22,7 @@ const ColorWheel = () => {
 
     const body = JSON.stringify(colorData);
 
-    fetch("http://localhost:8000/api/assign_color_to_song/", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/assign_color_to_song/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +39,7 @@ const ColorWheel = () => {
     const csrf = await getCSRF();
 
     try {
-      const response = await fetch("http://localhost:8000/api/user_songs/", {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user_songs/`, {
         headers: {
           "Content-Type": "application/json",
           "X-CSRFToken": csrf,
