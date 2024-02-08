@@ -86,7 +86,7 @@ export default function AuthContextProvider({ children }) {
   }, []);
 
   const whoami = () => {
-    fetch("http://localhost:8000/api/whoami", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/whoami`, {
       headers: {
         "Content-Type": "application/json",
       },
