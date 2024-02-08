@@ -36,7 +36,7 @@ export default function AuthContextProvider({ children }) {
 
   async function getCSRF() {
     try {
-      const response = await fetch("http://localhost:8000/api/csrf", {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/csrf`, {
         credentials: "include",
       });
 
