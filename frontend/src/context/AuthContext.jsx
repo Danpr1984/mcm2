@@ -54,7 +54,7 @@ export default function AuthContextProvider({ children }) {
 
   const getSession = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/session", {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/session`, {
         credentials: "include",
       });
 
