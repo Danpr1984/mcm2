@@ -58,8 +58,8 @@ export default function AuthContextProvider({ children }) {
         credentials: "include",
       });
 
-      response.text().then(console.log); // Temporarily log the response text
-
+      const clonedResponse = response.clone();
+      clonedResponse.text().then(console.log); // Temporarily log the response text
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
