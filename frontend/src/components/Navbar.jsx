@@ -14,7 +14,7 @@ const Navbar = () => {
     event.preventDefault();
 
     const csrf = await getCSRF();
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/logout`, {
+    fetch("http://localhost:8000/api/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

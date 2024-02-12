@@ -30,7 +30,7 @@ const PlaylistPage = () => {
       const csrf = await getCSRF();
 
       try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user_songs/`, {
+        const response = await fetch("http://localhost:8000/api/user_songs/", {
           headers: {
             "Content-Type": "application/json",
             "X-CSRFToken": csrf,

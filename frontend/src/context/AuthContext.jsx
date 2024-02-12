@@ -36,7 +36,7 @@ export default function AuthContextProvider({ children }) {
 
   async function getCSRF() {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/csrf`, {
+      const response = await fetch("http://localhost:8000/api/csrf", {
         credentials: "include",
       });
 
@@ -54,12 +54,9 @@ export default function AuthContextProvider({ children }) {
 
   const getSession = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/session`, {
+      const response = await fetch("http://localhost:8000/api/session", {
         credentials: "include",
       });
-
-      const clonedResponse = response.clone();
-      clonedResponse.text().then(console.log); // Temporarily log the response text
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -89,7 +86,7 @@ export default function AuthContextProvider({ children }) {
   }, []);
 
   const whoami = () => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/whoami`, {
+    fetch("http://localhost:8000/api/whoami", {
       headers: {
         "Content-Type": "application/json",
       },
