@@ -1,1 +1,1 @@
-web: node server.js
+web: gunicorn music-colors.wsgi
