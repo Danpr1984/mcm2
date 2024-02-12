@@ -1,1 +1,1 @@
-web: gunicorn music-colors.wsgi
+web: gunicorn backend.color_wheel.wsgi
