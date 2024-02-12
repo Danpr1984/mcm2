@@ -1,1 +1,1 @@
-web: gunicorn backend.color_wheel.wsgi
+web: gunicorn backend.color_wheel.wsgi:application
