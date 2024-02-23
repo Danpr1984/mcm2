@@ -63,7 +63,7 @@ ACCESS_CONTROL_ALLOW_CREDENTIALS = True
 ACCESS_CONTROL_ALLOW_METHODS = '*'
 ACCESS_CONTROL_ALLOW_HEADERS = '*'
 
-CSRF_TRUSTED_ORIGINS = [ "http://127.0.0.1:3000",'http://127.0.0.1:8000', "http://localhost:3000"]
+CSRF_TRUSTED_ORIGINS = [ "https://musiccolourwheel.netlify.app",'http://127.0.0.1:8000', "http://localhost:3000"]
 
 ROOT_URLCONF = 'color_wheel.urls'
 
