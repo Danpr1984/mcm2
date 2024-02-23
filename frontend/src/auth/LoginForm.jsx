@@ -14,18 +14,21 @@ const LoginForm = ({ setIsLoggingIn }) => {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrf,
+      const response = await fetch(
+        "https://mcmtest-a77e7600c8bb.herokuapp.com/api/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrf,
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            username,
+            password,
+          }),
         },
-        credentials: "include",
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      });
+      );
 
       if (!response.ok) {
         const { error } = await response.json();

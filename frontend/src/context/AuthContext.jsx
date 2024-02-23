@@ -36,9 +36,12 @@ export default function AuthContextProvider({ children }) {
 
   async function getCSRF() {
     try {
-      const response = await fetch("http://localhost:8000/api/csrf", {
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://mcmtest-a77e7600c8bb.herokuapp.com/api/csrf",
+        {
+          credentials: "include",
+        },
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -54,9 +57,12 @@ export default function AuthContextProvider({ children }) {
 
   const getSession = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/session", {
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://mcmtest-a77e7600c8bb.herokuapp.com/api/session",
+        {
+          credentials: "include",
+        },
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -86,7 +92,7 @@ export default function AuthContextProvider({ children }) {
   }, []);
 
   const whoami = () => {
-    fetch("http://localhost:8000/api/whoami", {
+    fetch("https://mcmtest-a77e7600c8bb.herokuapp.com/api/whoami", {
       headers: {
         "Content-Type": "application/json",
       },

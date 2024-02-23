@@ -44,7 +44,7 @@ const AssignedSongs = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/remove_color_song/",
+        "https://mcmtest-a77e7600c8bb.herokuapp.com/api/remove_color_song/",
         {
           method: "POST",
           headers: {
@@ -69,13 +69,16 @@ const AssignedSongs = () => {
     const csrf = await getCSRF();
 
     try {
-      const response = await fetch("http://localhost:8000/api/user_songs/", {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrf,
+      const response = await fetch(
+        "https://mcmtest-a77e7600c8bb.herokuapp.com/api/user_songs/",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrf,
+          },
+          credentials: "include",
         },
-        credentials: "include",
-      });
+      );
 
       const { user_songs } = await response.json();
       setUserSongs(user_songs);

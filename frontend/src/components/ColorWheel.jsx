@@ -22,15 +22,18 @@ const ColorWheel = () => {
 
     const body = JSON.stringify(colorData);
 
-    fetch("http://localhost:8000/api/assign_color_to_song/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrf,
+    fetch(
+      "https://mcmtest-a77e7600c8bb.herokuapp.com/api/assign_color_to_song/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
+        },
+        credentials: "include",
+        body,
       },
-      credentials: "include",
-      body,
-    }).then(isResponseOk);
+    ).then(isResponseOk);
 
     fetchUserSongs();
   };
@@ -39,13 +42,16 @@ const ColorWheel = () => {
     const csrf = await getCSRF();
 
     try {
-      const response = await fetch("http://localhost:8000/api/user_songs/", {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrf,
+      const response = await fetch(
+        "https://mcmtest-a77e7600c8bb.herokuapp.com/api/user_songs/",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrf,
+          },
+          credentials: "include",
         },
-        credentials: "include",
-      });
+      );
 
       const { user_songs } = await response.json();
       setUserSongs(user_songs);

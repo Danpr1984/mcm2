@@ -14,7 +14,7 @@ const Navbar = () => {
     event.preventDefault();
 
     const csrf = await getCSRF();
-    fetch("http://localhost:8000/api/logout", {
+    fetch("https://mcmtest-a77e7600c8bb.herokuapp.com/api/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
