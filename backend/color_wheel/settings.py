@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-v&vm$exh*9*zhzfl5!^xwkn1z1jg(rsg!j1%(wg5k)0xv^(!j(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['music-colorwheel.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
