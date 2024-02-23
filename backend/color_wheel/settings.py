@@ -12,16 +12,17 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 
 import os  # Make sure you have this import
-import dj_database_url  # Import dj_database_url
 from pathlib import Path
+import dj_database_url  # Import dj_database_url
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'otherkey')
+if os.path.exists('env.py'):
+    import env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-v&vm$exh*9*zhzfl5!^xwkn1z1jg(rsg!j1%(wg5k)0xv^(!j('
+SECRET_KEY = 'django-insecure-v&vm$exh*9*zhzfl5!^xwkn1z1jg(rsg!j1%(wg5k)0xv^(!j('
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -39,7 +40,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'base',
-    
 ]
 
 MIDDLEWARE = [
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ALLOWED_HOSTS = ['music-colorwheel.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 ACCESS_CONTROL_ALLOW_ORIGIN = '*'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
@@ -70,7 +70,7 @@ ROOT_URLCONF = 'color_wheel.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,10 +85,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'color_wheel.wsgi.application'
 
-# Database
-DATABASES = {
-    'default': dj_database_url.config(default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'))
-}
+
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL"))}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
