@@ -1,7 +1,7 @@
 import axios from "axios";
 const authEndpoint = "https://accounts.spotify.com/authorize?";
 const clientId = "660bc9f960ec49bf9d1a5e944c24dfbd";
-const redirectUri = "http://localhost:3000/";
+const redirectUri = "https://musiccolourwheel.netlify.app";
 const scopes = [
   "user-library-read",
   "playlist-read-private",
