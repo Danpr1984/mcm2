@@ -1,8 +1,10 @@
 import { useContext } from "react";
 import { AudioContext } from "../context/AudioContext";
 import { AuthContext } from "../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { isResponseOk } from "../helpers/fetch-requests";
+
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Navbar = () => {
   const { userImage } = useContext(AudioContext);
@@ -14,7 +16,7 @@ const Navbar = () => {
     event.preventDefault();
 
     const csrf = await getCSRF();
-    fetch("https://mcmtest-a77e7600c8bb.herokuapp.com/api/logout", {
+    fetch(`${BASE_URL}/api/logout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

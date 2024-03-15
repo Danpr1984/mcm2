@@ -6,6 +6,8 @@ import { isResponseOk } from "../helpers/fetch-requests";
 import { AuthContext } from "../context/AuthContext";
 import { AudioContext } from "../context/AudioContext";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
 export default function EditColor({ color, song }) {
   const { getCSRF } = useContext(AuthContext);
   const { setUserSongs } = useContext(AudioContext);
@@ -20,7 +22,7 @@ export default function EditColor({ color, song }) {
 
     const body = JSON.stringify(colorData);
 
-    fetch("https://mcmtest-a77e7600c8bb.herokuapp.com/api/reassign_color/", {
+    fetch(`${BASE_URL}/api/reassign_color/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,16 +39,13 @@ export default function EditColor({ color, song }) {
     const csrf = await getCSRF();
 
     try {
-      const response = await fetch(
-        "https://mcmtest-a77e7600c8bb.herokuapp.com/api/user_songs/",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrf,
-          },
-          credentials: "include",
+      const response = await fetch(`${BASE_URL}api/user_songs/"`, {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
         },
-      );
+        credentials: "include",
+      });
 
       const { user_songs } = await response.json();
       setUserSongs(user_songs);

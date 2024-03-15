@@ -6,6 +6,8 @@ import AudioPlayer from "./audio/AudioPlayer.jsx";
 import PlayWheel from "./PlayWheel.jsx";
 import AssignedSongs from "./AssignedSongs.jsx";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
 function Library({ token }) {
   if (!token) return;
   const { playlists, setUserSongs, userSongs } = useContext(AudioContext);
@@ -15,16 +17,13 @@ function Library({ token }) {
     const csrf = await getCSRF();
 
     try {
-      const response = await fetch(
-        "https://mcmtest-a77e7600c8bb.herokuapp.com/api/user_songs/",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrf,
-          },
-          credentials: "include",
+      const response = await fetch(`${BASE_URL}api/user_songs/`, {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
         },
-      );
+        credentials: "include",
+      });
 
       const { user_songs } = await response.json();
       setUserSongs(user_songs);

@@ -3,6 +3,7 @@ import { ColorContext } from "../context/ColorContext";
 import { AuthContext } from "../context/AuthContext";
 import { isResponseOk } from "../helpers/fetch-requests";
 import { AudioContext } from "../context/AudioContext";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const ColorWheel = () => {
   const { assignTrack } = useContext(ColorContext);
@@ -22,18 +23,15 @@ const ColorWheel = () => {
 
     const body = JSON.stringify(colorData);
 
-    fetch(
-      "https://mcmtest-a77e7600c8bb.herokuapp.com/api/assign_color_to_song/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrf,
-        },
-        credentials: "include",
-        body,
+    fetch(`${BASE_URL}/api/assign_color_to_song/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrf,
       },
-    ).then(isResponseOk);
+      credentials: "include",
+      body,
+    }).then(isResponseOk);
 
     fetchUserSongs();
   };
@@ -42,16 +40,13 @@ const ColorWheel = () => {
     const csrf = await getCSRF();
 
     try {
-      const response = await fetch(
-        "https://mcmtest-a77e7600c8bb.herokuapp.com/api/user_songs/",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrf,
-          },
-          credentials: "include",
+      const response = await fetch(`${BASE_URL}api/user_songs/`, {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
         },
-      );
+        credentials: "include",
+      });
 
       const { user_songs } = await response.json();
       setUserSongs(user_songs);

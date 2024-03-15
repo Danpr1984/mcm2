@@ -7,6 +7,8 @@ import { FaTrash } from "react-icons/fa";
 import EditColor from "./EditColour";
 import { AuthContext } from "../context/AuthContext";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
 export const COLORS = [
   "yellow",
   "orange",
@@ -43,18 +45,15 @@ const AssignedSongs = () => {
     const body = JSON.stringify(song);
 
     try {
-      const response = await fetch(
-        "https://mcmtest-a77e7600c8bb.herokuapp.com/api/remove_color_song/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrf,
-          },
-          credentials: "include",
-          body,
+      const response = await fetch(`${BASE_URL}/api/remove_color_song/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
         },
-      );
+        credentials: "include",
+        body,
+      });
 
       const data = await response.json();
       console.log(data);
@@ -69,16 +68,13 @@ const AssignedSongs = () => {
     const csrf = await getCSRF();
 
     try {
-      const response = await fetch(
-        "https://mcmtest-a77e7600c8bb.herokuapp.com/api/user_songs/",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrf,
-          },
-          credentials: "include",
+      const response = await fetch(`${BASE_URL}/api/user_songs/`, {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
         },
-      );
+        credentials: "include",
+      });
 
       const { user_songs } = await response.json();
       setUserSongs(user_songs);

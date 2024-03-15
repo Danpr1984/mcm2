@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { setClientToken } from "../components/spotify";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const AuthContext = createContext({
   user: "",
@@ -36,12 +37,9 @@ export default function AuthContextProvider({ children }) {
 
   async function getCSRF() {
     try {
-      const response = await fetch(
-        "https://mcmtest-a77e7600c8bb.herokuapp.com/api/csrf",
-        {
-          credentials: "include",
-        },
-      );
+      const response = await fetch(`${BASE_URL}/api/csrf`, {
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -57,12 +55,9 @@ export default function AuthContextProvider({ children }) {
 
   const getSession = async () => {
     try {
-      const response = await fetch(
-        "https://mcmtest-a77e7600c8bb.herokuapp.com/api/session",
-        {
-          credentials: "include",
-        },
-      );
+      const response = await fetch(`${BASE_URL}/api/session`, {
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -92,7 +87,7 @@ export default function AuthContextProvider({ children }) {
   }, []);
 
   const whoami = () => {
-    fetch("https://mcmtest-a77e7600c8bb.herokuapp.com/api/whoami", {
+    fetch(`${BASE_URL}/api/whoami`, {
       headers: {
         "Content-Type": "application/json",
       },

@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { isResponseOk } from "../helpers/fetch-requests";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const LoginForm = ({ setIsLoggingIn }) => {
   const { csrf, whoami, setIsAuthenticated } = useContext(AuthContext);
@@ -14,21 +14,18 @@ const LoginForm = ({ setIsLoggingIn }) => {
     event.preventDefault();
 
     try {
-      const response = await fetch(
-        "https://mcmtest-a77e7600c8bb.herokuapp.com/api/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrf,
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            username,
-            password,
-          }),
+      const response = await fetch(`${BASE_URL}/api/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
         },
-      );
+        credentials: "include",
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
 
       if (!response.ok) {
         const { error } = await response.json();

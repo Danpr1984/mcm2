@@ -8,6 +8,8 @@ import ColorWheel from "../components/ColorWheel";
 import AudioLayout from "../components/audio/AudioLayout";
 import { AuthContext } from "../context/AuthContext";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
 const PlaylistPage = () => {
   const { slug } = useParams();
   const { playlists } = useContext(AudioContext);
@@ -30,16 +32,13 @@ const PlaylistPage = () => {
       const csrf = await getCSRF();
 
       try {
-        const response = await fetch(
-          "https://mcmtest-a77e7600c8bb.herokuapp.com/api/user_songs/",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRFToken": csrf,
-            },
-            credentials: "include",
+        const response = await fetch(`${BASE_URL}/api/user_songs/`, {
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrf,
           },
-        );
+          credentials: "include",
+        });
 
         const { user_songs } = await response.json();
         setUserSongs(user_songs);
