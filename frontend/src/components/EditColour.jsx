@@ -39,7 +39,7 @@ export default function EditColor({ color, song }) {
     const csrf = await getCSRF();
 
     try {
-      const response = await fetch(`${BASE_URL}api/user_songs/"`, {
+      const response = await fetch(`${BASE_URL}/api/user_songs/"`, {
         headers: {
           "Content-Type": "application/json",
           "X-CSRFToken": csrf,
