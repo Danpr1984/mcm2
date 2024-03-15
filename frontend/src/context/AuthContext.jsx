@@ -10,7 +10,7 @@ export const AuthContext = createContext({
   setSpotifyToken: () => {},
   csrf: "",
   setCsrf: () => {},
-  getCSRF: () => Promise,
+  getCSRF: async () => {},
 });
 
 export default function AuthContextProvider({ children }) {

@@ -2,37 +2,21 @@ import { useContext } from "react";
 import { AudioContext } from "../context/AudioContext";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import { isResponseOk } from "../helpers/fetch-requests";
-
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+import { baseURLClient } from "../App";
 
 const Navbar = () => {
   const { userImage } = useContext(AudioContext);
 
-  const { user, isAuthenticated, getCSRF, setIsAuthenticated } =
-    useContext(AuthContext);
+  const { user, isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
-  const logout = async (event) => {
-    event.preventDefault();
-
-    const csrf = await getCSRF();
-    fetch(`${BASE_URL}/api/logout`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrf,
-      },
-      credentials: "include",
-    })
-      .then(isResponseOk)
-      .then((data) => {
-        setIsAuthenticated({ isAuthenticated: false });
-        window.location.href = "/";
-      })
-      .catch((err) => {
-        console.log(err);
+  function submitLogout(e) {
+    e.preventDefault();
+    baseURLClient
+      .post("/api/logout", { withCredentials: true })
+      .then(function (res) {
+        setIsAuthenticated(false);
       });
-  };
+  }
 
   return (
     <nav className="h-[64px] border-gray-200 bg-indigo-700 dark:bg-gray-900">
@@ -74,7 +58,7 @@ const Navbar = () => {
               <ul className="py-2" aria-labelledby="user-menu-button">
                 <li>
                   <button
-                    onClick={logout}
+                    onClick={submitLogout}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                   >
                     Sign out

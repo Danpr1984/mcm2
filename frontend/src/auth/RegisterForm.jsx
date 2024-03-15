@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { isResponseOk } from "../helpers/fetch-requests";
+import { baseURLClient } from "../App";
 
 const RegisterForm = ({ setIsLoggingIn }) => {
   const { csrf, whoami, setIsAuthenticated } = useContext(AuthContext);
@@ -11,38 +12,20 @@ const RegisterForm = ({ setIsLoggingIn }) => {
   const [re_password, setRePassword] = useState("");
   const navigate = useNavigate();
 
-  const register = async (event) => {
+  async function submitRegistration(event) {
     event.preventDefault();
 
     try {
-      const response = await fetch(`${BASE_URL}/api/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrf,
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          username,
-          password,
-          re_password,
-        }),
+      const { data } = await baseURLClient.post("/api/register", {
+        username: username,
+        password: password,
+        re_password: re_password,
       });
-
-      if (!response.ok) {
-        const { error } = await response.json();
-        setErrorMessages(error);
-
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      } else {
-        await whoami();
-        setIsAuthenticated(true);
-        navigate("dashboard");
-      }
-    } catch (err) {
-      console.log(err);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
     }
-  };
+  }
 
   return (
     <div className="h-100 w-full">
@@ -50,7 +33,7 @@ const RegisterForm = ({ setIsLoggingIn }) => {
         Register your account
       </h1>
 
-      <form className="mt-6" onSubmit={register}>
+      <form className="mt-6" onSubmit={submitRegistration}>
         <div>
           <label className="block text-gray-700">Username</label>
           <input

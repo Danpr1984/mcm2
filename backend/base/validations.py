@@ -1,17 +1,19 @@
 from django.core.exceptions import ValidationError
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 
 def custom_validation(data):
-    email = data['email'].strip()
     username = data['username'].strip()
     password = data['password'].strip()
+    re_password = data['re_password'].strip()
     ##
-    if not email or User.objects.filter(email=email).exists():
-        raise ValidationError('choose another email')
+    if not username or User.objects.filter(username=username).exists():
+        raise ValidationError('choose another username')
     ##
     if not password or len(password) < 8:
         raise ValidationError('choose another password, min 8 characters')
+
+    if not re_password == password:
+        raise ValidationError('Passwords do not match')
     ##
     if not username:
         raise ValidationError('choose another username')

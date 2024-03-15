@@ -2,55 +2,42 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useContext } from "react";
 
 import { COLORS } from "./AssignedSongs";
-import { isResponseOk } from "../helpers/fetch-requests";
 import { AuthContext } from "../context/AuthContext";
 import { AudioContext } from "../context/AudioContext";
-
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+import { baseURLClient } from "../App";
 
 export default function EditColor({ color, song }) {
   const { getCSRF } = useContext(AuthContext);
-  const { setUserSongs } = useContext(AudioContext);
+  const { setUserSongs, assignTrack } = useContext(AudioContext);
 
   const handleColorReAssign = async (color) => {
+    const csrftoken = await getCSRF();
     const colorData = {
       color: color,
-      track: song,
+      track: assignTrack,
     };
 
-    const csrf = await getCSRF();
+    console.log(assignTrack);
 
-    const body = JSON.stringify(colorData);
-
-    fetch(`${BASE_URL}/api/reassign_color/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrf,
-      },
-      credentials: "include",
-      body,
-    }).then(isResponseOk);
-
+    try {
+      await baseURLClient.post("/api/reassign_color/", colorData, {
+        headers: {
+          "X-CSRFToken": csrftoken,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
     fetchUserSongs();
   };
 
   const fetchUserSongs = async () => {
-    const csrf = await getCSRF();
-
     try {
-      const response = await fetch(`${BASE_URL}/api/user_songs/"`, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrf,
-        },
-        credentials: "include",
-      });
+      const { data } = await baseURLClient.get("/api/user_songs");
 
-      const { user_songs } = await response.json();
-      setUserSongs(user_songs);
-    } catch (err) {
-      console.log(err);
+      setUserSongs(data.user_songs);
+    } catch (error) {
+      console.log(error);
     }
   };
 

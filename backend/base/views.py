@@ -54,8 +54,6 @@ class UserView(APIView):
     authentication_classes = (SessionAuthentication,)
 	##
     def get(self, request):
-        print('fire off the user view')
-        print(request)
         serializer = UserSerializer(request.user)
         return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 
