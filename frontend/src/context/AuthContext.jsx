@@ -6,11 +6,14 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 export const AuthContext = createContext({
   user: "",
   setUser: () => {},
+  loadingUser: true,
+  setLoadingUser: () => {},
   spotifyToken: "",
   setSpotifyToken: () => {},
   csrf: "",
   setCsrf: () => {},
   getCSRF: async () => {},
+  whoami: async () => {},
 });
 
 export default function AuthContextProvider({ children }) {
@@ -71,6 +74,7 @@ export default function AuthContextProvider({ children }) {
     csrf,
     getCSRF,
     loadingUser,
+    setLoadingUser,
     whoami,
   };
 

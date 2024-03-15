@@ -7,18 +7,25 @@ const LoginForm = ({ setIsLoggingIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState({});
+  const { whoami } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  function submitLogin(e) {
+  async function submitLogin(e) {
     e.preventDefault();
-    baseURLClient
-      .post("/api/login", {
+
+    try {
+      const data = await baseURLClient.post("/api/login", {
         username,
         password,
-      })
-      .then(function (res) {
-        console.log(res);
       });
+
+      if (data.status === 200) {
+        await whoami();
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (

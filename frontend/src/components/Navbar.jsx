@@ -1,21 +1,25 @@
 import { useContext } from "react";
 import { AudioContext } from "../context/AudioContext";
 import { AuthContext } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { baseURLClient } from "../App";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { userImage } = useContext(AudioContext);
 
-  const { user, isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
-  function submitLogout(e) {
+  async function submitLogout(e) {
     e.preventDefault();
-    baseURLClient
-      .post("/api/logout", { withCredentials: true })
-      .then(function (res) {
-        setIsAuthenticated(false);
-      });
+
+    try {
+      await baseURLClient.post("/api/logout", { withCredentials: true });
+
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -107,7 +111,7 @@ const Navbar = () => {
                 Home
               </Link>
             </li>
-            {isAuthenticated && (
+            {user && (
               <li>
                 <Link
                   to="/dashboard"
