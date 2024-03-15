@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import { AuthContext } from "./context/AuthContext";

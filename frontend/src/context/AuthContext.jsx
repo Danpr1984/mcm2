@@ -15,9 +15,8 @@ export const AuthContext = createContext({
 
 export default function AuthContextProvider({ children }) {
   const [user, setUser] = useState();
+  const [loadingUser, setLoadingUser] = useState(true);
   const [spotifyToken, setSpotifyToken] = useState();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [csrf, setCsrf] = useState("");
 
   useEffect(() => {
@@ -54,48 +53,14 @@ export default function AuthContextProvider({ children }) {
     }
   }
 
-  const getSession = async () => {
+  const whoami = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/session`, {
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data.isAuthenticated) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-        await getCSRF();
-      }
-    } catch (err) {
-      console.error(err);
+      const { data } = await baseURLClient.get("/api/user");
+      setUser(data.user);
+      setLoadingUser(false);
+    } catch (error) {
+      console.log(error);
     }
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    const asyncGetSession = async () => {
-      await getSession();
-      setLoading(false);
-    };
-
-    asyncGetSession();
-  }, []);
-
-  const whoami = () => {
-    baseURLClient
-      .get("/api/user")
-      .then(function (res) {
-        setUser(res.data.user);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
   };
 
   const value = {
@@ -105,9 +70,7 @@ export default function AuthContextProvider({ children }) {
     spotifyToken,
     csrf,
     getCSRF,
-    isAuthenticated,
-    setIsAuthenticated,
-    loading,
+    loadingUser,
     whoami,
   };
 

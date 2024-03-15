@@ -71,15 +71,6 @@ def get_csrf(request):
     return response
 
 
-@ensure_csrf_cookie
-def session_view(request):
-    if not request.user.is_authenticated:
-        return JsonResponse({'isAuthenticated': False})
-
-    return JsonResponse({'isAuthenticated': True})
-
-
-
 class UserSongsView(APIView):
     permission_classes =(permissions.IsAuthenticated, )
 
