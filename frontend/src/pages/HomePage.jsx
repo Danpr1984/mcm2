@@ -9,8 +9,6 @@ const HomePage = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
   const { user } = useContext(AuthContext);
 
-  console.log(user);
-
   return (
     <section className="flex h-[calc(100vh-64px)] flex-col items-center justify-center bg-indigo-600 p-1 md:flex-row lg:p-0">
       <div className="hidden w-full md:w-1/2 lg:block xl:w-2/3">

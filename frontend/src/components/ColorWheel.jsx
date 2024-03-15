@@ -1,57 +1,43 @@
 import { useContext } from "react";
 import { ColorContext } from "../context/ColorContext";
-import { AuthContext } from "../context/AuthContext";
-import { isResponseOk } from "../helpers/fetch-requests";
 import { AudioContext } from "../context/AudioContext";
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+import { baseURLClient } from "../App";
+import { AuthContext } from "../context/AuthContext";
 
 const ColorWheel = () => {
   const { assignTrack } = useContext(ColorContext);
-  const { getCSRF } = useContext(AuthContext);
   const { setUserSongs } = useContext(AudioContext);
+  const { user, getCSRF } = useContext(AuthContext);
 
   const handleColorAssign = async (color) => {
     if (!assignTrack) return;
+
+    const csrftoken = await getCSRF();
     const colorData = {
       color: color,
       track: assignTrack,
     };
 
-    console.log(assignTrack);
-
-    const csrf = await getCSRF();
-
-    const body = JSON.stringify(colorData);
-
-    fetch(`${BASE_URL}/api/assign_color_to_song/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrf,
-      },
-      credentials: "include",
-      body,
-    }).then(isResponseOk);
+    try {
+      await baseURLClient.post("/api/assign_color_to_song/", colorData, {
+        headers: {
+          "X-CSRFToken": csrftoken,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     fetchUserSongs();
   };
 
   const fetchUserSongs = async () => {
-    const csrf = await getCSRF();
-
     try {
-      const response = await fetch(`${BASE_URL}/api/user_songs/`, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrf,
-        },
-        credentials: "include",
-      });
+      const { data } = await baseURLClient.get("/api/user_songs");
 
-      const { user_songs } = await response.json();
-      setUserSongs(user_songs);
-    } catch (err) {
-      console.log(err);
+      setUserSongs(data.user_songs);
+    } catch (error) {
+      console.log(error);
     }
   };
 

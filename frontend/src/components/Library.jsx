@@ -1,34 +1,21 @@
 import React, { useContext, useEffect } from "react";
 import Playlist from "./audio/Playlist.jsx";
 import { AudioContext } from "../context/AudioContext.jsx";
-import { AuthContext } from "../context/AuthContext.jsx";
-import AudioPlayer from "./audio/AudioPlayer.jsx";
 import PlayWheel from "./PlayWheel.jsx";
 import AssignedSongs from "./AssignedSongs.jsx";
-
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+import { baseURLClient } from "../App.jsx";
 
 function Library({ token }) {
   if (!token) return;
-  const { playlists, setUserSongs, userSongs } = useContext(AudioContext);
-  const { getCSRF } = useContext(AuthContext);
+  const { playlists, setUserSongs } = useContext(AudioContext);
 
   const fetchUserSongs = async () => {
-    const csrf = await getCSRF();
-
     try {
-      const response = await fetch(`${BASE_URL}/api/user_songs/`, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrf,
-        },
-        credentials: "include",
-      });
+      const { data } = await baseURLClient.get("/api/user_songs");
 
-      const { user_songs } = await response.json();
-      setUserSongs(user_songs);
-    } catch (err) {
-      console.log(err);
+      setUserSongs(data.user_songs);
+    } catch (error) {
+      console.log(error);
     }
   };
 

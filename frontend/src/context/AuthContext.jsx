@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { setClientToken } from "../components/spotify";
+import { baseURLClient } from "../App";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const AuthContext = createContext({
@@ -87,19 +88,13 @@ export default function AuthContextProvider({ children }) {
   }, []);
 
   const whoami = () => {
-    fetch(`${BASE_URL}/api/whoami`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const { user } = data;
-        setUser(user);
+    baseURLClient
+      .get("/api/user")
+      .then(function (res) {
+        setUser(res.data.user);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(function (error) {
+        console.log(error);
       });
   };
 

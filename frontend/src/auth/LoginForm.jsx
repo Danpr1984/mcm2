@@ -1,46 +1,25 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+import { baseURLClient } from "../App";
 
 const LoginForm = ({ setIsLoggingIn }) => {
-  const { csrf, whoami, setIsAuthenticated } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState({});
   const navigate = useNavigate();
 
-  const login = async (event) => {
-    event.preventDefault();
-
-    try {
-      const response = await fetch(`${BASE_URL}/api/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrf,
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          username,
-          password,
-        }),
+  function submitLogin(e) {
+    e.preventDefault();
+    baseURLClient
+      .post("/api/login", {
+        username,
+        password,
+      })
+      .then(function (res) {
+        console.log(res);
       });
-
-      if (!response.ok) {
-        const { error } = await response.json();
-        setErrorMessages(error);
-
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      } else {
-        await whoami();
-        setIsAuthenticated(true);
-        navigate("dashboard");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  }
 
   return (
     <div className="h-100 w-full">
@@ -48,14 +27,14 @@ const LoginForm = ({ setIsLoggingIn }) => {
         Log in to your account
       </h1>
 
-      <form className="mt-6" onSubmit={login}>
+      <form className="mt-6" onSubmit={submitLogin}>
         <div>
           <label className="block text-gray-700">Username</label>
           <input
             type="text"
             value={username}
             onChange={(event) => setUsername(event.target.value)}
-            placeholder="Enter Email Address"
+            placeholder="Enter Username"
             className={`mt-2 w-full rounded-lg border ${
               errorMessages.username && "border-red-600"
             } bg-gray-200 px-4 py-3 focus:border-blue-500 focus:bg-white focus:outline-none`}

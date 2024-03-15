@@ -10,13 +10,6 @@ const SongFile = ({ track }) => {
   return (
     <div>
       <p>{track.track.name || "No name"}</p>
-      {/* <button
-        className="m-1 rounded bg-indigo-500 px-3 py-1 text-white hover:bg-indigo-700"
-        onClick={() => setAssignTrack(track)}
-      >
-        Assign Color
-      </button> */}
-
       <div className="flex gap-2">
         <TestAudioLayout />
 
