@@ -66,7 +66,8 @@ ACCESS_CONTROL_ALLOW_CREDENTIALS = True
 ACCESS_CONTROL_ALLOW_METHODS = '*'
 ACCESS_CONTROL_ALLOW_HEADERS = '*'
 
-CSRF_TRUSTED_ORIGINS = [ "https://musiccolourwheel.netlify.app",'http://127.0.0.1:8000', "http://localhost:3000"]
+
+CSRF_TRUSTED_ORIGINS = [ "https://musiccolourwheel.netlify.app",'http://127.0.0.1:8000', "http://localhost:3000", "https://mcm-backend-2de70cb4aac9.herokuapp.com/"]
 
 ROOT_URLCONF = 'color_wheel.urls'
 
@@ -123,8 +124,8 @@ USE_I18N = True
 USE_TZ = True
 
 # Add this
-CSRF_COOKIE_SAMESITE = 'Lax'
-SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = None
+SESSION_COOKIE_SAMESITE = None
 CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_HTTPONLY = True
 
