@@ -21,7 +21,7 @@ from django.urls import path, include, re_path
 
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'dist/index.html')
 
 
 urlpatterns = [
