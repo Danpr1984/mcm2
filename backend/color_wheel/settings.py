@@ -154,6 +154,6 @@ TEMPLATES = [
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (
-    BASE_DIR.joinpath('frontend', 'dist', 'assets'),
+    BASE_DIR.joinpath('frontend', 'dist'),
 )
 STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
