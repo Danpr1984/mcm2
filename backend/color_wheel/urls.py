@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.shortcuts import render
-from django.urls import path, include
+from django.urls import path, include, re_path
+
 
 
 def index(request):
@@ -26,5 +27,5 @@ def index(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('base.urls')),
-    path('', index, name='index'),
+    re_path(r".*", index, name='index'),
 ]
