@@ -26,7 +26,7 @@ PARENT_DIR = os.path.dirname(BASE_DIR)
 SECRET_KEY = 'django-insecure-v&vm$exh*9*zhzfl5!^xwkn1z1jg(rsg!j1%(wg5k)0xv^(!j('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
@@ -52,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ALLOWED_HOSTS = ['*']
@@ -89,6 +92,14 @@ REST_FRAMEWORK = {
     ]
 }
 
+STORAGES = {
+    # ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -125,7 +136,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'frontend', 'dist')], 
+        'DIRS': [BASE_DIR.joinpath('frontend')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -139,6 +150,10 @@ TEMPLATES = [
 ]
 
 
-STATIC_URL = 'assets/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend', 'dist', 'assets' ), ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+STATIC_URL = 'static/'
+STATICFILES_DIRS = (
+    BASE_DIR.joinpath('frontend', 'dist'),
+)
+STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
