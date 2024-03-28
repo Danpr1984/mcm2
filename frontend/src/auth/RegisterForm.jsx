@@ -1,11 +1,10 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { isResponseOk } from "../helpers/fetch-requests";
 import { baseURLClient } from "../App";
 
 const RegisterForm = ({ setIsLoggingIn }) => {
-  const { csrf, whoami, setIsAuthenticated } = useContext(AuthContext);
+  const { whoami, setIsAuthenticated } = useContext(AuthContext);
   const [errorMessages, setErrorMessages] = useState({});
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

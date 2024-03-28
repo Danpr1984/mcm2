@@ -6,7 +6,7 @@ import LoadingSpinner from "../components/ui/LoadingSpinner";
 import { generatePlaylistSlug } from "../components/audio/Playlist";
 import ColorWheel from "../components/ColorWheel";
 import AudioLayout from "../components/audio/AudioLayout";
-import { AuthContext } from "../context/AuthContext";
+import { baseURLClient } from "../App";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -15,7 +15,6 @@ const PlaylistPage = () => {
   const { playlists } = useContext(AudioContext);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
   const { setAssignTrack } = useContext(ColorContext);
-  const { getCSRF } = useContext(AuthContext);
   const { setUserSongs } = useContext(AudioContext);
 
   useEffect(() => {
@@ -29,19 +28,11 @@ const PlaylistPage = () => {
 
   useEffect(() => {
     const fetchUserSongs = async () => {
-      const csrf = await getCSRF();
-
       try {
-        const response = await fetch(`${BASE_URL}/api/user_songs/`, {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrf,
-          },
-          credentials: "include",
-        });
+        const { data } = await baseURLClient.get("/api/user_songs/");
 
-        const { user_songs } = await response.json();
-        setUserSongs(user_songs);
+        // const { user_songs } = await response.json();
+        setUserSongs(data.user_songs);
       } catch (err) {
         console.log(err);
       }

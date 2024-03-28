@@ -10,14 +10,16 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 import axios from "axios";
 
-axios.defaults.xsrfCookieName = "csrftoken";
-axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.withCredentials = true;
 
 export const baseURLClient = axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
+
+export function setAuthToken(token) {
+  baseURLClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+}
 
 function App() {
   const { spotifyToken } = useContext(AuthContext);

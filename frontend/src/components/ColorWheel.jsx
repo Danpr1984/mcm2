@@ -7,23 +7,18 @@ import { AuthContext } from "../context/AuthContext";
 const ColorWheel = () => {
   const { assignTrack } = useContext(ColorContext);
   const { setUserSongs } = useContext(AudioContext);
-  const { user, getCSRF } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const handleColorAssign = async (color) => {
     if (!assignTrack) return;
 
-    const csrftoken = await getCSRF();
     const colorData = {
       color: color,
       track: assignTrack,
     };
 
     try {
-      await baseURLClient.post("/api/assign_color_to_song/", colorData, {
-        headers: {
-          "X-CSRFToken": csrftoken,
-        },
-      });
+      await baseURLClient.post("/api/assign_color_to_song/", colorData);
     } catch (error) {
       console.log(error);
     }

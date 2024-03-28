@@ -1,26 +1,27 @@
 import { createContext, useEffect, useState } from "react";
 import { setClientToken } from "../components/spotify";
-import { baseURLClient } from "../App";
+import { baseURLClient, setAuthToken } from "../App";
+import useLocationStorage from "../../hooks/useLocalStorage";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const AuthContext = createContext({
+  isAuthenticated: false,
+  setIsAuthenticated: () => {},
   user: "",
   setUser: () => {},
   loadingUser: true,
   setLoadingUser: () => {},
   spotifyToken: "",
   setSpotifyToken: () => {},
-  csrf: "",
-  setCsrf: () => {},
-  getCSRF: async () => {},
   whoami: async () => {},
 });
 
 export default function AuthContextProvider({ children }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [accessToken, setAccessToken] = useLocationStorage("access_token");
   const [user, setUser] = useState();
   const [loadingUser, setLoadingUser] = useState(true);
   const [spotifyToken, setSpotifyToken] = useState();
-  const [csrf, setCsrf] = useState("");
 
   useEffect(() => {
     const token = window.localStorage.getItem("token");
@@ -38,24 +39,6 @@ export default function AuthContextProvider({ children }) {
     whoami();
   }, [spotifyToken]);
 
-  async function getCSRF() {
-    try {
-      const response = await fetch(`${BASE_URL}/api/csrf`, {
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const csrfToken = response.headers.get("X-CSRFToken");
-      setCsrf(csrfToken);
-      return csrfToken;
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
   const whoami = async () => {
     try {
       const user = {
@@ -64,21 +47,25 @@ export default function AuthContextProvider({ children }) {
       };
       const { data } = await baseURLClient.post("/auth/login", user);
 
-      console.log(data);
-      // setUser(data.user);
-      // setLoadingUser(false);
+      if (data.token) {
+        setAccessToken(data.access);
+        setAuthToken(data.access);
+        setIsAuthenticated(true);
+      }
+      setLoadingUser(false);
     } catch (error) {
       console.log(error);
     }
   };
 
   const value = {
+    isAuthenticated,
+    setIsAuthenticated,
+    accessToken,
     user,
     setUser,
     setSpotifyToken,
     spotifyToken,
-    csrf,
-    getCSRF,
     loadingUser,
     setLoadingUser,
     whoami,

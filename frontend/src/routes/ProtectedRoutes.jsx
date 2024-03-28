@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 const ProtectedRoutes = () => {
-  const { loadingUser, user } = useContext(AuthContext);
+  const { loadingUser, isAuthenticated } = useContext(AuthContext);
 
   return (
     <>
@@ -15,7 +15,9 @@ const ProtectedRoutes = () => {
       )}
       <>
         {!loadingUser && (
-          <> {!loadingUser && user ? <Outlet /> : <Navigate to="/" />}</>
+          <>
+            {!loadingUser && isAuthenticated ? <Outlet /> : <Navigate to="/" />}
+          </>
         )}
       </>
     </>

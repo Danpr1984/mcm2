@@ -24,7 +24,6 @@ const AssignedSongs = () => {
   const { userSongs, setUserSongs } = useContext(AudioContext);
   const [assignedColor, setAssignedColor] = useState("");
   const [filteredSongs, setFilteredSongs] = useState([]);
-  const { getCSRF } = useContext(AuthContext);
 
   useEffect(() => {
     setFilteredSongs(userSongs);
@@ -40,18 +39,12 @@ const AssignedSongs = () => {
   };
 
   const removeSong = async (song) => {
-    const csrf = await getCSRF();
-
     const body = JSON.stringify(song);
 
     try {
       const response = await fetch(`${BASE_URL}/api/remove_color_song/`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrf,
-        },
-        credentials: "include",
+
         body,
       });
 
@@ -65,16 +58,8 @@ const AssignedSongs = () => {
   };
 
   const fetchUserSongs = async () => {
-    const csrf = await getCSRF();
-
     try {
-      const response = await fetch(`${BASE_URL}/api/user_songs/`, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrf,
-        },
-        credentials: "include",
-      });
+      const response = await fetch(`${BASE_URL}/api/user_songs/`);
 
       const { user_songs } = await response.json();
       setUserSongs(user_songs);

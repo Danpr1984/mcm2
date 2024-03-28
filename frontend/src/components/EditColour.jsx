@@ -7,24 +7,16 @@ import { AudioContext } from "../context/AudioContext";
 import { baseURLClient } from "../App";
 
 export default function EditColor({ color, song }) {
-  const { getCSRF } = useContext(AuthContext);
   const { setUserSongs, assignTrack } = useContext(AudioContext);
 
   const handleColorReAssign = async (color) => {
-    const csrftoken = await getCSRF();
     const colorData = {
       color: color,
       track: assignTrack,
     };
 
-    console.log(assignTrack);
-
     try {
-      await baseURLClient.post("/api/reassign_color/", colorData, {
-        headers: {
-          "X-CSRFToken": csrftoken,
-        },
-      });
+      await baseURLClient.post("/api/reassign_color/", colorData);
     } catch (error) {
       console.log(error);
     }
