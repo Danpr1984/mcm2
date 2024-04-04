@@ -7,7 +7,7 @@ const LoginForm = ({ setIsLoggingIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState({});
-  const { whoami, setAccessToken } = useContext(AuthContext);
+  const { whoami, setUserAuthToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   async function submitLogin(e) {
@@ -19,13 +19,10 @@ const LoginForm = ({ setIsLoggingIn }) => {
         password,
       });
 
-      console.log(data);
-
       if (data.status === 200) {
-        console.log(data.data.access);
         setAuthToken(data.data.access);
-        setAccessToken(data.data.access);
-        const user = await whoami();
+        setUserAuthToken(data.data.access);
+
         // navigate("/dashboard");
       }
     } catch (error) {

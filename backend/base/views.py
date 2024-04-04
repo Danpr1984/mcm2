@@ -1,57 +1,13 @@
 from rest_framework.views import APIView
-from rest_framework import permissions, status
-from django.contrib.auth import login, logout
+from rest_framework import  status
 from rest_framework.response import Response
-from .serializers import UserRegisterSerializer, AssignedSongSerializer, UserSerializer, UserLoginSerializer
+from rest_framework.permissions import  IsAuthenticated
+from .serializers import  AssignedSongSerializer
 from .models import AssignedSong, Color, Song
-from .validations import custom_validation, validate_username, validate_password
-
-class UserRegister(APIView):
-    permission_classes = (permissions.AllowAny,)
-    def post(self, request):
-        clean_data = custom_validation(request.data)
-        serializer = UserRegisterSerializer(data=clean_data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.create(clean_data)
-            if user:
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-class UserLogin(APIView):
-    permission_classes = (permissions.AllowAny,)
-	##
-    def post(self, request):
-        print(request.data)
-        data = request.data
-        assert validate_username(data)
-        assert validate_password(data)
-        serializer = UserLoginSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.check_user(data)
-            login(request, user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class UserLogout(APIView):
-    permission_classes = (permissions.AllowAny,)
-    authentication_classes = ()
-    def post(self, request):
-        logout(request)
-        return Response(status=status.HTTP_200_OK)
-
-
-class UserView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-	##
-    def get(self, request):
-        serializer = UserSerializer(request.user)
-        return Response({'user': serializer.data}, status=status.HTTP_200_OK)
-
 
 
 class UserSongsView(APIView):
-    permission_classes =(permissions.IsAuthenticated, )
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         assigned_songs = request.user.user_songs.all()
@@ -60,7 +16,7 @@ class UserSongsView(APIView):
 
 
 class AssignColorToSong(APIView):
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         color = request.data.get('color')
@@ -78,8 +34,9 @@ class AssignColorToSong(APIView):
 
         song, created = Song.objects.get_or_create(
             id=track_id, 
-            defaults={'name': name, 'artist': artist, 'album': album, 'image': image, 'preview_url': preview_url}
-        )
+            defaults={'name': name, 'artist': artist, 'album':
+                    album, 'image': image, 'preview_url': preview_url}
+                    )
 
         AssignedSong.objects.filter(user=user, song=song).delete()
 
@@ -90,7 +47,7 @@ class AssignColorToSong(APIView):
 
 
 class ReAssignColor(APIView):
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         color = request.data.get('color')
@@ -113,7 +70,7 @@ class ReAssignColor(APIView):
 
 
 class RemovedAssignedSong(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         track_id = request.data.get('id')

@@ -13,8 +13,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data = super().validate(attrs)
 
         serializer = UserSerializerWithToken(self.user).data
-        for k, v in serializer.items():
-            data[k] = v
+        for key, value in serializer.items():
+            data[key] = value
 
         return data
 
@@ -26,6 +26,7 @@ class RegisterView(CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+
 
 class FetchUser(APIView):
     permission_classes = [IsAuthenticated]

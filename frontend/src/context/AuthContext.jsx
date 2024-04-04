@@ -12,12 +12,12 @@ export const AuthContext = createContext({
   spotifyToken: "",
   setSpotifyToken: () => {},
   whoami: async () => {},
-  setAccessToken: () => {},
+  setUserAuthToken: () => {},
 });
 
 export default function AuthContextProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [accessToken, setAccessToken] = useLocationStorage("access_token");
+  const [userAuthToken, setUserAuthToken] = useLocationStorage("access_token");
   const [loadingUser, setLoadingUser] = useState(true);
   const [spotifyToken, setSpotifyToken] = useState();
 
@@ -39,22 +39,19 @@ export default function AuthContextProvider({ children }) {
 
   const whoami = async () => {
     try {
-      if (!accessToken) {
+      if (!userAuthToken) {
         return;
-      } else {
-        setAuthToken(accessToken);
       }
+      setAuthToken(userAuthToken);
 
-      const { data } = await baseURLClient.get("auth/user");
+      const response = await baseURLClient.get("auth/user");
 
-      if (data.token) {
-        setAccessToken(data.access);
-        setAuthToken(data.access);
+      if (response.status === 200) {
         setIsAuthenticated(true);
       }
       setLoadingUser(false);
 
-      return data;
+      return response.data;
     } catch (error) {
       console.log(error);
     }
@@ -63,13 +60,13 @@ export default function AuthContextProvider({ children }) {
   const value = {
     isAuthenticated,
     setIsAuthenticated,
-    accessToken,
     setSpotifyToken,
     spotifyToken,
     loadingUser,
     setLoadingUser,
     whoami,
-    setAccessToken,
+    setUserAuthToken,
+    setUserAuthToken,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
