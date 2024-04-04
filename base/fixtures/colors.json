@@ -1,0 +1,66 @@
+[
+    {
+        "pk": 1,
+        "model": "base.color",
+        "fields": {
+            "name": "green",
+            "hex_code": "#008000"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "base.color",
+        "fields": {
+            "name": "red",
+            "hex_code": "#FF0000"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "base.color",
+        "fields": {
+            "name": "blue",
+            "hex_code": "#0000FF"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "base.color",
+        "fields": {
+            "name": "yellow",
+            "hex_code": "#FFFF00"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "base.color",
+        "fields": {
+            "name": "black",
+            "hex_code": "#000000"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "base.color",
+        "fields": {
+            "name": "gray",
+            "hex_code": "#808080"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "base.color",
+        "fields": {
+            "name": "skyblue",
+            "hex_code": "#87CEEB"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "base.color",
+        "fields": {
+            "name": "orange",
+            "hex_code": "#FFA500"
+        }
+    }
+]
