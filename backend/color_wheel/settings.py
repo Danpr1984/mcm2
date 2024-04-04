@@ -22,7 +22,6 @@ if os.path.exists('env.py'):
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-PARENT_DIR = os.path.dirname(BASE_DIR)
 
 # # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-v&vm$exh*9*zhzfl5!^xwkn1z1jg(rsg!j1%(wg5k)0xv^(!j('
@@ -56,7 +55,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
 ]
 
 ALLOWED_HOSTS = ['*']
@@ -87,16 +85,6 @@ else:
         }
     }
 
-
-# SESSION AUTH
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': [
-#         'rest_framework.permissions.IsAuthenticated',
-#     ],
-#     'DEFAULT_AUTHENTICATION_CLASSES': [
-#         'rest_framework.authentication.SessionAuthentication',
-#     ]
-# }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -143,7 +131,6 @@ SIMPLE_JWT = {
 
 
 STORAGES = {
-    # ...
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
@@ -180,7 +167,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR.joinpath('frontend', 'dist')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -193,15 +180,9 @@ TEMPLATES = [
     },
 ]
 
-
-
-
-
-# STATIC_URL = 'static/'
-# STATICFILES_DIRS = (
-#     BASE_DIR.joinpath('frontend', 'dist',),
-# )
-# STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
-
 STATIC_URL = 'static/'
-STATIC_ROOT = '/static/'
+STATICFILES_DIRS = (
+    BASE_DIR.joinpath('frontend', 'dist', 'assets'),
+)
+
+STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
