@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 function useLocationStorage(key) {
   const [value, setValue] = useState(() => {
-    // If we are on the server, return an empty array
     if (typeof window === "undefined") {
       return [];
     }

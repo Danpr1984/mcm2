@@ -1,27 +1,32 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { baseURLClient } from "../App";
+import { baseURLClient, setAuthToken } from "../App";
 
 const LoginForm = ({ setIsLoggingIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState({});
-  const { whoami } = useContext(AuthContext);
+  const { whoami, setAccessToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   async function submitLogin(e) {
     e.preventDefault();
 
     try {
-      const data = await baseURLClient.post("/api/login", {
+      const data = await baseURLClient.post("/auth/login", {
         username,
         password,
       });
 
+      console.log(data);
+
       if (data.status === 200) {
-        await whoami();
-        navigate("/dashboard");
+        console.log(data.data.access);
+        setAuthToken(data.data.access);
+        setAccessToken(data.data.access);
+        const user = await whoami();
+        // navigate("/dashboard");
       }
     } catch (error) {
       console.error(error);

@@ -1,19 +1,9 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self, attrs): 
-        data  = super().validate(attrs)
-        serializer = UserSerializerWithToken(self.user).data
-
-        for k, v in serializer.items():
-            data[k] = v
-
-        return data
 
 
 class UserSerializer(serializers.ModelSerializer):

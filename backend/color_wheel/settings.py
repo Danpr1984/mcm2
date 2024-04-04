@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os  # Make sure you have this import
 from pathlib import Path
-import dj_database_url  # Import dj_database_url
 from datetime import timedelta
+import dj_database_url  # Import dj_database_url
 
 
 if os.path.exists('env.py'):
@@ -171,12 +171,6 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
-
-# # Add this
-# CSRF_COOKIE_SAMESITE = None
-# SESSION_COOKIE_SAMESITE = None
-# CSRF_COOKIE_HTTPONLY = True
-# SESSION_COOKIE_HTTPONLY = True
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

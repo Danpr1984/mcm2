@@ -18,7 +18,13 @@ export const baseURLClient = axios.create({
 });
 
 export function setAuthToken(token) {
-  baseURLClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  if (token) {
+    // Set the Authorization header if token is provided
+    baseURLClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  } else {
+    // Remove the Authorization header if token is not provided or invalid
+    delete baseURLClient.defaults.headers.common["Authorization"];
+  }
 }
 
 function App() {

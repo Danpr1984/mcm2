@@ -7,19 +7,17 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 export const AuthContext = createContext({
   isAuthenticated: false,
   setIsAuthenticated: () => {},
-  user: "",
-  setUser: () => {},
   loadingUser: true,
   setLoadingUser: () => {},
   spotifyToken: "",
   setSpotifyToken: () => {},
   whoami: async () => {},
+  setAccessToken: () => {},
 });
 
 export default function AuthContextProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useLocationStorage("access_token");
-  const [user, setUser] = useState();
   const [loadingUser, setLoadingUser] = useState(true);
   const [spotifyToken, setSpotifyToken] = useState();
 
@@ -41,11 +39,13 @@ export default function AuthContextProvider({ children }) {
 
   const whoami = async () => {
     try {
-      const user = {
-        username: "admin",
-        password: "lol",
-      };
-      const { data } = await baseURLClient.post("/auth/login", user);
+      if (!accessToken) {
+        return;
+      } else {
+        setAuthToken(accessToken);
+      }
+
+      const { data } = await baseURLClient.get("auth/user");
 
       if (data.token) {
         setAccessToken(data.access);
@@ -53,6 +53,8 @@ export default function AuthContextProvider({ children }) {
         setIsAuthenticated(true);
       }
       setLoadingUser(false);
+
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -62,13 +64,12 @@ export default function AuthContextProvider({ children }) {
     isAuthenticated,
     setIsAuthenticated,
     accessToken,
-    user,
-    setUser,
     setSpotifyToken,
     spotifyToken,
     loadingUser,
     setLoadingUser,
     whoami,
+    setAccessToken,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

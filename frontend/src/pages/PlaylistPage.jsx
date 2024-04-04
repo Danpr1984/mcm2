@@ -8,8 +8,6 @@ import ColorWheel from "../components/ColorWheel";
 import AudioLayout from "../components/audio/AudioLayout";
 import { baseURLClient } from "../App";
 
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-
 const PlaylistPage = () => {
   const { slug } = useParams();
   const { playlists } = useContext(AudioContext);

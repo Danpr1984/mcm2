@@ -2,12 +2,6 @@ from rest_framework.views import APIView
 from rest_framework import permissions, status
 from django.contrib.auth import login, logout
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
-from django.http import JsonResponse
-from django.middleware.csrf import get_token
-from django.views.decorators.csrf import ensure_csrf_cookie
-
 from .serializers import UserRegisterSerializer, AssignedSongSerializer, UserSerializer, UserLoginSerializer
 from .models import AssignedSong, Color, Song
 from .validations import custom_validation, validate_username, validate_password
@@ -54,18 +48,6 @@ class UserView(APIView):
         serializer = UserSerializer(request.user)
         return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 
-
-class GetCSRFToken(APIView):
-    permission_classes = (permissions.AllowAny, )
-
-    def get(self, request, format=None):
-        return Response({ 'success': 'CSRF cookie set' })
-
-
-def get_csrf(request):
-    response = JsonResponse({'detail': 'CSRF cookie set'})
-    response['X-CSRFToken'] = get_token(request)
-    return response
 
 
 class UserSongsView(APIView):
