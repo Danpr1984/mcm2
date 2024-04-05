@@ -29,7 +29,6 @@ SECRET_KEY = 'django-insecure-v&vm$exh*9*zhzfl5!^xwkn1z1jg(rsg!j1%(wg5k)0xv^(!j(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
@@ -57,17 +56,16 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ALLOWED_HOSTS = ['*']
-ACCESS_CONTROL_ALLOW_ORIGIN = '*'
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
-ACCESS_CONTROL_ALLOW_CREDENTIALS = True
-ACCESS_CONTROL_ALLOW_METHODS = '*'
-ACCESS_CONTROL_ALLOW_HEADERS = '*'
 
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', "http://localhost:3000", "https://mcm-backend-2de70cb4aac9.herokuapp.com/"]
+ALLOWED_HOSTS = ['http://127.0.0.1:8000', 
+                "http://localhost:3000", 
+                "https://mcm-backend-2de70cb4aac9.herokuapp.com/"]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000',
+                        "http://localhost:3000",
+                        "https://mcm-backend-2de70cb4aac9.herokuapp.com/"]
 
 ROOT_URLCONF = 'color_wheel.urls'
 
