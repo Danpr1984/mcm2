@@ -13,6 +13,7 @@ export const AuthContext = createContext({
   setSpotifyToken: () => {},
   whoami: async () => {},
   setUserAuthToken: () => {},
+  setConfigToken: () => {},
 });
 
 export default function AuthContextProvider({ children }) {
@@ -75,6 +76,8 @@ export default function AuthContextProvider({ children }) {
     setLoadingUser,
     whoami,
     setUserAuthToken,
+    setConfigToken,
+    configToken,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
