@@ -4,6 +4,7 @@ import RegisterForm from "../auth/RegisterForm";
 import { AuthContext } from "../context/AuthContext";
 import { staggeredFadeUp } from "../animations/variants";
 import { motion, AnimatePresence } from "framer-motion";
+import colorWheelImage from "../../public/images/colourwheel.png";
 
 const HomePage = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
@@ -13,7 +14,7 @@ const HomePage = () => {
     <section className="flex h-[calc(100vh-64px)] flex-col items-center justify-center bg-indigo-600 p-1 md:flex-row lg:p-0">
       <div className="hidden w-full md:w-1/2 lg:block xl:w-2/3">
         <img
-          src="images/colourwheel.png"
+          src={colorWheelImage}
           alt=""
           className="g mx-auto flex max-h-[calc(100vh-64px)] object-cover"
         />

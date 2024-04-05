@@ -4,6 +4,8 @@ import { AuthContext } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { baseURLClient } from "../App";
 
+import colorWheelImage from "../../public/images/colourwheel.png";
+
 const Navbar = () => {
   const navigate = useNavigate();
   const { userImage } = useContext(AudioContext);
@@ -26,11 +28,7 @@ const Navbar = () => {
     <nav className="h-[64px] border-gray-200 bg-indigo-700 dark:bg-gray-900">
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
         <div className="flex items-center space-x-3 rtl:space-x-reverse">
-          <img
-            src="/images/colourwheel.png"
-            className="h-8"
-            alt="Colourwheel Logo"
-          />
+          <img src={colorWheelImage} className="h-8" alt="Colourwheel Logo" />
           <span className="self-center whitespace-nowrap text-2xl font-semibold text-white dark:text-white">
             ColourWheel
           </span>
