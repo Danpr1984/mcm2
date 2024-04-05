@@ -4,25 +4,41 @@ import { AuthContext } from "../context/AuthContext";
 import { baseURLClient } from "../App";
 
 const RegisterForm = ({ setIsLoggingIn }) => {
-  const { whoami, setIsAuthenticated } = useContext(AuthContext);
+  const { setIsAuthenticated } = useContext(AuthContext);
   const [errorMessages, setErrorMessages] = useState({});
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [re_password, setRePassword] = useState("");
   const navigate = useNavigate();
 
-  async function submitRegistration(event) {
-    event.preventDefault();
+  async function submitRegistration(e) {
+    e.preventDefault();
 
     try {
-      const { data } = await baseURLClient.post("/api/register", {
+      const data = await baseURLClient.post("/auth/register", {
         username: username,
         password: password,
         re_password: re_password,
       });
-      console.log(data);
+
+      if (data.status === 200) {
+        setAuthToken(data.data.access);
+        setUserAuthToken(data.data.access);
+        setIsAuthenticated(true);
+        navigate("/dashboard");
+      }
+
+      if (data.status === 401) {
+        setErrorMessages(data.data);
+      }
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.status === 401) {
+        // Handle 401 error
+        setErrorMessages(error.response.data);
+      } else {
+        // Handle other errors
+        console.error(error);
+      }
     }
   }
 
