@@ -7,8 +7,6 @@ import {
   reassignColor,
   removeSong,
 } from "../routes/api.js";
-import { AuthContext } from "./AuthContext.jsx";
-import { useContext } from "react";
 
 export const AudioContext = createContext({
   assignTrack: "",
@@ -33,7 +31,6 @@ export default function AudioContextProvider({ children }) {
   const [playlists, setPlaylists] = useState(null);
   const [songError, setSongError] = useState(null);
   const [loadingSongs, setLoadingSongs] = useState(false);
-  const { configToken } = useContext(AuthContext);
 
   useEffect(() => {
     fetchPlaylists();
@@ -62,7 +59,7 @@ export default function AudioContextProvider({ children }) {
 
   const loadUserSongs = async () => {
     try {
-      const songs = await fetchUserSongs(configToken);
+      const songs = await fetchUserSongs();
       setUserSongs(songs);
       setLoadingSongs(false);
     } catch (error) {
@@ -73,7 +70,7 @@ export default function AudioContextProvider({ children }) {
 
   const handleRemoveSong = async (song) => {
     try {
-      await removeSong(song, configToken);
+      await removeSong(song);
     } catch (error) {
       setSongError(error.message);
     }
@@ -86,7 +83,7 @@ export default function AudioContextProvider({ children }) {
       track: assignTrack,
     };
     try {
-      await reassignColor(colorData, configToken);
+      await reassignColor(colorData);
     } catch (error) {
       setSongError(error.message);
     }
@@ -100,7 +97,7 @@ export default function AudioContextProvider({ children }) {
     };
 
     try {
-      await colorAssign(colorData, configToken);
+      await colorAssign(colorData);
     } catch (error) {
       setSongError(error.message);
     }

@@ -45,7 +45,7 @@ export default function AuthContextProvider({ children }) {
 
       setAuthToken(userAuthToken);
 
-      const response = await baseURLClient.get("auth/user", config);
+      const response = await baseURLClient.get("auth/user");
 
       if (response.status === 200) {
         setIsAuthenticated(true);
