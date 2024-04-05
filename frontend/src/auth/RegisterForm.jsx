@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { baseURLClient } from "../App";
+import { baseURLClient, setAuthToken } from "../App";
+import axios from "axios";
 
 const RegisterForm = ({ setIsLoggingIn }) => {
-  const { setIsAuthenticated } = useContext(AuthContext);
+  const { setIsAuthenticated, setUserAuthToken } = useContext(AuthContext);
   const [errorMessages, setErrorMessages] = useState({});
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -15,15 +16,24 @@ const RegisterForm = ({ setIsLoggingIn }) => {
     e.preventDefault();
 
     try {
-      const data = await baseURLClient.post("/auth/register", {
-        username: username,
-        password: password,
-        re_password: re_password,
-      });
+      const data = await axios.post(
+        "http://localhost:8000/auth/register",
+        {
+          username: username,
+          password: password,
+          re_password: re_password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
 
-      if (data.status === 200) {
-        setAuthToken(data.data.access);
-        setUserAuthToken(data.data.access);
+      if (data.status === 201) {
+        console.log(data.data);
+        setAuthToken(data.data.token);
+        setUserAuthToken(data.data.token);
         setIsAuthenticated(true);
         navigate("/dashboard");
       }
