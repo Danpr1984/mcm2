@@ -17,7 +17,7 @@ const RegisterForm = ({ setIsLoggingIn }) => {
 
     try {
       const data = await axios.post(
-        "http://localhost:8000/auth/register",
+        "https://mcm-backend-2de70cb4aac9.herokuapp.com/auth/register",
         {
           username: username,
           password: password,
