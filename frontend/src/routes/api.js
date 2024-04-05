@@ -3,6 +3,7 @@ import { baseURLClient } from "../App";
 export const fetchUserSongs = async () => {
   try {
     const response = await baseURLClient.get("/api/user_songs");
+    console.log(response);
     if (response.status === 200) {
       const { data } = response;
       if (data.user_songs) return data.user_songs;
