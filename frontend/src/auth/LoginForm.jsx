@@ -24,8 +24,18 @@ const LoginForm = ({ setIsLoggingIn }) => {
         setUserAuthToken(data.data.access);
         navigate("/dashboard");
       }
+
+      if (data.status === 401) {
+        setErrorMessages(data.data);
+      }
     } catch (error) {
-      console.error(error);
+      if (error.response && error.response.status === 401) {
+        // Handle 401 error
+        setErrorMessages(error.response.data);
+      } else {
+        // Handle other errors
+        console.error(error);
+      }
     }
   }
 
@@ -44,15 +54,15 @@ const LoginForm = ({ setIsLoggingIn }) => {
             onChange={(event) => setUsername(event.target.value)}
             placeholder="Enter Username"
             className={`mt-2 w-full rounded-lg border ${
-              errorMessages.username && "border-red-600"
+              errorMessages.detail && "border-red-600"
             } bg-gray-200 px-4 py-3 focus:border-blue-500 focus:bg-white focus:outline-none`}
             autoFocus
             autoComplete="true"
             required
           />
-          {errorMessages.username && (
+          {errorMessages.detail && (
             <span className="text-xs font-semibold text-red-600">
-              {errorMessages.username}
+              {errorMessages.detail}
             </span>
           )}
         </div>
@@ -65,15 +75,10 @@ const LoginForm = ({ setIsLoggingIn }) => {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             className={`mt-2 w-full rounded-lg border ${
-              errorMessages.password && "border-red-600"
+              errorMessages.detail && "border-red-600"
             } bg-gray-200 px-4 py-3 focus:border-blue-500 focus:bg-white focus:outline-none`}
             required
           />
-          {errorMessages.password && (
-            <span className="text-xs font-semibold text-red-600">
-              {errorMessages.password}
-            </span>
-          )}
         </div>
 
         <div className="mt-2 text-right">
