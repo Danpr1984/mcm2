@@ -63,7 +63,7 @@ export default function AudioContextProvider({ children }) {
 
   const loadUserSongs = async () => {
     try {
-      const songs = await fetchUserSongs(csrfToken);
+      const songs = await fetchUserSongs();
       setUserSongs(songs);
       setLoadingSongs(false);
     } catch (error) {
