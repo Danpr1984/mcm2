@@ -7,7 +7,8 @@ const LoginForm = ({ setIsLoggingIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState({});
-  const { whoami, setUserAuthToken } = useContext(AuthContext);
+  const { whoami, setUserAuthToken, setIsAuthenticated } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   async function submitLogin(e) {
@@ -22,6 +23,7 @@ const LoginForm = ({ setIsLoggingIn }) => {
       if (data.status === 200) {
         setAuthToken(data.data.access);
         setUserAuthToken(data.data.access);
+        setIsAuthenticated(true);
         navigate("/dashboard");
       }
 
