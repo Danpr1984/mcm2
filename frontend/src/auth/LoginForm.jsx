@@ -7,7 +7,7 @@ const LoginForm = ({ setIsLoggingIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState({});
-  const { whoami, setUserAuthToken } = useContext(AuthContext);
+  const { whoami, setUserAuthToken, setConfigToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   async function submitLogin(e) {
@@ -20,7 +20,13 @@ const LoginForm = ({ setIsLoggingIn }) => {
       });
 
       if (data.status === 200) {
-        setAuthToken(data.data.access);
+        setConfigToken({
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${data.data.access}`,
+          },
+        });
+        // setAuthToken(data.data.access);
         setUserAuthToken(data.data.access);
         navigate("/dashboard");
       }

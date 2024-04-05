@@ -20,6 +20,7 @@ export default function AuthContextProvider({ children }) {
   const [userAuthToken, setUserAuthToken] = useLocationStorage("access_token");
   const [loadingUser, setLoadingUser] = useState(true);
   const [spotifyToken, setSpotifyToken] = useState();
+  const [configToken, setConfigToken] = useState(); // [1
 
   useEffect(() => {
     const token = window.localStorage.getItem("token");
@@ -42,9 +43,17 @@ export default function AuthContextProvider({ children }) {
       if (!userAuthToken) {
         return;
       }
-      setAuthToken(userAuthToken);
 
-      const response = await baseURLClient.get("auth/user");
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${userAuthToken}`,
+        },
+      };
+      setConfigToken(config);
+      // setAuthToken(userAuthToken);
+
+      const response = await baseURLClient.get("auth/user", config);
 
       if (response.status === 200) {
         setIsAuthenticated(true);
