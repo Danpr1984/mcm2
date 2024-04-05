@@ -59,13 +59,13 @@ MIDDLEWARE = [
 
 ALLOWED_HOSTS = ['http://127.0.0.1:8000', 
                 "http://localhost:3000", 
-                "https://mcm-backend-2de70cb4aac9.herokuapp.com/"]
+                "mcm-backend-2de70cb4aac9.herokuapp.com"]
 
 CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000',
                         "http://localhost:3000",
-                        "https://mcm-backend-2de70cb4aac9.herokuapp.com/"]
+                        "mcm-backend-2de70cb4aac9.herokuapp.com"]
 
 ROOT_URLCONF = 'color_wheel.urls'
 
