@@ -57,7 +57,7 @@ MIDDLEWARE = [
 ]
 
 
-ALLOWED_HOSTS = ['http://127.0.0.1:8000', 
+ALLOWED_HOSTS = ['http://127.0.0.1:8000',
                 "http://localhost:3000", 
                 "mcm-backend-2de70cb4aac9.herokuapp.com"]
 
