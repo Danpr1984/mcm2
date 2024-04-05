@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -39,5 +40,6 @@ class FetchUser(APIView):
 
 
 def get_csrf(request):
+    response = JsonResponse({'detail': 'CSRF cookie set'})
     response['X-CSRFToken'] = get_token(request)
     return response
