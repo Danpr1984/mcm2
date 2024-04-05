@@ -1,8 +1,8 @@
 import { baseURLClient } from "../App";
 
-export const fetchUserSongs = async (configToken) => {
+export const fetchUserSongs = async () => {
   try {
-    const response = await baseURLClient.get("/api/user_songs", configToken);
+    const response = await baseURLClient.get("/api/user_songs");
     if (response.status === 200) {
       const { data } = response;
       if (data.user_songs) return data.user_songs;
@@ -13,13 +13,9 @@ export const fetchUserSongs = async (configToken) => {
   }
 };
 
-export const removeSong = async (song, configToken) => {
+export const removeSong = async (song) => {
   try {
-    const response = await baseURLClient.post(
-      "/api/remove_color_song/",
-      song,
-      configToken,
-    );
+    const response = await baseURLClient.post("/api/remove_color_song/", song);
 
     if (response.status !== 200) {
       throw new Error("Failed to remove song");
@@ -32,12 +28,11 @@ export const removeSong = async (song, configToken) => {
   }
 };
 
-export const reassignColor = async (colorData, configToken) => {
+export const reassignColor = async (colorData) => {
   try {
     const response = await baseURLClient.post(
       "/api/reassign_color/",
       colorData,
-      configToken,
     );
 
     if (response.status !== 200) {
@@ -51,12 +46,11 @@ export const reassignColor = async (colorData, configToken) => {
   }
 };
 
-export const colorAssign = async (colorData, configToken) => {
+export const colorAssign = async (colorData) => {
   try {
     const response = await baseURLClient.post(
       "/api/assign_color_to_song/",
       colorData,
-      configToken,
     );
     if (response.status !== 200) {
       throw new Error("Failed to remove song");

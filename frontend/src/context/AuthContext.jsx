@@ -13,7 +13,6 @@ export const AuthContext = createContext({
   setSpotifyToken: () => {},
   whoami: async () => {},
   setUserAuthToken: () => {},
-  setConfigToken: () => {},
 });
 
 export default function AuthContextProvider({ children }) {
@@ -21,7 +20,6 @@ export default function AuthContextProvider({ children }) {
   const [userAuthToken, setUserAuthToken] = useLocationStorage("access_token");
   const [loadingUser, setLoadingUser] = useState(true);
   const [spotifyToken, setSpotifyToken] = useState();
-  const [configToken, setConfigToken] = useState(); // [1
 
   useEffect(() => {
     const token = window.localStorage.getItem("token");
@@ -45,14 +43,7 @@ export default function AuthContextProvider({ children }) {
         return;
       }
 
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${userAuthToken}`,
-        },
-      };
-      setConfigToken(config);
-      // setAuthToken(userAuthToken);
+      setAuthToken(userAuthToken);
 
       const response = await baseURLClient.get("auth/user", config);
 
@@ -76,8 +67,6 @@ export default function AuthContextProvider({ children }) {
     setLoadingUser,
     whoami,
     setUserAuthToken,
-    setConfigToken,
-    configToken,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
