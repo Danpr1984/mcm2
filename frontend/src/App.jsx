@@ -10,10 +10,6 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
-axios.defaults.xsrfCookieName = "csrftoken";
-axios.defaults.xsrfHeaderName = "X-CSRFToken";
-
 export const baseURLClient = axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
