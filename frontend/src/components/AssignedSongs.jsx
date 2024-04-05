@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { opacityScaleChild, staggerContainer } from "../animations/containers";
 import { FaTrash } from "react-icons/fa";
 import EditColor from "./EditColour";
-import { AuthContext } from "../context/AuthContext";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -21,7 +20,7 @@ export const COLORS = [
 ];
 
 const AssignedSongs = () => {
-  const { userSongs, setUserSongs } = useContext(AudioContext);
+  const { userSongs, handleRemoveSong } = useContext(AudioContext);
   const [assignedColor, setAssignedColor] = useState("");
   const [filteredSongs, setFilteredSongs] = useState([]);
 
@@ -36,36 +35,6 @@ const AssignedSongs = () => {
     const newfilteredSongs = userSongs.filter((item) => item.color === color);
 
     setFilteredSongs(newfilteredSongs);
-  };
-
-  const removeSong = async (song) => {
-    const body = JSON.stringify(song);
-
-    try {
-      const response = await fetch(`${BASE_URL}/api/remove_color_song/`, {
-        method: "POST",
-
-        body,
-      });
-
-      const data = await response.json();
-      console.log(data);
-
-      fetchUserSongs();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const fetchUserSongs = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/api/user_songs/`);
-
-      const { user_songs } = await response.json();
-      setUserSongs(user_songs);
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   return (
@@ -99,7 +68,6 @@ const AssignedSongs = () => {
           ))}
         </motion.ul>
       </div>
-
       <div
         className={`no-scrollbar container max-h-96 overflow-scroll rounded-lg border border-indigo-200 p-4 ${assignedColor}`}
       >
@@ -125,7 +93,7 @@ const AssignedSongs = () => {
               </div>
               <AudioPlayer track={song} />
               <EditColor color={color} song={song} />
-              <button className="m-2" onClick={() => removeSong(song)}>
+              <button className="m-2" onClick={() => handleRemoveSong(song)}>
                 <FaTrash className="text-2xl text-red-600" />
               </button>
             </div>

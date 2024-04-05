@@ -2,36 +2,10 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useContext } from "react";
 
 import { COLORS } from "./AssignedSongs";
-import { AuthContext } from "../context/AuthContext";
 import { AudioContext } from "../context/AudioContext";
-import { baseURLClient } from "../App";
 
 export default function EditColor({ color, song }) {
-  const { setUserSongs, assignTrack } = useContext(AudioContext);
-
-  const handleColorReAssign = async (color) => {
-    const colorData = {
-      color: color,
-      track: assignTrack,
-    };
-
-    try {
-      await baseURLClient.post("/api/reassign_color/", colorData);
-    } catch (error) {
-      console.log(error);
-    }
-    fetchUserSongs();
-  };
-
-  const fetchUserSongs = async () => {
-    try {
-      const { data } = await baseURLClient.get("/api/user_songs");
-
-      setUserSongs(data.user_songs);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { handleColorReAssign } = useContext(AudioContext);
 
   return (
     <div className="text-right">

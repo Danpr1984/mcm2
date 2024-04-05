@@ -167,8 +167,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR.joinpath('frontend', 'dist')],
-        # 'DIRS': [BASE_DIR / 'templates'],
+        # 'DIRS': [BASE_DIR.joinpath('frontend', 'dist')],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -181,13 +181,13 @@ TEMPLATES = [
     },
 ]
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    BASE_DIR.joinpath('frontend', 'dist',),
-)
+# STATICFILES_DIRS = (
+#     BASE_DIR.joinpath('frontend', 'dist',),
+# )
 
-STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
+# STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 
-# STATIC_URL = 'static/'
-# STATIC_ROOT = '/static/'
+STATIC_URL = 'static/'
+STATIC_ROOT = '/static/'

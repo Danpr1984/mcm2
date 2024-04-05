@@ -1,6 +1,12 @@
 import { createContext, useEffect, useState } from "react";
 
 import APIKit from "../components/spotify.js";
+import {
+  colorAssign,
+  fetchUserSongs,
+  reassignColor,
+  removeSong,
+} from "../routes/api.js";
 
 export const AudioContext = createContext({
   assignTrack: "",
@@ -9,6 +15,13 @@ export const AudioContext = createContext({
   playlists: null,
   userSongs: [],
   setUserSongs: () => {},
+  loadUserSongs: () => {},
+  handleRemoveSong: () => {},
+  handleColorReAssign: () => {},
+  handleColorAssign: () => {},
+  songError: "",
+  loadingSongs: false,
+  setLoadingSongs: () => {},
 });
 
 export default function AudioContextProvider({ children }) {
@@ -16,6 +29,8 @@ export default function AudioContextProvider({ children }) {
   const [userSongs, setUserSongs] = useState([]);
   const [userImage, setUserImage] = useState("/images/colourwheel.png");
   const [playlists, setPlaylists] = useState(null);
+  const [songError, setSongError] = useState(null);
+  const [loadingSongs, setLoadingSongs] = useState(false);
 
   useEffect(() => {
     fetchPlaylists();
@@ -42,6 +57,54 @@ export default function AudioContextProvider({ children }) {
     }
   };
 
+  const loadUserSongs = async () => {
+    try {
+      const songs = await fetchUserSongs();
+      setUserSongs(songs);
+      setLoadingSongs(false);
+    } catch (error) {
+      setSongError(error.message);
+      setLoadingSongs(false);
+    }
+  };
+
+  const handleRemoveSong = async (song) => {
+    try {
+      await removeSong(song);
+    } catch (error) {
+      setSongError(error.message);
+    }
+    loadUserSongs();
+  };
+
+  const handleColorReAssign = async (color) => {
+    const colorData = {
+      color: color,
+      track: assignTrack,
+    };
+    try {
+      await reassignColor(colorData);
+    } catch (error) {
+      setSongError(error.message);
+    }
+    loadUserSongs();
+  };
+
+  const handleColorAssign = async (color) => {
+    console.log(assignTrack);
+    const colorData = {
+      color: color,
+      track: assignTrack,
+    };
+
+    try {
+      await colorAssign(colorData);
+    } catch (error) {
+      setSongError(error.message);
+    }
+    loadUserSongs();
+  };
+
   const value = {
     assignTrack,
     setAssignTrack,
@@ -50,6 +113,13 @@ export default function AudioContextProvider({ children }) {
     userImage,
     userSongs,
     setUserSongs,
+    loadUserSongs,
+    handleRemoveSong,
+    handleColorReAssign,
+    handleColorAssign,
+    loadingSongs,
+    setLoadingSongs,
+    songError,
   };
 
   return (

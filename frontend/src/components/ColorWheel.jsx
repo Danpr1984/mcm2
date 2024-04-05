@@ -1,40 +1,8 @@
 import { useContext } from "react";
-import { ColorContext } from "../context/ColorContext";
 import { AudioContext } from "../context/AudioContext";
-import { baseURLClient } from "../App";
-import { AuthContext } from "../context/AuthContext";
 
 const ColorWheel = () => {
-  const { assignTrack } = useContext(ColorContext);
-  const { setUserSongs } = useContext(AudioContext);
-  const { user } = useContext(AuthContext);
-
-  const handleColorAssign = async (color) => {
-    if (!assignTrack) return;
-
-    const colorData = {
-      color: color,
-      track: assignTrack,
-    };
-
-    try {
-      await baseURLClient.post("/api/assign_color_to_song/", colorData);
-    } catch (error) {
-      console.log(error);
-    }
-
-    fetchUserSongs();
-  };
-
-  const fetchUserSongs = async () => {
-    try {
-      const { data } = await baseURLClient.get("/api/user_songs");
-
-      setUserSongs(data.user_songs);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { handleColorAssign } = useContext(AudioContext);
 
   return (
     <svg viewBox="0 0 64 64" className="pie">

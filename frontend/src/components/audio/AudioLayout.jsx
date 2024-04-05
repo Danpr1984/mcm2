@@ -1,14 +1,12 @@
 import { FaQuestion } from "react-icons/fa";
 import SongPreviewItem from "../SongPreviewItem";
 import { useContext } from "react";
-import { ColorContext } from "../../context/ColorContext";
 import { AudioContext } from "../../context/AudioContext";
 import { findObjectById } from "../../helpers/functions";
 import AudioPlayer from "./AudioPlayer";
 
 const AudioLayout = ({ tracks }) => {
-  const { assignTrack } = useContext(ColorContext);
-  const { userSongs } = useContext(AudioContext);
+  const { userSongs, assignTrack } = useContext(AudioContext);
 
   const alreadyAssigned = findObjectById(userSongs, assignTrack.id);
 
