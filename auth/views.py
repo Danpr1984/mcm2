@@ -5,6 +5,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.middleware.csrf import get_token
 from .serializers import UserSerializer, RegisterSerializer, UserSerializerWithToken
 
 
@@ -35,3 +36,8 @@ class FetchUser(APIView):
         user = request.user
         seralizer = UserSerializer(user, many=False)
         return Response(seralizer.data)
+
+
+def get_csrf(request):
+    response['X-CSRFToken'] = get_token(request)
+    return response

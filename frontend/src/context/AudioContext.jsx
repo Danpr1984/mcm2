@@ -7,6 +7,9 @@ import {
   reassignColor,
   removeSong,
 } from "../routes/api.js";
+import { AuthContext } from "./AuthContext.jsx";
+import { useContext } from "react";
+import { baseURLClient } from "../App.jsx";
 
 export const AudioContext = createContext({
   assignTrack: "",
@@ -31,6 +34,7 @@ export default function AudioContextProvider({ children }) {
   const [playlists, setPlaylists] = useState(null);
   const [songError, setSongError] = useState(null);
   const [loadingSongs, setLoadingSongs] = useState(false);
+  const { getCSRF } = useContext(AuthContext);
 
   useEffect(() => {
     fetchPlaylists();
@@ -59,7 +63,7 @@ export default function AudioContextProvider({ children }) {
 
   const loadUserSongs = async () => {
     try {
-      const songs = await fetchUserSongs();
+      const songs = await fetchUserSongs(csrfToken);
       setUserSongs(songs);
       setLoadingSongs(false);
     } catch (error) {
@@ -70,6 +74,8 @@ export default function AudioContextProvider({ children }) {
 
   const handleRemoveSong = async (song) => {
     try {
+      const csrfToken = await getCSRF();
+      baseURLClient.defaults.headers["X-CSRFToken"] = csrfToken;
       await removeSong(song);
     } catch (error) {
       setSongError(error.message);
@@ -83,6 +89,8 @@ export default function AudioContextProvider({ children }) {
       track: assignTrack,
     };
     try {
+      const csrfToken = await getCSRF();
+      baseURLClient.defaults.headers["X-CSRFToken"] = csrfToken;
       await reassignColor(colorData);
     } catch (error) {
       setSongError(error.message);
@@ -97,6 +105,8 @@ export default function AudioContextProvider({ children }) {
     };
 
     try {
+      const csrfToken = await getCSRF();
+      baseURLClient.defaults.headers["X-CSRFToken"] = csrfToken;
       await colorAssign(colorData);
     } catch (error) {
       setSongError(error.message);

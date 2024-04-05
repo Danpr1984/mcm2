@@ -13,6 +13,7 @@ export const AuthContext = createContext({
   setSpotifyToken: () => {},
   whoami: async () => {},
   setUserAuthToken: () => {},
+  getCSRF: async () => {},
 });
 
 export default function AuthContextProvider({ children }) {
@@ -36,6 +37,22 @@ export default function AuthContextProvider({ children }) {
     }
     whoami();
   }, [spotifyToken]);
+
+  async function getCSRF() {
+    try {
+      const response = await fetch(`${VITE_BACKEND_URL}/api/csrf`, {
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const csrfToken = response.headers.get("X-CSRFToken");
+      return csrfToken;
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   const whoami = async () => {
     try {
@@ -67,6 +84,7 @@ export default function AuthContextProvider({ children }) {
     setLoadingUser,
     whoami,
     setUserAuthToken,
+    getCSRF,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
