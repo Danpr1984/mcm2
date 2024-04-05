@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework import  status
 from rest_framework.response import Response
 from rest_framework.permissions import  IsAuthenticated
+from django.views.decorators.csrf import csrf_exempt
 from .serializers import  AssignedSongSerializer
 from .models import AssignedSong, Color, Song
 
@@ -14,7 +15,7 @@ class UserSongsView(APIView):
         song_serializer = AssignedSongSerializer(assigned_songs, many=True)
         return Response({'user_songs': song_serializer.data}, status=status.HTTP_200_OK)
 
-
+@csrf_exempt
 class AssignColorToSong(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -45,7 +46,7 @@ class AssignColorToSong(APIView):
 
         return Response({"message" : 'Route works'})
 
-
+@csrf_exempt
 class ReAssignColor(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -68,7 +69,7 @@ class ReAssignColor(APIView):
 
         return Response({"message" : 'Route works'})
 
-
+@csrf_exempt
 class RemovedAssignedSong(APIView):
     permission_classes = [IsAuthenticated]
 
