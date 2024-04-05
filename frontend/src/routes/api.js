@@ -15,7 +15,7 @@ export const fetchUserSongs = async () => {
 
 export const removeSong = async (song) => {
   try {
-    const response = await baseURLClient.post("/api/remove_color_song/", song);
+    const response = await baseURLClient.post("/api/remove_color_song", song);
 
     if (response.status !== 200) {
       throw new Error("Failed to remove song");
@@ -30,10 +30,7 @@ export const removeSong = async (song) => {
 
 export const reassignColor = async (colorData) => {
   try {
-    const response = await baseURLClient.post(
-      "/api/reassign_color/",
-      colorData,
-    );
+    const response = await baseURLClient.post("/api/reassign_color", colorData);
 
     if (response.status !== 200) {
       throw new Error("Failed to remove song");
@@ -49,7 +46,7 @@ export const reassignColor = async (colorData) => {
 export const colorAssign = async (colorData) => {
   try {
     const response = await baseURLClient.post(
-      "/api/assign_color_to_song/",
+      "/api/assign_color_to_song",
       colorData,
     );
     if (response.status !== 200) {
