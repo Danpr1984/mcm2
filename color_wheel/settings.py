@@ -59,7 +59,7 @@ MIDDLEWARE = [
 
 ALLOWED_HOSTS = ['http://127.0.0.1:8000',
                 "http://localhost:3000", 
-                "mcm-colour-930ee6d9a64a.herokuapp.com",
+                "https://music-colorwheel-097faf076de0.herokuapp.com/",
                 'localhost']
 
 CORS_ALLOW_ALL_ORIGINS = True
