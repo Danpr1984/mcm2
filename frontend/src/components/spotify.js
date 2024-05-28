@@ -1,7 +1,7 @@
 import axios from "axios";
 const authEndpoint = "https://accounts.spotify.com/authorize?";
 const clientId = "660bc9f960ec49bf9d1a5e944c24dfbd";
-const redirectUri = "mcm-backend-2de70cb4aac9.herokuapp.com";
+const redirectUri = "music-colorwheel-097faf076de0.herokuapp.com";
 // const redirectUri = "http://localhost:8000/";
 
 const scopes = [
